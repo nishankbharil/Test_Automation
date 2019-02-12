@@ -63,11 +63,5 @@ public class Common
 		return count1;
 	}
 	
-//	public static int getColumnNumberWithName(WebDriver driver)
-//	{
-//		List<WebElement> allColumns = driver.findElement(By.xpath("//table/thead/tr/th"));
-//		allColumns.contains("Employee Name");
-//		
-//	}
 
 }
