@@ -44,6 +44,7 @@ public class Common
 		{
 			String s2 = driver.findElement(By.xpath("((//table/tbody/tr)["+i+"]/td/a)[2]")).getText();
 			System.out.println(s2);
+			System.out.println(s2);
 		}
 		
 
