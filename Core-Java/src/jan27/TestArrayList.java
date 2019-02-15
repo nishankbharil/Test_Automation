@@ -2,6 +2,7 @@ package jan27;
 
 import java.util.List;
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class TestArrayList
 {
@@ -15,6 +16,17 @@ public class TestArrayList
 		names.add("James");
 		names.add("Tom");
 		names.add("Jessica");//index = 4
+		
+		
+//		names.add(8);
+//		names.add(5);
+//		names.add(777777777);
+//		names.add(7);
+//		names.add(8);//index = 4
+		
+		Collections.sort(names);
+		
+		System.out.println(names);
 		
 		String ele2 = names.get(2);
 		System.out.println(ele2);
@@ -32,6 +44,7 @@ public class TestArrayList
 		{
 			System.out.println(temp);
 		}
+		
 	}
 
 }

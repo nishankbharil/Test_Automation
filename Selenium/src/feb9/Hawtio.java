@@ -63,10 +63,10 @@ public class Hawtio
 		return s;
 	}
 	
-	public static void GetRowWithCellText(WebDriver driver)
-	{
-		WebElement Ele6 = driver.findElement(By.xpath("(//thead/tr/th)["+col+"]"));
-	}
+//	public static void GetRowWithCellText(WebDriver driver)
+//	{
+//		WebElement Ele6 = driver.findElement(By.xpath("(//thead/tr/th)["+col+"]"));
+//	}
 	
 	
 }

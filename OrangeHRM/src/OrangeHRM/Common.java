@@ -7,6 +7,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.support.ui.Select;
 
 public class Common
 {
@@ -44,8 +45,13 @@ public class Common
 		{
 			String s2 = driver.findElement(By.xpath("((//table/tbody/tr)["+i+"]/td/a)[2]")).getText();
 			System.out.println(s2);
-			System.out.println(s2);
+			
+			WebElement E2 = driver.findElement(By.xpath("(((//table/tbody/tr)["+i+"])/td)[8]/select"));
+			Select d = new Select(E2);
+			d.selectByVisibleText("Cancel");
 		}
+		
+		driver.findElement(By.linkText("Admin")).click();
 		
 
 	}
@@ -63,6 +69,12 @@ public class Common
 		int count1 = allColumns.size();
 		return count1;
 	}
+//	public static String getRowWithCellText(String text, WebDriver driver)
+//	{
+//		
+//		return ;
+//	}
+//	
 	
 
 }
