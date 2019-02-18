@@ -16,5 +16,7 @@ public class AdvanceCalc extends Calc
 		}
 		
 		System.out.println(a/b);
+		
+		
 	}
 }

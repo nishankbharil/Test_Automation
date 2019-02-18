@@ -12,6 +12,10 @@ public class TestCircle {
 		float valueOfPiInCircleClass = c.getpi();
 		System.out.println(valueOfPiInCircleClass);
 		c.getArea(10);
+		
+//		double num= Math.random();
+//		System.out.println(num);
+		
 	}
 
 }

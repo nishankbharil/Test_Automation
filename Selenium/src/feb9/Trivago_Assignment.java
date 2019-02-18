@@ -36,7 +36,6 @@ public class Trivago_Assignment
 		Common.sleep(2000);
 		
 		
-		
 		driver.findElement(By.xpath("//time[@datetime ='2019-02-20']")).click();
 		Common.sleep(2000);
 		driver.findElement(By.xpath("//time[@datetime ='2019-02-22']")).click();
