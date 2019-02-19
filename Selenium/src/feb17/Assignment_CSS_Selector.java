@@ -27,7 +27,7 @@ public class Assignment_CSS_Selector {
 		wait.until(
 				ExpectedConditions.visibilityOfAllElementsLocatedBy(By.cssSelector("input[type='text'][name='name']")));
 		driver.findElement(By.cssSelector("input[type='text'][name='name']")).sendKeys("Nishank");
-
+		
 	}
 
 }
