@@ -1,22 +1,26 @@
-package feb17;
+package feb23;
 
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 
 import Lib.Common;
 
-public class Browse_Upload_File {
+public class Firefox2_Browse_Upload_File {
 
 	public static void main(String[] args) {
-	
-		System.setProperty("webdriver.chrome.driver", "drivers/chromedriver.exe");
+		System.setProperty("webdriver.gecko.driver", "drivers/geckodriver.exe");
 		
-		WebDriver driver = new ChromeDriver();
+// 		when error : can not find firefox binary
+//		System.setProperty("webdriver.firefox.bin", "/location/of/firefox.exe");
+		
+		
+		WebDriver driver = new FirefoxDriver();
 		
 		driver.manage().timeouts().pageLoadTimeout(60, TimeUnit.SECONDS);
 		driver.get("http://localhost:8999/dwrdemo/");
