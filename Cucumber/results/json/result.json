@@ -1,0 +1,63 @@
+[
+  {
+    "line": 1,
+    "elements": [
+      {
+        "before": [
+          {
+            "result": {
+              "duration": 1991825260,
+              "status": "passed"
+            },
+            "match": {
+              "location": "ConnectPageStepDefs.waitForLoading()"
+            }
+          }
+        ],
+        "line": 2,
+        "name": "user is able to click on Threads page",
+        "description": "",
+        "id": "threads-feature;user-is-able-to-click-on-threads-page",
+        "type": "scenario",
+        "keyword": "Scenario",
+        "steps": [
+          {
+            "result": {
+              "duration": 8501308451,
+              "status": "passed"
+            },
+            "line": 3,
+            "name": "that user is on welcome page",
+            "match": {
+              "location": "ConnectPageStepDefs.launchWelcome()"
+            },
+            "keyword": "Given "
+          },
+          {
+            "result": {
+              "duration": 11715432908,
+              "status": "passed"
+            },
+            "line": 4,
+            "name": "user clicks on Threads link",
+            "match": {
+              "arguments": [
+                {
+                  "val": "Threads",
+                  "offset": 15
+                }
+              ],
+              "location": "ConnectPageStepDefs.clickLinks(String)"
+            },
+            "keyword": "When "
+          }
+        ]
+      }
+    ],
+    "name": "Threads feature",
+    "description": "",
+    "id": "threads-feature",
+    "keyword": "Feature",
+    "uri": "features/Threads.feature"
+  }
+]

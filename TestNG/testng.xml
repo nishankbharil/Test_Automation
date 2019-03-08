@@ -1,0 +1,20 @@
+<suite name="my suite">
+	<parameter name="AppURL" value="http://google.co.in"/>
+	<test name = "my test">
+		<!--
+		<classes>
+			<class name = "p1.Test2"/>
+			<class name = "p1.Test3"/>
+		</classes>
+		-->
+		<packages>
+			<package name="p1"/>
+			<package name="p2"/>
+		</packages>
+		<groups> 
+			<run>
+				<include name = "Sanity"/>
+			</run>
+		</groups>
+	</test>
+</suite>

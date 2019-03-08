@@ -1,0 +1,9 @@
+<suite name="my suite">
+	<parameter name="Url" value="http://localhost:8999/hawtio"/>
+	<test name = "my test">
+		<packages>
+			<package name="tests.setup"/>
+			<package name="tests.testCases"/>
+		</packages>
+	</test>
+</suite>
