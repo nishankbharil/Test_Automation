@@ -93,7 +93,4 @@ public class ConnectPageStepDefs {
 		ImageIO.write(screenshot.getImage(), "PNG", new File(System.getProperty("user.dir")+"\\Screenshot\\"+"FullPage_ThreadsPage.png"));
 		
 	}
-	
-	
-
 }

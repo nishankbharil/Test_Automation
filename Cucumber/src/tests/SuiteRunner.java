@@ -12,3 +12,6 @@ public class SuiteRunner
 {
 	
 }
+
+//tags= {"Sanity"}
+//druRun  = true(This checks if mapping is completed)

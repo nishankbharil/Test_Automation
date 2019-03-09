@@ -28,8 +28,8 @@ public class Java_Script_Example {
 		
 //		Java script executor supports id and name and Tagname
 		
-		((JavascriptExecutor)driver).executeScript("document.getElementsByName('Name')[0].value='Tom';");
-		((JavascriptExecutor)driver).executeScript("document.getElementsByName('Scheme')[0].selectedIndex=1;");
+		((JavascriptExecutor)driver).executeScript("document.getElementsByName('name')[0].value='Tom';");
+		((JavascriptExecutor)driver).executeScript("document.getElementsByName('scheme')[0].selectedIndex=1;");
 		
 		
 

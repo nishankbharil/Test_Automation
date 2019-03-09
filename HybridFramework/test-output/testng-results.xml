@@ -2,12 +2,12 @@
 <testng-results skipped="0" failed="0" ignored="0" total="2" passed="2">
   <reporter-output>
   </reporter-output>
-  <suite name="my suite" duration-ms="2556" started-at="2019-03-07T05:22:49Z" finished-at="2019-03-07T05:22:52Z">
+  <suite name="my suite" duration-ms="2865" started-at="2019-03-09T07:56:16Z" finished-at="2019-03-09T07:56:19Z">
     <groups>
     </groups>
-    <test name="my test" duration-ms="2556" started-at="2019-03-07T05:22:49Z" finished-at="2019-03-07T05:22:52Z">
+    <test name="my test" duration-ms="2865" started-at="2019-03-09T07:56:16Z" finished-at="2019-03-09T07:56:19Z">
       <class name="tests.setup.Initilize">
-        <test-method status="PASS" signature="setup(java.lang.String)[pri:0, instance:tests.setup.Initilize@4d95d2a2]" name="setup" is-config="true" duration-ms="8423" started-at="2019-03-07T05:22:41Z" finished-at="2019-03-07T05:22:49Z">
+        <test-method status="PASS" signature="setup(java.lang.String)[pri:0, instance:tests.setup.Initilize@675d3402]" name="setup" is-config="true" duration-ms="8867" started-at="2019-03-09T07:56:07Z" finished-at="2019-03-09T07:56:16Z">
           <params>
             <param index="0">
               <value>
@@ -20,13 +20,13 @@
         </test-method> <!-- setup -->
       </class> <!-- tests.setup.Initilize -->
       <class name="tests.testCases.Test_Welcome_Page">
-        <test-method status="PASS" signature="testFillForm()[pri:0, instance:tests.testCases.Test_Welcome_Page@3b088d51]" name="testFillForm" duration-ms="1191" started-at="2019-03-07T05:22:51Z" finished-at="2019-03-07T05:22:52Z">
+        <test-method status="PASS" signature="testFillForm()[pri:0, instance:tests.testCases.Test_Welcome_Page@482f8f11]" name="testFillForm" duration-ms="1197" started-at="2019-03-09T07:56:18Z" finished-at="2019-03-09T07:56:19Z">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- testFillForm -->
       </class> <!-- tests.testCases.Test_Welcome_Page -->
       <class name="tests.testCases.Test_Threads">
-        <test-method status="PASS" signature="testThreadsPage()[pri:0, instance:tests.testCases.Test_Threads@53f65459]" name="testThreadsPage" duration-ms="1330" started-at="2019-03-07T05:22:49Z" finished-at="2019-03-07T05:22:51Z">
+        <test-method status="PASS" signature="testThreadsPage()[pri:0, instance:tests.testCases.Test_Threads@51565ec2]" name="testThreadsPage" duration-ms="1648" started-at="2019-03-09T07:56:16Z" finished-at="2019-03-09T07:56:18Z">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- testThreadsPage -->
