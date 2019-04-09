@@ -6,7 +6,7 @@ public class PrimeNumberCheck
 	public static void main(String[] args) 
 	{
 		PrimeNumberCheck pnc = new PrimeNumberCheck();
-		boolean res1 = pnc.isPrime(2);
+		boolean res1 = pnc.isPrime(89);
 		System.out.println(res1);
 		
 		boolean res2 = pnc.isPrime(27);

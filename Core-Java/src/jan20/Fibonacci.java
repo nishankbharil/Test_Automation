@@ -13,7 +13,7 @@ public class Fibonacci {
 		int y = 1;
 		int z = 0;
 
-		int num = 100;
+		int num = 10;
 		System.out.println(x);
 		System.out.println(y);
 		for (int i = 1; i <= num; i++) {

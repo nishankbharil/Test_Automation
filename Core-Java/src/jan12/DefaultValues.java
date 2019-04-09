@@ -2,9 +2,9 @@ package jan12;
 
 public class DefaultValues
 {
-	int a;
-	static int b;
-	static String s;
+	int a = 10;
+	static int b = 20;
+	static String s = "nishank";
 	static DefaultValues d;//null pointer exception
 	
 	public static void main(String[] args) 
