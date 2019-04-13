@@ -39,11 +39,11 @@ public class TestBase {
 		String browserName = prop.getProperty("browser");
 		
 		if(browserName.equals("chrome")){
-			System.setProperty("webdriver.chrome.driver", "/Users/naveenkhunteta/Downloads/chromedriver");	
+			System.setProperty("webdriver.chrome.driver", "C:\\My Documents\\Selenium\\Git_Repository_Learn_Selenium\\PageObjectModel-master\\drivers\\chromedriver.exe");	
 			driver = new ChromeDriver(); 
 		}
 		else if(browserName.equals("FF")){
-			System.setProperty("webdriver.gecko.driver", "/Users/naveenkhunteta/Documents/SeleniumServer/geckodriver");	
+			System.setProperty("webdriver.gecko.driver", "C:\\My Documents\\Selenium\\Git_Repository_Learn_Selenium\\PageObjectModel-master\\drivers\\geckodriver.exe");	
 			driver = new FirefoxDriver(); 
 		}
 		
@@ -62,13 +62,4 @@ public class TestBase {
 		driver.get(prop.getProperty("url"));
 		
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-
 }

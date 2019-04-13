@@ -9,6 +9,10 @@ public class baseclass extends Override{
 		
 		int d = obj1.sum(20, 10);
 		
+		Override obj2 = new Override();
+		
+		System.out.println(obj2.sum(30, 40));
+		
 		System.out.println(d);
 
 	}

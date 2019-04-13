@@ -54,8 +54,4 @@ public class ContactsPage extends TestBase {
 		saveBtn.click();
 		
 	}
-	
-	
-	
-
 }
