@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
-<suite name="FREE CRM Application Test Automation Test Suite">
+<suite name="Orange HRM Test Automation Suite">
 
 	<listeners>
 		<listener class-name="com.qa.ExtentReportListener.ExtentReporterNG" />
@@ -9,7 +9,7 @@
 
 	<test name="Free CRM App Test Cases">
 		<classes>
-			<class name="com.crm.qa.testcases.FirstTest"></class>
+			<class name="com.crm.qa.testcases.OHLoginPageTest"></class>
 		</classes>
 	</test>
 </suite>
