@@ -25,4 +25,3 @@ Examples:
 		|username|password|
 		|admin   |admin123|
 		|admin   |admin123|
-

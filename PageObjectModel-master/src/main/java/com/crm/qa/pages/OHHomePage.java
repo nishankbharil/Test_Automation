@@ -3,7 +3,9 @@ package com.crm.qa.pages;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
-public class OHHomePage
+import com.crm.qa.base.TestBase;
+
+public class OHHomePage extends TestBase
 {
 	
 	@FindBy(xpath = "//img[@src='/webres_5ca6658021cd89.53008077/orangehrmLeavePlugin/images/ApplyLeave.png']")

@@ -26,5 +26,4 @@ public class TestArraya
 		System.out.println("Name of student at index 2 - "+names[2]);
 		System.out.println("Name of student at index 2 - "+names.length);//array index out of bound
 	}
-
 }

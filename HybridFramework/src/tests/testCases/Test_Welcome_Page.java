@@ -7,7 +7,6 @@ import org.testng.annotations.Test;
 
 import libs.Common;
 import pageObjects.ConnectPage;
-import pageObjects.ThreadsPage;
 import pageObjects.WelcomePage;
 
 public class Test_Welcome_Page

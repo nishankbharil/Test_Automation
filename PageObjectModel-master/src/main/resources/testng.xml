@@ -7,7 +7,7 @@
 	</listeners>
 
 
-	<test name="Free CRM App Test Cases">
+	<test name="Orange HRM Test">
 		<classes>
 			<class name="com.crm.qa.testcases.OHLoginPageTest"></class>
 		</classes>

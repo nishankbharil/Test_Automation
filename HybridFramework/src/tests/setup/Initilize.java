@@ -1,7 +1,6 @@
 package tests.setup;
 
 import org.testng.annotations.BeforeSuite;
-
 import org.testng.annotations.Parameters;
 
 import libs.Common;

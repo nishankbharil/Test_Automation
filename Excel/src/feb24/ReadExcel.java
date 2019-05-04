@@ -37,7 +37,7 @@ public class ReadExcel {
 	}
 
 	public static List<String> getTestData(String testName) {
-		List<String> testData = new ArrayList<String>();
+		ArrayList<String> testData = new ArrayList<String>();
 		try {
 			XSSFWorkbook book = new XSSFWorkbook("TestData.xlsx");
 
@@ -61,4 +61,6 @@ public class ReadExcel {
 		}
 		return testData;
 	}
+	
+	
 }

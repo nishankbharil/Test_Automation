@@ -4,23 +4,22 @@ public class Assignment3 {
 
 	public static void main(String[] args) {
 		
-		int a = 10;
+		int num = 13;
 		boolean bflag = false;
 		
-		for (int i =2; i<a; i++)
+		for (int i =2; i<num; i++)
 		{
-			if (a%i!=0)
+			if (num%i==0)
 			{
-				
-			}
-			else
-			{
+				System.out.println("Number - "+num +" is not a prime number");
 				bflag = true;
+				break;
 			}
 		}
-		if (bflag == true)
+		
+		if (bflag == false)
 		{	
-		System.out.println("Number - "+a +" is a prime number");
+			System.out.println("Number - "+num +" is a prime number");
 		}
 	}
 }

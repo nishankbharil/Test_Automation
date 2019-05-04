@@ -35,7 +35,10 @@ public class Alert_Class {
 		alert.sendKeys("OK");
 		Thread.sleep(1000);
 		alert.accept();
-
+		
+//		Alert alrt = driver.switchTo().alert();
+//		alrt.accept();
+//		alrt.dismiss();
+//		alrt.sendKeys("test");
 	}
-
 }

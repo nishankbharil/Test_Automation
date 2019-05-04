@@ -4,7 +4,10 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 
 import io.restassured.RestAssured;
+import static io.restassured.RestAssured.*;
 import io.restassured.response.Response;
+import static org.hamcrest.Matchers.*;
+
 
 public class getData
 
@@ -17,6 +20,11 @@ public class getData
 		System.out.println("Status code is: " + code);
 
 		Assert.assertEquals(code, 200);
+		
+//		ResponseBody s = resp.body();
+//		
+//		System.out.println(s);
+		
 	}
 
 	@Test
@@ -28,10 +36,31 @@ public class getData
 //		String a = resp.getStatusLine();
 		boolean ss = data.contains("light intensity drizzle");
 		
+		int code = resp.getStatusCode();
+		
 		System.out.println(ss);
 		System.out.println("Data is " + data);
 		System.out.println("response time " + resp.getTime());
+//		data.
+//		Assert.assertEquals(code, 200);
 
+	}
+	
+	@Test
+	public void test_numberOfCircuitsFor2017_Seacon()
+	{
+		given().
+		when().
+		get ("http://ergast.com/api/f1/2017/circuits.json").
+		then().
+		assertThat().
+		statusCode(200).
+		and().
+		body("MRData.CircuitTable.Circuits.circuitId", hasSize(20)).
+		and().
+		header("content-length", equalTo("4551"));
+	
 	}
 
 }
+

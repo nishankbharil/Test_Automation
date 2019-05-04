@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testng-results skipped="0" failed="0" ignored="0" total="1" passed="1">
+  <reporter-output>
+  </reporter-output>
+  <suite name="Default suite" duration-ms="17774" started-at="2019-04-15T08:09:22Z" finished-at="2019-04-15T08:09:40Z">
+    <groups>
+    </groups>
+    <test name="Default test" duration-ms="17774" started-at="2019-04-15T08:09:22Z" finished-at="2019-04-15T08:09:40Z">
+      <class name="com.qa.testcases.OHAdminPageTest">
+        <test-method status="PASS" signature="setUp()[pri:0, instance:com.qa.testcases.OHAdminPageTest@3532ec19]" name="setUp" is-config="true" duration-ms="12013" started-at="2019-04-15T13:39:22Z" finished-at="2019-04-15T13:39:34Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- setUp -->
+        <test-method status="PASS" signature="AddNewUserTest()[pri:1, instance:com.qa.testcases.OHAdminPageTest@3532ec19]" name="AddNewUserTest" duration-ms="4893" started-at="2019-04-15T13:39:34Z" finished-at="2019-04-15T13:39:39Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- AddNewUserTest -->
+        <test-method status="PASS" signature="tearDown()[pri:0, instance:com.qa.testcases.OHAdminPageTest@3532ec19]" name="tearDown" is-config="true" duration-ms="840" started-at="2019-04-15T13:39:39Z" finished-at="2019-04-15T13:39:40Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- tearDown -->
+      </class> <!-- com.qa.testcases.OHAdminPageTest -->
+    </test> <!-- Default test -->
+  </suite> <!-- Default suite -->
+</testng-results>

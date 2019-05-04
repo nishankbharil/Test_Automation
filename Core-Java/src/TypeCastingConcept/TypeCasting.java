@@ -8,7 +8,7 @@ public class TypeCasting
 	
 		//Premitive
 		
-		int i = 1000; 
+		int i = 128; 
 		
 		long l = i; //Implicit typecasting
 		
