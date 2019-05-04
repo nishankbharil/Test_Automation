@@ -3,17 +3,6 @@
     "line": 1,
     "elements": [
       {
-        "before": [
-          {
-            "result": {
-              "duration": 2002037695,
-              "status": "passed"
-            },
-            "match": {
-              "location": "ConnectPageStepDefs.waitForLoading()"
-            }
-          }
-        ],
         "line": 26,
         "name": "free CRM login2 test scenario",
         "description": "",
@@ -23,8 +12,7 @@
         "steps": [
           {
             "result": {
-              "duration": 8723490477,
-              "status": "passed"
+              "status": "skipped"
             },
             "line": 17,
             "name": "User is already on login page",
@@ -35,8 +23,7 @@
           },
           {
             "result": {
-              "duration": 18506227,
-              "status": "passed"
+              "status": "skipped"
             },
             "line": 18,
             "name": "Title of login page is Free CRM",
@@ -47,8 +34,7 @@
           },
           {
             "result": {
-              "duration": 316447444,
-              "status": "passed"
+              "status": "skipped"
             },
             "line": 19,
             "name": "User enters \"admin\" and \"admin123\"",
@@ -73,8 +59,7 @@
           },
           {
             "result": {
-              "duration": 4836732500,
-              "status": "passed"
+              "status": "skipped"
             },
             "line": 20,
             "name": "User clicks on login button",
@@ -85,8 +70,7 @@
           },
           {
             "result": {
-              "duration": 115342896,
-              "status": "passed"
+              "status": "skipped"
             },
             "line": 21,
             "name": "User is on home page",
@@ -97,8 +81,7 @@
           },
           {
             "result": {
-              "duration": 785524283,
-              "status": "passed"
+              "status": "skipped"
             },
             "line": 22,
             "name": "User close the browser",
@@ -110,17 +93,6 @@
         ]
       },
       {
-        "before": [
-          {
-            "result": {
-              "duration": 2009334342,
-              "status": "passed"
-            },
-            "match": {
-              "location": "ConnectPageStepDefs.waitForLoading()"
-            }
-          }
-        ],
         "line": 27,
         "name": "free CRM login2 test scenario",
         "description": "",
@@ -130,8 +102,7 @@
         "steps": [
           {
             "result": {
-              "duration": 7265582193,
-              "status": "passed"
+              "status": "skipped"
             },
             "line": 17,
             "name": "User is already on login page",
@@ -142,8 +113,7 @@
           },
           {
             "result": {
-              "duration": 17161438,
-              "status": "passed"
+              "status": "skipped"
             },
             "line": 18,
             "name": "Title of login page is Free CRM",
@@ -154,8 +124,7 @@
           },
           {
             "result": {
-              "duration": 187670201,
-              "status": "passed"
+              "status": "skipped"
             },
             "line": 19,
             "name": "User enters \"admin\" and \"admin123\"",
@@ -180,8 +149,7 @@
           },
           {
             "result": {
-              "duration": 4757228341,
-              "status": "passed"
+              "status": "skipped"
             },
             "line": 20,
             "name": "User clicks on login button",
@@ -192,8 +160,7 @@
           },
           {
             "result": {
-              "duration": 38573031,
-              "status": "passed"
+              "status": "skipped"
             },
             "line": 21,
             "name": "User is on home page",
@@ -204,8 +171,7 @@
           },
           {
             "result": {
-              "duration": 774202296,
-              "status": "passed"
+              "status": "skipped"
             },
             "line": 22,
             "name": "User close the browser",

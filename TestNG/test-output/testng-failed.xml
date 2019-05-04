@@ -3,15 +3,11 @@
 <suite guice-stage="DEVELOPMENT" name="Failed suite [Default suite]">
   <test thread-count="5" name="Default test(failed)">
     <classes>
-      <class name="p2.Test4">
+      <class name="Assertion_Demo.Assert">
         <methods>
-          <include name="m10"/>
-          <include name="Launch_URL"/>
-          <include name="Logout"/>
-          <include name="Close_Browser"/>
-          <include name="login"/>
+          <include name="HardAssert"/>
         </methods>
-      </class> <!-- p2.Test4 -->
+      </class> <!-- Assertion_Demo.Assert -->
     </classes>
   </test> <!-- Default test(failed) -->
 </suite> <!-- Failed suite [Default suite] -->

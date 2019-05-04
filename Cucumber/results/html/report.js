@@ -119,10 +119,6 @@ formatter.examples({
   ],
   "keyword": "Examples"
 });
-formatter.before({
-  "duration": 2002037695,
-  "status": "passed"
-});
 formatter.scenario({
   "line": 26,
   "name": "free CRM login2 test scenario",
@@ -169,15 +165,13 @@ formatter.match({
   "location": "LoginStepDefination.user_already_on_login_page()"
 });
 formatter.result({
-  "duration": 8723490477,
-  "status": "passed"
+  "status": "skipped"
 });
 formatter.match({
   "location": "LoginStepDefination.title_of_login_page_is_free_crm()"
 });
 formatter.result({
-  "duration": 18506227,
-  "status": "passed"
+  "status": "skipped"
 });
 formatter.match({
   "arguments": [
@@ -193,33 +187,25 @@ formatter.match({
   "location": "LoginStepDefination.User_enters_username_and_password(String,String)"
 });
 formatter.result({
-  "duration": 316447444,
-  "status": "passed"
+  "status": "skipped"
 });
 formatter.match({
   "location": "LoginStepDefination.User_clicks_on_login_button()"
 });
 formatter.result({
-  "duration": 4836732500,
-  "status": "passed"
+  "status": "skipped"
 });
 formatter.match({
   "location": "LoginStepDefination.User_is_on_home_page()"
 });
 formatter.result({
-  "duration": 115342896,
-  "status": "passed"
+  "status": "skipped"
 });
 formatter.match({
   "location": "LoginStepDefination.User_Close_The_Browser()"
 });
 formatter.result({
-  "duration": 785524283,
-  "status": "passed"
-});
-formatter.before({
-  "duration": 2009334342,
-  "status": "passed"
+  "status": "skipped"
 });
 formatter.scenario({
   "line": 27,
@@ -267,15 +253,13 @@ formatter.match({
   "location": "LoginStepDefination.user_already_on_login_page()"
 });
 formatter.result({
-  "duration": 7265582193,
-  "status": "passed"
+  "status": "skipped"
 });
 formatter.match({
   "location": "LoginStepDefination.title_of_login_page_is_free_crm()"
 });
 formatter.result({
-  "duration": 17161438,
-  "status": "passed"
+  "status": "skipped"
 });
 formatter.match({
   "arguments": [
@@ -291,28 +275,24 @@ formatter.match({
   "location": "LoginStepDefination.User_enters_username_and_password(String,String)"
 });
 formatter.result({
-  "duration": 187670201,
-  "status": "passed"
+  "status": "skipped"
 });
 formatter.match({
   "location": "LoginStepDefination.User_clicks_on_login_button()"
 });
 formatter.result({
-  "duration": 4757228341,
-  "status": "passed"
+  "status": "skipped"
 });
 formatter.match({
   "location": "LoginStepDefination.User_is_on_home_page()"
 });
 formatter.result({
-  "duration": 38573031,
-  "status": "passed"
+  "status": "skipped"
 });
 formatter.match({
   "location": "LoginStepDefination.User_Close_The_Browser()"
 });
 formatter.result({
-  "duration": 774202296,
-  "status": "passed"
+  "status": "skipped"
 });
 });
