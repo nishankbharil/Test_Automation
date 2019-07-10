@@ -27,7 +27,6 @@ public class ConstructorCon
 	public static void main(String[] args) 
 	
 	{
-		
 		ConstructorCon obj1 = new ConstructorCon();
 		ConstructorCon obj2 = new ConstructorCon(20);
 		ConstructorCon obj3 = new ConstructorCon(20, "tom");
@@ -35,6 +34,4 @@ public class ConstructorCon
 		System.out.println(obj2);
 		System.out.println(obj3);
 	}
-
-
 }

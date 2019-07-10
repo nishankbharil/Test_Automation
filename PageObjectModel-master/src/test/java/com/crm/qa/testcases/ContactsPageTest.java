@@ -40,7 +40,6 @@ public class ContactsPageTest extends TestBase{
 			
 	}
 	
-	
 	@BeforeMethod
 	public void setUp() throws InterruptedException {
 		

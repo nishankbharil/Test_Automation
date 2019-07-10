@@ -15,5 +15,4 @@ public class ReverseStringWhileLoop
 			k=k-1;
 		}
 	}
-
 }

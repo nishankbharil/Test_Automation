@@ -1,6 +1,6 @@
 package dec30;
 
-public class Assignment3 {
+public class Prime_Number {
 
 	public static void main(String[] args) {
 		

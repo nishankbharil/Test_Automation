@@ -7,6 +7,8 @@ import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.support.ui.FluentWait;
+import org.openqa.selenium.support.ui.Wait;
 
 import Lib.Common;
 
@@ -72,6 +74,8 @@ public class Trivago_Assignment
 
 //		driver.close();
 //		driver.quit();
+		
+//		Wait wait = new FluentWait<T>(30, TimeUnit.SECONDS,)
 
 	}
 

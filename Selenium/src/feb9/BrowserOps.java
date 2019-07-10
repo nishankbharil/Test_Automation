@@ -24,6 +24,7 @@ public class BrowserOps
 		
 		Common.sleep(2000);
 		WebElement linkEle = driver.findElement(By.linkText("Threads"));
+		
 		linkEle.click();
 		
 		Common.sleep(2000);
@@ -34,7 +35,11 @@ public class BrowserOps
 		
 		WebElement linkEle1 = driver.findElement(By.xpath("//input[@type='text']"));
 		linkEle1.sendKeys("MyTest"+ Keys.BACK_SPACE);
-	
+		linkEle1.sendKeys("MyTest"+ Keys.ARROW_UP);
+		linkEle1.sendKeys("MyTest"+ Keys.ARROW_DOWN);
+		linkEle1.sendKeys("MyTest"+ Keys.COMMAND);
+		linkEle1.sendKeys("MyTest"+ Keys.CONTROL);
+		
 
 	}
 

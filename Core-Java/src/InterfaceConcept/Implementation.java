@@ -27,5 +27,4 @@ public class Implementation implements Bank {
 		System.out.println("Account");
 		return 0;
 	}
-
 }

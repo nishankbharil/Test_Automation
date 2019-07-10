@@ -2,7 +2,10 @@ package tests.stepDefinations;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.support.ui.Select;
 
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.Given;
@@ -60,6 +63,55 @@ public class LoginStepDefination
 			System.out.println("At home page");
 		}
 		
+	}
+	
+	@And("^User clicks on Admin tab$")
+	public void User_clicks_on_Admin_tab()
+	{
+		driver.findElement(By.linkText("Admin")).click();
+	}
+	
+	@And("^User clicks on Users link inside User Management$")
+	public void User_clicks_on_Users_link_inside_User_Management()
+	{
+		Actions action = new Actions(driver);
+		action.moveToElement(driver.findElement(By.id("menu_admin_UserManagement"))).build().perform();
+		driver.findElement(By.id("menu_admin_viewSystemUsers")).click();
+	}
+	
+	@And("^User clicks on Add button$")
+	public void User_clicks_on_Add_button() throws InterruptedException {
+		Thread.sleep(2000);;
+		driver.findElement(By.id("btnAdd")).click();
+	}
+	@And("^User selects User role$")
+	public void User_selects_User_role() {
+
+		WebElement UserType = driver.findElement(By.id("systemUser_userType"));
+		Select s = new Select(UserType);
+		s.selectByVisibleText("Admin");
+	}
+
+	@And("^User selects Username$")
+	public void User_selects_Username() {
+
+		driver.findElement(By.id("systemUser_employeeName_empName")).sendKeys("TestAutoamtion User");
+	}
+
+	@And("^User Selects status$")
+	public void User_Selects_status() {
+		
+		WebElement s2 = driver.findElement(By.id("systemUser_status"));
+		Select se = new Select(s2);
+		se.selectByVisibleText("Enabled");
+
+	}
+
+	@Then("^User clicks on Save button$")
+	public void User_clicks_on_Save_button() {
+		
+		driver.findElement(By.id("btnSave")).click();
+
 	}
 	
 	@And("^User close the browser$")

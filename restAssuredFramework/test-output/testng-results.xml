@@ -1,25 +1,151 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testng-results skipped="0" failed="0" ignored="0" total="3" passed="3">
+<testng-results skipped="0" failed="1" ignored="0" total="1" passed="0">
   <reporter-output>
   </reporter-output>
-  <suite name="Default suite" duration-ms="7649" started-at="2019-05-03T12:31:39Z" finished-at="2019-05-03T12:31:47Z">
+  <suite name="Default suite" duration-ms="2180" started-at="2019-05-14T06:29:14Z" finished-at="2019-05-14T06:29:16Z">
     <groups>
     </groups>
-    <test name="Default test" duration-ms="7649" started-at="2019-05-03T12:31:39Z" finished-at="2019-05-03T12:31:47Z">
-      <class name="getRequest.getData">
-        <test-method status="PASS" signature="testBody()[pri:0, instance:getRequest.getData@482f8f11]" name="testBody" duration-ms="4593" started-at="2019-05-03T12:31:39Z" finished-at="2019-05-03T12:31:44Z">
+    <test name="Default test" duration-ms="2180" started-at="2019-05-14T06:29:14Z" finished-at="2019-05-14T06:29:16Z">
+      <class name="database.ConnectMySQL">
+        <test-method status="FAIL" signature="testDB()[pri:0, instance:database.ConnectMySQL@5c7fa833]" name="testDB" duration-ms="2114" started-at="2019-05-14T06:29:14Z" finished-at="2019-05-14T06:29:16Z">
+          <exception class="com.mysql.jdbc.CommunicationsException">
+            <message>
+              <![CDATA[Communications link failure due to underlying exception: 
+
+** BEGIN NESTED EXCEPTION ** 
+
+java.net.SocketException
+MESSAGE: java.net.ConnectException: Connection refused: connect
+
+STACKTRACE:
+
+java.net.SocketException: java.net.ConnectException: Connection refused: connect
+at com.mysql.jdbc.StandardSocketFactory.connect(StandardSocketFactory.java:151)
+at com.mysql.jdbc.MysqlIO.<init>(MysqlIO.java:280)
+at com.mysql.jdbc.Connection.createNewIO(Connection.java:1765)
+at com.mysql.jdbc.Connection.<init>(Connection.java:430)
+at com.mysql.jdbc.NonRegisteringDriver.connect(NonRegisteringDriver.java:268)
+at java.sql.DriverManager.getConnection(Unknown Source)
+at java.sql.DriverManager.getConnection(Unknown Source)
+at database.ConnectMySQL.testDB(ConnectMySQL.java:19)
+at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+at sun.reflect.NativeMethodAccessorImpl.invoke(Unknown Source)
+at sun.reflect.DelegatingMethodAccessorImpl.invoke(Unknown Source)
+at java.lang.reflect.Method.invoke(Unknown Source)
+at org.testng.internal.MethodInvocationHelper.invokeMethod(MethodInvocationHelper.java:124)
+at org.testng.internal.Invoker.invokeMethod(Invoker.java:583)
+at org.testng.internal.Invoker.invokeTestMethod(Invoker.java:719)
+at org.testng.internal.Invoker.invokeTestMethods(Invoker.java:989)
+at org.testng.internal.TestMethodWorker.invokeTestMethods(TestMethodWorker.java:125)
+at org.testng.internal.TestMethodWorker.run(TestMethodWorker.java:109)
+at org.testng.TestRunner.privateRun(TestRunner.java:648)
+at org.testng.TestRunner.run(TestRunner.java:505)
+at org.testng.SuiteRunner.runTest(SuiteRunner.java:455)
+at org.testng.SuiteRunner.runSequentially(SuiteRunner.java:450)
+at org.testng.SuiteRunner.privateRun(SuiteRunner.java:415)
+at org.testng.SuiteRunner.run(SuiteRunner.java:364)
+at org.testng.SuiteRunnerWorker.runSuite(SuiteRunnerWorker.java:52)
+at org.testng.SuiteRunnerWorker.run(SuiteRunnerWorker.java:84)
+at org.testng.TestNG.runSuitesSequentially(TestNG.java:1208)
+at org.testng.TestNG.runSuitesLocally(TestNG.java:1137)
+at org.testng.TestNG.runSuites(TestNG.java:1049)
+at org.testng.TestNG.run(TestNG.java:1017)
+at org.testng.remote.AbstractRemoteTestNG.run(AbstractRemoteTestNG.java:115)
+at org.testng.remote.RemoteTestNG.initAndRun(RemoteTestNG.java:251)
+at org.testng.remote.RemoteTestNG.main(RemoteTestNG.java:77)
+
+
+** END NESTED EXCEPTION **
+
+]]>
+            </message>
+            <full-stacktrace>
+              <![CDATA[com.mysql.jdbc.CommunicationsException: Communications link failure due to underlying exception: 
+
+** BEGIN NESTED EXCEPTION ** 
+
+java.net.SocketException
+MESSAGE: java.net.ConnectException: Connection refused: connect
+
+STACKTRACE:
+
+java.net.SocketException: java.net.ConnectException: Connection refused: connect
+at com.mysql.jdbc.StandardSocketFactory.connect(StandardSocketFactory.java:151)
+at com.mysql.jdbc.MysqlIO.<init>(MysqlIO.java:280)
+at com.mysql.jdbc.Connection.createNewIO(Connection.java:1765)
+at com.mysql.jdbc.Connection.<init>(Connection.java:430)
+at com.mysql.jdbc.NonRegisteringDriver.connect(NonRegisteringDriver.java:268)
+at java.sql.DriverManager.getConnection(Unknown Source)
+at java.sql.DriverManager.getConnection(Unknown Source)
+at database.ConnectMySQL.testDB(ConnectMySQL.java:19)
+at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+at sun.reflect.NativeMethodAccessorImpl.invoke(Unknown Source)
+at sun.reflect.DelegatingMethodAccessorImpl.invoke(Unknown Source)
+at java.lang.reflect.Method.invoke(Unknown Source)
+at org.testng.internal.MethodInvocationHelper.invokeMethod(MethodInvocationHelper.java:124)
+at org.testng.internal.Invoker.invokeMethod(Invoker.java:583)
+at org.testng.internal.Invoker.invokeTestMethod(Invoker.java:719)
+at org.testng.internal.Invoker.invokeTestMethods(Invoker.java:989)
+at org.testng.internal.TestMethodWorker.invokeTestMethods(TestMethodWorker.java:125)
+at org.testng.internal.TestMethodWorker.run(TestMethodWorker.java:109)
+at org.testng.TestRunner.privateRun(TestRunner.java:648)
+at org.testng.TestRunner.run(TestRunner.java:505)
+at org.testng.SuiteRunner.runTest(SuiteRunner.java:455)
+at org.testng.SuiteRunner.runSequentially(SuiteRunner.java:450)
+at org.testng.SuiteRunner.privateRun(SuiteRunner.java:415)
+at org.testng.SuiteRunner.run(SuiteRunner.java:364)
+at org.testng.SuiteRunnerWorker.runSuite(SuiteRunnerWorker.java:52)
+at org.testng.SuiteRunnerWorker.run(SuiteRunnerWorker.java:84)
+at org.testng.TestNG.runSuitesSequentially(TestNG.java:1208)
+at org.testng.TestNG.runSuitesLocally(TestNG.java:1137)
+at org.testng.TestNG.runSuites(TestNG.java:1049)
+at org.testng.TestNG.run(TestNG.java:1017)
+at org.testng.remote.AbstractRemoteTestNG.run(AbstractRemoteTestNG.java:115)
+at org.testng.remote.RemoteTestNG.initAndRun(RemoteTestNG.java:251)
+at org.testng.remote.RemoteTestNG.main(RemoteTestNG.java:77)
+
+
+** END NESTED EXCEPTION **
+
+
+at com.mysql.jdbc.Connection.createNewIO(Connection.java:1830)
+at com.mysql.jdbc.Connection.<init>(Connection.java:430)
+at com.mysql.jdbc.NonRegisteringDriver.connect(NonRegisteringDriver.java:268)
+at java.sql.DriverManager.getConnection(Unknown Source)
+at java.sql.DriverManager.getConnection(Unknown Source)
+at database.ConnectMySQL.testDB(ConnectMySQL.java:19)
+at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+at sun.reflect.NativeMethodAccessorImpl.invoke(Unknown Source)
+at sun.reflect.DelegatingMethodAccessorImpl.invoke(Unknown Source)
+at java.lang.reflect.Method.invoke(Unknown Source)
+at org.testng.internal.MethodInvocationHelper.invokeMethod(MethodInvocationHelper.java:124)
+at org.testng.internal.Invoker.invokeMethod(Invoker.java:583)
+at org.testng.internal.Invoker.invokeTestMethod(Invoker.java:719)
+at org.testng.internal.Invoker.invokeTestMethods(Invoker.java:989)
+at org.testng.internal.TestMethodWorker.invokeTestMethods(TestMethodWorker.java:125)
+at org.testng.internal.TestMethodWorker.run(TestMethodWorker.java:109)
+at org.testng.TestRunner.privateRun(TestRunner.java:648)
+at org.testng.TestRunner.run(TestRunner.java:505)
+at org.testng.SuiteRunner.runTest(SuiteRunner.java:455)
+at org.testng.SuiteRunner.runSequentially(SuiteRunner.java:450)
+at org.testng.SuiteRunner.privateRun(SuiteRunner.java:415)
+at org.testng.SuiteRunner.run(SuiteRunner.java:364)
+at org.testng.SuiteRunnerWorker.runSuite(SuiteRunnerWorker.java:52)
+at org.testng.SuiteRunnerWorker.run(SuiteRunnerWorker.java:84)
+at org.testng.TestNG.runSuitesSequentially(TestNG.java:1208)
+at org.testng.TestNG.runSuitesLocally(TestNG.java:1137)
+at org.testng.TestNG.runSuites(TestNG.java:1049)
+at org.testng.TestNG.run(TestNG.java:1017)
+at org.testng.remote.AbstractRemoteTestNG.run(AbstractRemoteTestNG.java:115)
+at org.testng.remote.RemoteTestNG.initAndRun(RemoteTestNG.java:251)
+at org.testng.remote.RemoteTestNG.main(RemoteTestNG.java:77)
+]]>
+            </full-stacktrace>
+          </exception> <!-- com.mysql.jdbc.CommunicationsException -->
           <reporter-output>
           </reporter-output>
-        </test-method> <!-- testBody -->
-        <test-method status="PASS" signature="testResponsecode()[pri:0, instance:getRequest.getData@482f8f11]" name="testResponsecode" duration-ms="1539" started-at="2019-05-03T12:31:44Z" finished-at="2019-05-03T12:31:45Z">
-          <reporter-output>
-          </reporter-output>
-        </test-method> <!-- testResponsecode -->
-        <test-method status="PASS" signature="test_numberOfCircuitsFor2017_Seacon()[pri:0, instance:getRequest.getData@482f8f11]" name="test_numberOfCircuitsFor2017_Seacon" duration-ms="1484" started-at="2019-05-03T12:31:45Z" finished-at="2019-05-03T12:31:47Z">
-          <reporter-output>
-          </reporter-output>
-        </test-method> <!-- test_numberOfCircuitsFor2017_Seacon -->
-      </class> <!-- getRequest.getData -->
+        </test-method> <!-- testDB -->
+      </class> <!-- database.ConnectMySQL -->
     </test> <!-- Default test -->
   </suite> <!-- Default suite -->
 </testng-results>

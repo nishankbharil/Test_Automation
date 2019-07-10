@@ -1,6 +1,6 @@
 package dec30;
 
-public class Assignment2 {
+public class Odd_Even_Number {
 
 	public static void main(String[] args) {
 		int a = 237786587;

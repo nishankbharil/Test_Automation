@@ -38,5 +38,9 @@ public class Browse_Upload_File {
 //		} catch (IOException e) {
 //			e.printStackTrace();
 //		}
+		
+		String s = "abc def ghi jkl";
+		String k = s.replaceAll("\\s","");
+		System.out.println(k);
 	}
 }

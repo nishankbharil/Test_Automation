@@ -54,13 +54,8 @@ public class HomePageTest extends TestBase {
 		contactsPage = homePage.clickOnContactsLink();
 	}
 	
-	
-	
 	@AfterMethod
 	public void tearDown(){
 		driver.quit();
 	}
-	
-	
-
 }

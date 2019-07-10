@@ -3,108 +3,30 @@
     "line": 1,
     "elements": [
       {
-        "line": 26,
-        "name": "free CRM login2 test scenario",
-        "description": "",
-        "id": "free-crm-login-feature;free-crm-login2-test-scenario;;2",
-        "type": "scenario",
-        "keyword": "Scenario Outline",
-        "steps": [
+        "before": [
           {
             "result": {
-              "status": "skipped"
+              "duration": 2013442800,
+              "status": "passed"
             },
-            "line": 17,
-            "name": "User is already on login page",
             "match": {
-              "location": "LoginStepDefination.user_already_on_login_page()"
-            },
-            "keyword": "Given "
-          },
-          {
-            "result": {
-              "status": "skipped"
-            },
-            "line": 18,
-            "name": "Title of login page is Free CRM",
-            "match": {
-              "location": "LoginStepDefination.title_of_login_page_is_free_crm()"
-            },
-            "keyword": "When "
-          },
-          {
-            "result": {
-              "status": "skipped"
-            },
-            "line": 19,
-            "name": "User enters \"admin\" and \"admin123\"",
-            "match": {
-              "arguments": [
-                {
-                  "val": "admin",
-                  "offset": 13
-                },
-                {
-                  "val": "admin123",
-                  "offset": 25
-                }
-              ],
-              "location": "LoginStepDefination.User_enters_username_and_password(String,String)"
-            },
-            "matchedColumns": [
-              0,
-              1
-            ],
-            "keyword": "Then "
-          },
-          {
-            "result": {
-              "status": "skipped"
-            },
-            "line": 20,
-            "name": "User clicks on login button",
-            "match": {
-              "location": "LoginStepDefination.User_clicks_on_login_button()"
-            },
-            "keyword": "Then "
-          },
-          {
-            "result": {
-              "status": "skipped"
-            },
-            "line": 21,
-            "name": "User is on home page",
-            "match": {
-              "location": "LoginStepDefination.User_is_on_home_page()"
-            },
-            "keyword": "And "
-          },
-          {
-            "result": {
-              "status": "skipped"
-            },
-            "line": 22,
-            "name": "User close the browser",
-            "match": {
-              "location": "LoginStepDefination.User_Close_The_Browser()"
-            },
-            "keyword": "And "
+              "location": "ConnectPageStepDefs.waitForLoading()"
+            }
           }
-        ]
-      },
-      {
-        "line": 27,
+        ],
+        "line": 13,
         "name": "free CRM login2 test scenario",
         "description": "",
-        "id": "free-crm-login-feature;free-crm-login2-test-scenario;;3",
+        "id": "free-crm-login2-test-scenario;free-crm-login2-test-scenario;;2",
         "type": "scenario",
         "keyword": "Scenario Outline",
         "steps": [
           {
             "result": {
-              "status": "skipped"
+              "duration": 9261163800,
+              "status": "passed"
             },
-            "line": 17,
+            "line": 4,
             "name": "User is already on login page",
             "match": {
               "location": "LoginStepDefination.user_already_on_login_page()"
@@ -113,9 +35,10 @@
           },
           {
             "result": {
-              "status": "skipped"
+              "duration": 12107100,
+              "status": "passed"
             },
-            "line": 18,
+            "line": 5,
             "name": "Title of login page is Free CRM",
             "match": {
               "location": "LoginStepDefination.title_of_login_page_is_free_crm()"
@@ -124,9 +47,10 @@
           },
           {
             "result": {
-              "status": "skipped"
+              "duration": 198967600,
+              "status": "passed"
             },
-            "line": 19,
+            "line": 6,
             "name": "User enters \"admin\" and \"admin123\"",
             "match": {
               "arguments": [
@@ -149,9 +73,10 @@
           },
           {
             "result": {
-              "status": "skipped"
+              "duration": 4612543400,
+              "status": "passed"
             },
-            "line": 20,
+            "line": 7,
             "name": "User clicks on login button",
             "match": {
               "location": "LoginStepDefination.User_clicks_on_login_button()"
@@ -160,9 +85,10 @@
           },
           {
             "result": {
-              "status": "skipped"
+              "duration": 1274737700,
+              "status": "passed"
             },
-            "line": 21,
+            "line": 8,
             "name": "User is on home page",
             "match": {
               "location": "LoginStepDefination.User_is_on_home_page()"
@@ -171,9 +97,10 @@
           },
           {
             "result": {
-              "status": "skipped"
+              "duration": 687082800,
+              "status": "passed"
             },
-            "line": 22,
+            "line": 9,
             "name": "User close the browser",
             "match": {
               "location": "LoginStepDefination.User_Close_The_Browser()"
@@ -183,10 +110,10 @@
         ]
       }
     ],
-    "name": "free CRM login feature",
+    "name": "free CRM login2 test scenario",
     "description": "",
-    "id": "free-crm-login-feature",
+    "id": "free-crm-login2-test-scenario",
     "keyword": "Feature",
-    "uri": "features/login.feature"
+    "uri": "features/tagging.feature"
   }
 ]

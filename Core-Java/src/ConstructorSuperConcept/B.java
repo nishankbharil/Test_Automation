@@ -17,11 +17,9 @@ public class B extends A
 		System.out.println("Base class conctructor");
 	}
 	
-	
 	public static void main(String[] args) 
 	{
 		B obj2 = new B();
 		B obj3 = new B(10);
 	}
-
 }

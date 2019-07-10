@@ -29,7 +29,5 @@ public class Test_Firefox {
 		wait.until(
 				ExpectedConditions.visibilityOfAllElementsLocatedBy(By.cssSelector("input[type='text'][name='name']")));
 		driver.findElement(By.cssSelector("input[type='text'][name='name']")).sendKeys("Nishank");
-		
 	}
-
 }
