@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testng-results skipped="0" failed="0" ignored="0" total="1" passed="1">
+  <reporter-output>
+  </reporter-output>
+  <suite name="Default suite" duration-ms="44067" started-at="2019-08-27T15:05:21Z" finished-at="2019-08-27T15:06:05Z">
+    <groups>
+    </groups>
+    <test name="Default test" duration-ms="44067" started-at="2019-08-27T15:05:21Z" finished-at="2019-08-27T15:06:05Z">
+      <class name="feb16.SelectClassMethods">
+        <test-method status="PASS" signature="SelectMethods()[pri:0, instance:feb16.SelectClassMethods@1d29cf23]" name="SelectMethods" duration-ms="44040" started-at="2019-08-27T15:05:21Z" finished-at="2019-08-27T15:06:05Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- SelectMethods -->
+      </class> <!-- feb16.SelectClassMethods -->
+    </test> <!-- Default test -->
+  </suite> <!-- Default suite -->
+</testng-results>

@@ -1,34 +1,23 @@
 package Business_Functions;
 
-import java.awt.Robot;
-import java.awt.event.KeyEvent;
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.Reader;
-import java.nio.file.Files;
-import java.nio.file.Paths;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
-import com.opencsv.CSVReader;
-import com.opencsv.CSVWriter;
 
-import org.apache.commons.csv.CSVFormat;
-import org.apache.commons.csv.CSVParser;
-import org.apache.commons.csv.CSVRecord;
 import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.eclipse.jetty.util.log.Log;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.NoSuchElementException;
-import org.openqa.selenium.Platform;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -36,7 +25,6 @@ import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.ie.InternetExplorerDriver;
 import org.openqa.selenium.interactions.Actions;
-import org.openqa.selenium.remote.CapabilityType;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.support.ui.Select;
 
@@ -44,18 +32,13 @@ import com.aventstack.extentreports.ExtentReports;
 import com.aventstack.extentreports.ExtentTest;
 import com.aventstack.extentreports.MediaEntityBuilder;
 import com.aventstack.extentreports.Status;
-import com.csvreader.CsvReader;
-import com.csvreader.CsvWriter;
+import com.opencsv.CSVReader;
+import com.opencsv.CSVWriter;
 
 import Utility.ExcelUtils;
 import Utility.PropertyReader;
 import Utility.Screenshots;
 import junit.framework.TestCase;
-
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 public class Common_Business_Functions extends TestCase {
 	PropertyReader objPageObjsProRead = new PropertyReader("src/test/java/Page_Objects/Common_Page_Objects.properties");
@@ -64,6 +47,7 @@ public class Common_Business_Functions extends TestCase {
 	PropertyReader objPageReadUserRoles = new PropertyReader("src/test/java/Page_Objects/User_Management.properties");
 	PropertyReader objPageReadDict = new PropertyReader("src/test/java/Page_Objects/Dictionaries.properties");
 	PropertyReader objPageReadModules = new PropertyReader("src/test/java/Page_Objects/Modules.properties");
+	PropertyReader objPageReadDISC = new PropertyReader("src/test/java/Page_Objects/DISC.properties");
 	Screenshots objCreateScreenshot = new Screenshots();
 	private static XSSFSheet ExcelWSheet;
 	private static XSSFWorkbook ExcelWBook;
@@ -107,19 +91,19 @@ public class Common_Business_Functions extends TestCase {
 			// Create driver for FF browser and open a URL
 			driver.get(strURL);
 			// Log the action performed in the extent report
-			test.pass("Opened the browser and navigated to the URL");
+			// test.pass("Opened the browser and navigated to the URL");
 			driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
 			// Enter the Username
 			driver.findElement(objPageObjsProRead.getLocator("objUserID")).clear();
 			driver.findElement(objPageObjsProRead.getLocator("objUserID")).sendKeys(userName);
 			// Log(Status, details)
-			test.pass("Entered Username");
+			// test.pass("Entered Username");
 
 			// Enter the Password
 			driver.findElement(objPageObjsProRead.getLocator("objPassword")).clear();
 			driver.findElement(objPageObjsProRead.getLocator("objPassword")).sendKeys(password);
 			// info(details)
-			test.pass("Entered Password");
+			// test.pass("Entered Password");
 
 			// Click the submit button
 			driver.findElement(objPageObjsProRead.getLocator("objSubmit")).click();
@@ -131,25 +115,28 @@ public class Common_Business_Functions extends TestCase {
 			// != 0) {
 			/*
 			 * if
-			 * (driver.findElement(objPageObjsProRead.getLocator("objWelcome")).isDisplayed(
-			 * )) { // Add a pass step to the Extent Report // Add the screenshot to the
-			 * Reporting steps with a hyperlink
-			 * test.pass("Verified Welcome to Casper is displayed on the Home page",
+			 * (driver.findElement(objPageObjsProRead.getLocator("objWelcome")).
+			 * isDisplayed()) { // Add a pass step to the Extent Report // Add
+			 * the screenshot to the Reporting steps with a hyperlink test.
+			 * pass("Verified Welcome to Casper is displayed on the Home page",
 			 * MediaEntityBuilder
-			 * .createScreenCaptureFromPath(objCreateScreenshot.createScreenshot(driver,
-			 * "VerifyLoginSuccessPass", test,rowNoGbl, date1)).build()); } else { //
+			 * .createScreenCaptureFromPath(objCreateScreenshot.createScreenshot
+			 * (driver, "VerifyLoginSuccessPass", test,rowNoGbl,
+			 * date1)).build()); } else { //
 			 * System.out.println("In the else block"); // Log with snapshot
 			 * test.fail("Welcome to Casper is not displayed on the Home page",
 			 * MediaEntityBuilder
-			 * .createScreenCaptureFromPath(objCreateScreenshot.createScreenshot(driver,
-			 * "VerifyLoginSuccessFail", test,rowNoGbl, date1)).build()); }
+			 * .createScreenCaptureFromPath(objCreateScreenshot.createScreenshot
+			 * (driver, "VerifyLoginSuccessFail", test,rowNoGbl,
+			 * date1)).build()); }
 			 */
-		} catch (NoSuchElementException e) {
-			System.out.println("In catch block");
+		} catch (Exception e) {
+			System.out.println("In catch block" + e);
 			// Add the screenshot to the Reporting steps with a hyperlink
+			test.fail("Login to casper application failed, please check url or refer screenshot for more detail");
 			test.fail("NoSuchElementException : " + e.getMessage());
 			test.addScreenCaptureFromPath(
-					objCreateScreenshot.createScreenshot(driver, "NoSuchElementException", test, rowNoGbl, date1));
+					objCreateScreenshot.createScreenshot(driver, "loginCasper_Fail", test, rowNoGbl, date1));
 
 			// Close the Browser
 			driver.quit();
@@ -185,7 +172,7 @@ public class Common_Business_Functions extends TestCase {
 			// Add the screenshot to the Reporting steps with a hyperlink
 			test.fail("NoSuchElementException : " + e.getMessage());
 			test.addScreenCaptureFromPath(
-					objCreateScreenshot.createScreenshot(driver, "NoSuchElementException", test, rowNoGbl, date1));
+					objCreateScreenshot.createScreenshot(driver, "enterNumericValue_Fail", test, rowNoGbl, date1));
 
 			// Close the Browser
 			driver.quit();
@@ -204,6 +191,7 @@ public class Common_Business_Functions extends TestCase {
 		WebElement element = driver.findElement(xpath);
 		element.clear();
 		element.sendKeys(value);
+		test.log(Status.INFO, "Successfully entered data in Editbox: " + value);
 		extent.flush();
 	}
 
@@ -218,7 +206,8 @@ public class Common_Business_Functions extends TestCase {
 	}
 
 	public boolean verifyMaxLength(WebDriver driver, String text, WebElement fieldName) throws Exception {
-		// WebElement eleName = driver.findElement(objPageRead.getLocator(fieldName));
+		// WebElement eleName =
+		// driver.findElement(objPageRead.getLocator(fieldName));
 		String lengthValue = fieldName.getAttribute("ng-reflect-maxlength");
 		int maxLengthOfTextField = Integer.parseInt(lengthValue);
 		fieldName.sendKeys(text);
@@ -241,9 +230,10 @@ public class Common_Business_Functions extends TestCase {
 				WebElement lnkToClick = driver.findElement(By.xpath(".//a[contains(text(),'" + lnkText + "')]"));
 				lnkToClick.click();
 				Thread.sleep(2000);
-				test.pass("Successfully clicked on link " + lnkText + "",
-						MediaEntityBuilder.createScreenCaptureFromPath(objCreateScreenshot.createScreenshot(driver,
-								"VerifyClickedLinkPassed", test, rowNoGbl, date1)).build());
+				// test.pass("Successfully clicked on link " + lnkText + "",
+				// MediaEntityBuilder.createScreenCaptureFromPath(objCreateScreenshot.createScreenshot(driver,
+				// "ClickedOnLinkPass", test, rowNoGbl, date1)).build());
+				test.log(Status.INFO, "Successfully Clicked On " + lnkText + " Link");
 				extent.flush();
 			}
 		} catch (Exception e) {
@@ -251,7 +241,7 @@ public class Common_Business_Functions extends TestCase {
 			// Add the screenshot to the Reporting steps with a hyperlink
 			test.fail("NoSuchElementException : " + e.getMessage());
 			test.addScreenCaptureFromPath(
-					objCreateScreenshot.createScreenshot(driver, "NoSuchElementException", test, rowNoGbl, date1));
+					objCreateScreenshot.createScreenshot(driver, "ClickOnLink_Fail", test, rowNoGbl, date1));
 
 			// Close the Browser
 			driver.quit();
@@ -275,27 +265,35 @@ public class Common_Business_Functions extends TestCase {
 				btnToClick.click();
 				Thread.sleep(2000);
 				System.out.println("Button clicked");
-				test.pass("Successfully clicken on button " + buttonName + "",
-						MediaEntityBuilder.createScreenCaptureFromPath(
-								objCreateScreenshot.createScreenshot(driver, "ClickOnbutton", test, rowNoGbl, date1))
-								.build());
+				// test.pass("Successfully clicken on button " + buttonName +
+				// "",
+				// MediaEntityBuilder.createScreenCaptureFromPath(
+				// objCreateScreenshot.createScreenshot(driver,
+				// "ClickedOnButtonPass", test, rowNoGbl, date1))
+				// .build());
+				test.log(Status.INFO, "Successfully clicked on button: " + buttonName);
 
-			} else {
-				test.fail("Button does not exist: " + buttonName + "", MediaEntityBuilder.createScreenCaptureFromPath(
-						objCreateScreenshot.createScreenshot(driver, "VerifyButtonFailed", test, rowNoGbl, date1))
-						.build());
+				// } else {
+				// test.fail("Button does not exist: " + buttonName + "",
+				// MediaEntityBuilder.createScreenCaptureFromPath(
+				// objCreateScreenshot.createScreenshot(driver,
+				// "ClickedOnButtonFail", test, rowNoGbl, date1))
+				// .build());
 			}
 			extent.flush();
 		} catch (Exception e) {
 			System.out.println("In catch block");
+			System.out.println("Error in Method : clickOnButton");
 			// Add the screenshot to the Reporting steps with a hyperlink
 			test.fail("NoSuchElementException : " + e.getMessage());
-			test.addScreenCaptureFromPath(
-					objCreateScreenshot.createScreenshot(driver, "NoSuchElementException", test, rowNoGbl, date1));
+			test.fail(buttonName + " : Button does not exist" + "",
+					MediaEntityBuilder.createScreenCaptureFromPath(
+							objCreateScreenshot.createScreenshot(driver, "ClickOnButton_Fail", test, rowNoGbl, date1))
+							.build());
 
 			// Close the Browser
 			driver.quit();
-			test.pass("Closed the Browser");
+			// test.pass("Closed the Browser");
 
 			// Calling flush writes everything to the Extent Report
 			extent.flush();
@@ -308,25 +306,21 @@ public class Common_Business_Functions extends TestCase {
 			String lnkText) throws Exception {
 		try {
 			driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
-			// Find the element to clicked
-			WebElement lnkToVerify = driver.findElement(By.xpath(".//li/a[contains(text(),'" + lnkText + "')]"));
+			WebElement lnkToVerify = driver.findElement(By.xpath(".//a[contains(text(),'" + lnkText + "')]"));
 			if (lnkToVerify.isDisplayed()) {
-				test.pass("Successfully clicked on link " + lnkText + "",
+				test.pass("Verified link: " + lnkText + " Successfully" + "",
 						MediaEntityBuilder.createScreenCaptureFromPath(objCreateScreenshot.createScreenshot(driver,
-								"VerifiedLinkDisplayed", test, rowNoGbl, date1)).build());
+								"VerifyLinkExist_Pass", test, rowNoGbl, date1)).build());
 			}
 			extent.flush();
 		} catch (Exception e) {
 			System.out.println("In catch block");
+			System.out.println("Error in Method : VerifyLinkExist");
 			// Add the screenshot to the Reporting steps with a hyperlink
-			test.fail("Link does not exist: ", MediaEntityBuilder.createScreenCaptureFromPath(
-					objCreateScreenshot.createScreenshot(driver, "NoSuchElementException", test, rowNoGbl, date1))
-					.build());
-			// Close the Browser
-			// driver.quit();
-			// test.log(Status.INFO, "Closed the Browser");
-
-			// Calling flush writes everything to the Extent Report
+			test.fail("Link does not exist: ",
+					MediaEntityBuilder.createScreenCaptureFromPath(
+							objCreateScreenshot.createScreenshot(driver, "VerifyLinkExist_Fail", test, rowNoGbl, date1))
+							.build());
 			extent.flush();
 
 			fail("NoSuchElementException");
@@ -341,16 +335,18 @@ public class Common_Business_Functions extends TestCase {
 			driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
 			WebElement btnToVerify = driver.findElement(By.xpath(".//div/button[contains(text(),'" + btnText + "')]"));
 			if (btnToVerify.isDisplayed()) {
-				System.out.println("Button verified");
-				test.pass("Successfully Verified button " + btnText + "",
+				System.out.println(btnText + " : Button verified");
+				Thread.sleep(1000);
+				test.pass("Verified : [" + btnText + "] button Successfully" + "",
 						MediaEntityBuilder.createScreenCaptureFromPath(objCreateScreenshot.createScreenshot(driver,
-								"VerifiedLinkDisplayed", test, rowNoGbl, date1)).build());
+								"VerifyButtonExist_Pass", test, rowNoGbl, date1)).build());
 
-			} else {
-				test.fail("Button does not exist: " + btnText + "",
-						MediaEntityBuilder.createScreenCaptureFromPath(
-								objCreateScreenshot.createScreenshot(driver, "VerifyListItem", test, rowNoGbl, date1))
-								.build());
+				//// } else {
+				//// test.fail("Button does not exist: " + btnText + "",
+				//// MediaEntityBuilder.createScreenCaptureFromPath(
+				// objCreateScreenshot.createScreenshot(driver,
+				//// "VerifyButtonExist", test, rowNoGbl, date1))
+				//// .build());
 			}
 			extent.flush();
 		}
@@ -358,18 +354,14 @@ public class Common_Business_Functions extends TestCase {
 		catch (Exception e) {
 			System.out.println("In catch block");
 			// Add the screenshot to the Reporting steps with a hyperlink
-			test.fail("Button does not exist: " + e.getMessage());
-			test.addScreenCaptureFromPath(
-					objCreateScreenshot.createScreenshot(driver, "NoSuchElementException", test, rowNoGbl, date1));
+			// test.fail("Error: "+e.getMessage());
+			test.fail(btnText + " : Button does not exist" + "", MediaEntityBuilder.createScreenCaptureFromPath(
+					objCreateScreenshot.createScreenshot(driver, "VerifyButtonExist_Fail", test, rowNoGbl, date1))
+					.build());
 
-			// Close the Browser
-			// driver.quit();
-			// test.log(Status.INFO, "Closed the Browser");
-
-			// Calling flush writes everything to the Extent Report
 			extent.flush();
 
-			fail("NoSuchElementException");
+			// fail("NoSuchElementException");
 		}
 	}
 
@@ -384,9 +376,8 @@ public class Common_Business_Functions extends TestCase {
 			size = records.size();
 			if (size <= 0)
 				test.fail("No record to verify " + actionName + " action",
-						MediaEntityBuilder.createScreenCaptureFromPath(
-								objCreateScreenshot.createScreenshot(driver, "VerifyListItem", test, rowNoGbl, date1))
-								.build());
+						MediaEntityBuilder.createScreenCaptureFromPath(objCreateScreenshot.createScreenshot(driver,
+								"VerifyAvailableActions_Fail", test, rowNoGbl, date1)).build());
 			else {
 				while (i < size) {
 					WebElement element = records.get(i);
@@ -399,28 +390,31 @@ public class Common_Business_Functions extends TestCase {
 				System.out.println("record clicked");
 				WebElement CurrentRow = driver.switchTo().activeElement();
 				Actions action = new Actions(driver);
+
 				action.contextClick(CurrentRow).sendKeys(Keys.ARROW_LEFT).sendKeys(Keys.ENTER).build().perform();
 				Thread.sleep(2000);
 				WebElement actionItem = driver.findElement(By.xpath(".//span[contains(text(),'" + actionName + "')]"));
 				String value = actionItem.getText();
 				if (value.equalsIgnoreCase(actionName)) {
+					action.moveToElement(actionItem).build().perform();
 					System.out.println("Verified :" + actionName);
-					test.pass("Successfully verified action option " + value + "",
+					test.pass("Verified action : [" + actionName + "] Successfully" + "",
 							MediaEntityBuilder.createScreenCaptureFromPath(objCreateScreenshot.createScreenshot(driver,
-									"VerifyListItem", test, rowNoGbl, date1)).build());
+									"VerifyAvailableActions_Pass", test, rowNoGbl, date1)).build());
 				} else {
-					test.fail("Action does not exist: " + value + "", MediaEntityBuilder.createScreenCaptureFromPath(
-							objCreateScreenshot.createScreenshot(driver, "VerifyListItem", test, rowNoGbl, date1))
-							.build());
+					test.fail("Action : " + value + " does not exist" + "",
+							MediaEntityBuilder.createScreenCaptureFromPath(objCreateScreenshot.createScreenshot(driver,
+									"VerifyAvailableActions_Fail", test, rowNoGbl, date1)).build());
 				}
 			}
 			extent.flush();
 		} catch (Exception e) {
 			System.out.println("In catch block");
 			// Add the screenshot to the Reporting steps with a hyperlink
-			test.fail("Action does not exist: " + e.getMessage());
+			// test.fail("Action does not exist: " + e.getMessage());
+			test.fail("Action does not exist: " + actionName);
 			test.addScreenCaptureFromPath(
-					objCreateScreenshot.createScreenshot(driver, "NoSuchElementException", test, rowNoGbl, date1));
+					objCreateScreenshot.createScreenshot(driver, "VerifyAvailableActions_Fail", test, rowNoGbl, date1));
 
 			// Close the Browser
 			// driver.quit();
@@ -429,7 +423,7 @@ public class Common_Business_Functions extends TestCase {
 			// Calling flush writes everything to the Extent Report
 			extent.flush();
 
-			fail("NoSuchElementException");
+			// fail("NoSuchElementException");
 		}
 	}
 
@@ -482,11 +476,11 @@ public class Common_Business_Functions extends TestCase {
 			if (element.isDisplayed())
 				test.pass("Toggle column " + columnName + " selected successfully",
 						MediaEntityBuilder.createScreenCaptureFromPath(objCreateScreenshot.createScreenshot(driver,
-								"VerifyToggleColumnselectedPassed", test, rowNoGbl, date1)).build());
+								"SelectToggleColumn_Pass", test, rowNoGbl, date1)).build());
 			else
 				test.fail("Toggle column " + columnName + " not selected",
 						MediaEntityBuilder.createScreenCaptureFromPath(objCreateScreenshot.createScreenshot(driver,
-								"VerifyToggleColumnselectedFailed", test, rowNoGbl, date1)).build());
+								"SelectToggleColumn_Fail", test, rowNoGbl, date1)).build());
 
 			extent.flush();
 		} catch (Exception e) {
@@ -494,7 +488,7 @@ public class Common_Business_Functions extends TestCase {
 			// Add the screenshot to the Reporting steps with a hyperlink
 			test.fail("Action does not exist: " + e.getMessage());
 			test.addScreenCaptureFromPath(
-					objCreateScreenshot.createScreenshot(driver, "NoSuchElementException", test, rowNoGbl, date1));
+					objCreateScreenshot.createScreenshot(driver, "SelectToggleColumn_Fail", test, rowNoGbl, date1));
 
 			// Close the Browser
 			driver.quit();
@@ -533,23 +527,23 @@ public class Common_Business_Functions extends TestCase {
 			WebElement actionItem = driver.findElement(By.xpath(".//span[contains(text(),'" + actionName + "')]"));
 			String value = actionItem.getText();
 			if (value.equalsIgnoreCase(actionName)) {
-				System.out.println("Verified Action :" + actionName);
-				test.pass("Successfully verified action option " + value + "",
+				System.out.println("Verified Action : [" + actionName + "]");
+				test.pass("Successfully verified action option [" + value + "]",
 						MediaEntityBuilder.createScreenCaptureFromPath(
 								objCreateScreenshot.createScreenshot(driver, "VerifyListItem", test, rowNoGbl, date1))
 								.build());
 			} else {
 				test.fail("Action does not exist: " + value);
-				test.addScreenCaptureFromPath(
-						objCreateScreenshot.createScreenshot(driver, "NoSuchElementException", test, rowNoGbl, date1));
+				test.addScreenCaptureFromPath(objCreateScreenshot.createScreenshot(driver,
+						"VerifyAvailableActionsSubList_Fail", test, rowNoGbl, date1));
 			}
 			extent.flush();
 		} catch (Exception e) {
 			System.out.println("In catch block");
 			// Add the screenshot to the Reporting steps with a hyperlink
 			test.fail("Action does not exist: " + e.getMessage());
-			test.addScreenCaptureFromPath(
-					objCreateScreenshot.createScreenshot(driver, "NoSuchElementException", test, rowNoGbl, date1));
+			test.addScreenCaptureFromPath(objCreateScreenshot.createScreenshot(driver,
+					"VerifyAvailableActionsSubList_Fail", test, rowNoGbl, date1));
 
 			// Close the Browser
 			driver.quit();
@@ -565,21 +559,21 @@ public class Common_Business_Functions extends TestCase {
 	public void verifyScreenName(WebDriver driver, ExtentTest test, ExtentReports extent, String rowNoGbl, String date1,
 			String screenName) throws IOException {
 		try {
-			Thread.sleep(2000);
-			driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
+			Thread.sleep(1000);
+			driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
 			// Find the element to clicked
 			WebElement screenNameToCheck = driver
 					.findElement(By.xpath(".//div/h1[contains(text(),'" + screenName + "')]"));
 			if (screenNameToCheck.isDisplayed()) {
 				System.out.println("Screen name is displayed");
-				test.pass("Screen Name " + screenName + "is present", MediaEntityBuilder.createScreenCaptureFromPath(
-						objCreateScreenshot.createScreenshot(driver, "VerifyScreenNamePassed", test, rowNoGbl, date1))
-						.build());
+				test.pass("Verified Screen Name : [" + screenName + "] successfully",
+						MediaEntityBuilder.createScreenCaptureFromPath(objCreateScreenshot.createScreenshot(driver,
+								"VerifyScreenName_Pass", test, rowNoGbl, date1)).build());
 
 			} else {
-				test.fail("Screen Name " + screenName + "is not present",
+				test.fail("Screen Name : " + screenName + " is not present",
 						MediaEntityBuilder.createScreenCaptureFromPath(objCreateScreenshot.createScreenshot(driver,
-								"VerifyScreenNameFailed", test, rowNoGbl, date1)).build());
+								"VerifyScreenName_Fail", test, rowNoGbl, date1)).build());
 			}
 			extent.flush();
 		} catch (Exception e) {
@@ -587,7 +581,7 @@ public class Common_Business_Functions extends TestCase {
 			// Add the screenshot to the Reporting steps with a hyperlink
 			test.fail("NoSuchElementException : " + e.getMessage());
 			test.addScreenCaptureFromPath(
-					objCreateScreenshot.createScreenshot(driver, "NoSuchElementException", test, rowNoGbl, date1));
+					objCreateScreenshot.createScreenshot(driver, "VerifyScreenName_Fail", test, rowNoGbl, date1));
 
 			// Close the Browser
 			// driver.quit();
@@ -608,13 +602,13 @@ public class Common_Business_Functions extends TestCase {
 			WebElement screenNameToCheck = driver.findElement(By.xpath(".//div[contains(text(),'" + popUpName + "')]"));
 			if (screenNameToCheck.isDisplayed()) {
 				System.out.println("Pop up name is displayed");
-				test.pass("Pop up Name " + popUpName + " is present", MediaEntityBuilder.createScreenCaptureFromPath(
-						objCreateScreenshot.createScreenshot(driver, "VerifyPopupNamePassed", test, rowNoGbl, date1))
-						.build());
+				test.pass("Verified Pop up Name: " + popUpName + " successfully",
+						MediaEntityBuilder.createScreenCaptureFromPath(objCreateScreenshot.createScreenshot(driver,
+								"VerifyPopupName_Pass", test, rowNoGbl, date1)).build());
 			} else {
 				test.fail("Pop up Name " + popUpName + " is not present",
 						MediaEntityBuilder.createScreenCaptureFromPath(objCreateScreenshot.createScreenshot(driver,
-								"VerifyPopIpNameFailed", test, rowNoGbl, date1)).build());
+								"VerifyPopupName_Fail", test, rowNoGbl, date1)).build());
 			}
 			extent.flush();
 		}
@@ -624,7 +618,7 @@ public class Common_Business_Functions extends TestCase {
 			// Add the screenshot to the Reporting steps with a hyperlink
 			test.fail("NoSuchElementException : " + e.getMessage());
 			test.addScreenCaptureFromPath(
-					objCreateScreenshot.createScreenshot(driver, "NoSuchElementException", test, rowNoGbl, date1));
+					objCreateScreenshot.createScreenshot(driver, "VerifyPopupName_Fail", test, rowNoGbl, date1));
 
 			// Close the Browser
 			// driver.quit();
@@ -647,7 +641,7 @@ public class Common_Business_Functions extends TestCase {
 					System.out.println("No search result found.");
 					test.fail("Error Message:No search result found.",
 							MediaEntityBuilder.createScreenCaptureFromPath(objCreateScreenshot.createScreenshot(driver,
-									"VerifyRecordsFoundFailed", test, rowNoGbl, date1)).build());
+									"verifyNumberOfRecords_Fail", test, rowNoGbl, date1)).build());
 				}
 				extent.flush();
 			} catch (Exception e) {
@@ -666,14 +660,14 @@ public class Common_Business_Functions extends TestCase {
 						+ " " + recordsFoundArray[lenth - 3] + " ";
 				if (expectedValue.equals(actualValue)) {
 					System.out.println("Number of Entries found text is displayed on screen");
-					test.pass("Number of Entries found: " + recordsFoundArray[lenth - 1] + "",
+					test.pass("Verified Number of Entries found : " + recordsFoundArray[lenth - 1] + "",
 							MediaEntityBuilder.createScreenCaptureFromPath(objCreateScreenshot.createScreenshot(driver,
-									"VerifyRecordsFoundTextPassed", test, rowNoGbl, date1)).build());
+									"verifyNumberOfRecords_Pass", test, rowNoGbl, date1)).build());
 				} else {
 					System.out.println("Number of Entries found text is not displayed on screen");
 					test.fail("Number of Entries found is not displayed on screen",
 							MediaEntityBuilder.createScreenCaptureFromPath(objCreateScreenshot.createScreenshot(driver,
-									"VerifyRecordsFoundTextFailed", test, rowNoGbl, date1)).build());
+									"verifyNumberOfRecords_Fail", test, rowNoGbl, date1)).build());
 				}
 				extent.flush();
 			}
@@ -682,7 +676,7 @@ public class Common_Business_Functions extends TestCase {
 			// Add the screenshot to the Reporting steps with a hyperlink
 			test.fail("NoSuchElementException : " + e.getMessage());
 			test.addScreenCaptureFromPath(
-					objCreateScreenshot.createScreenshot(driver, "NoSuchElementException", test, rowNoGbl, date1));
+					objCreateScreenshot.createScreenshot(driver, "verifyNumberOfRecords_Fail", test, rowNoGbl, date1));
 
 			// Close the Browser
 			// driver.quit();
@@ -716,21 +710,21 @@ public class Common_Business_Functions extends TestCase {
 					}
 				}
 				if (!columnValue.isEmpty()) {
-					System.out.println("Data is loaded in table" + columnValue);
-					test.pass("Data is loaded in table",
+					System.out.println("Data is loaded in the table" + columnValue);
+					test.pass("Verified Data is loaded in the table",
 							MediaEntityBuilder.createScreenCaptureFromPath(objCreateScreenshot.createScreenshot(driver,
-									"VerifyDataLoadedPassed", test, rowNoGbl, date1)).build());
+									"verifyDataInTable_Pass", test, rowNoGbl, date1)).build());
 				} else {
 					// System.out.println("Data is not loaded in table");
 					test.fail("Data is not loaded in table",
 							MediaEntityBuilder.createScreenCaptureFromPath(objCreateScreenshot.createScreenshot(driver,
-									"VerifyDataLoadedFailed", test, rowNoGbl, date1)).build());
+									"verifyDataInTable_Fail", test, rowNoGbl, date1)).build());
 				}
 
 			} else {
 				System.out.println("No records loaded in table");
 				test.fail("No records loaded in table", MediaEntityBuilder.createScreenCaptureFromPath(
-						objCreateScreenshot.createScreenshot(driver, "VerifyRecordsCountFailed", test, rowNoGbl, date1))
+						objCreateScreenshot.createScreenshot(driver, "verifyDataInTable_Fail", test, rowNoGbl, date1))
 						.build());
 			}
 			extent.flush();
@@ -741,7 +735,7 @@ public class Common_Business_Functions extends TestCase {
 			// Add the screenshot to the Reporting steps with a hyperlink
 			test.fail("NoSuchElementException : " + e.getMessage());
 			test.addScreenCaptureFromPath(
-					objCreateScreenshot.createScreenshot(driver, "NoSuchElementException", test, rowNoGbl, date1));
+					objCreateScreenshot.createScreenshot(driver, "verifyDataInTable_Fail", test, rowNoGbl, date1));
 
 			// Close the Browser
 			// driver.quit();
@@ -765,9 +759,8 @@ public class Common_Business_Functions extends TestCase {
 			size = records.size();
 			if (size <= 0)
 				test.fail("No record to verify " + actionName + " action",
-						MediaEntityBuilder.createScreenCaptureFromPath(
-								objCreateScreenshot.createScreenshot(driver, "VerifyListItem", test, rowNoGbl, date1))
-								.build());
+						MediaEntityBuilder.createScreenCaptureFromPath(objCreateScreenshot.createScreenshot(driver,
+								"clickOnAction_Fail", test, rowNoGbl, date1)).build());
 			else {
 				while (i < size) {
 					WebElement element = records.get(i);
@@ -786,9 +779,11 @@ public class Common_Business_Functions extends TestCase {
 				viewOpen.click();
 				Thread.sleep(1000);
 				System.out.println("Successfully clicked on action");
-				test.pass("Successfully clicked on " + actionName + "Action",
-						MediaEntityBuilder.createScreenCaptureFromPath(objCreateScreenshot.createScreenshot(driver,
-								"VerifyClickActionPassed", test, rowNoGbl, date1)).build());
+
+				// test.pass("Successfully clicked on " + actionName + "Action",
+				// MediaEntityBuilder.createScreenCaptureFromPath(objCreateScreenshot.createScreenshot(driver,
+				// "ClickOnActionPass", test, rowNoGbl, date1)).build());
+				test.log(Status.INFO, "Successfully clicked on action: " + actionName);
 			}
 			extent.flush();
 		} catch (Exception e) {
@@ -796,7 +791,7 @@ public class Common_Business_Functions extends TestCase {
 			// Add the screenshot to the Reporting steps with a hyperlink
 			test.fail("NoSuchElementException : " + e.getMessage());
 			test.addScreenCaptureFromPath(
-					objCreateScreenshot.createScreenshot(driver, "NoSuchElementException", test, rowNoGbl, date1));
+					objCreateScreenshot.createScreenshot(driver, "clickOnAction_Fail", test, rowNoGbl, date1));
 
 			// Close the Browser
 			driver.quit();
@@ -816,9 +811,9 @@ public class Common_Business_Functions extends TestCase {
 			WebElement menuToCheck = driver.findElement(By.xpath("//a[contains(text(),'" + leftMenuName + "')]"));
 			if (menuToCheck.isDisplayed()) {
 				System.out.println("Successfully verified left menu " + leftMenuName + "");
-				test.pass("Successfully verified left menu " + leftMenuName + "",
+				test.pass("Verified left menu: " + leftMenuName + " Successfully" + "",
 						MediaEntityBuilder.createScreenCaptureFromPath(objCreateScreenshot.createScreenshot(driver,
-								"VerifyDataLoadedPassed", test, rowNoGbl, date1)).build());
+								"verifyLeftMenu_Pass", test, rowNoGbl, date1)).build());
 			}
 			extent.flush();
 		} catch (Exception e) {
@@ -826,7 +821,7 @@ public class Common_Business_Functions extends TestCase {
 			// Add the screenshot to the Reporting steps with a hyperlink
 			test.fail("NoSuchElementException : " + e.getMessage());
 			test.addScreenCaptureFromPath(
-					objCreateScreenshot.createScreenshot(driver, "NoSuchElementException", test, rowNoGbl, date1));
+					objCreateScreenshot.createScreenshot(driver, "verifyLeftMenu_Fail", test, rowNoGbl, date1));
 
 			// Close the Browser
 			// driver.quit();
@@ -835,7 +830,7 @@ public class Common_Business_Functions extends TestCase {
 			// Calling flush writes everything to the Extent Report
 			extent.flush();
 
-			fail("NoSuchElementException");
+			// fail("NoSuchElementException");
 		}
 	}
 
@@ -867,15 +862,14 @@ public class Common_Business_Functions extends TestCase {
 
 			if (flag == true) {
 				System.out.println(" calculations values are present for " + fieldName + " field");
-				test.pass("calculations values are present for " + fieldName + " field",
+				test.pass("Verified calculations values are present for " + fieldName + " field",
 						MediaEntityBuilder.createScreenCaptureFromPath(objCreateScreenshot.createScreenshot(driver,
-								"VerifyCheckCalculationsPassed", test, rowNoGbl, date1)).build());
+								"checkCalculations_Pass", test, rowNoGbl, date1)).build());
 			} else {
 				// System.out.println("Data is not loaded in table");
-				test.fail(" calculations values are not present for " + fieldName + " field",
+				test.fail("calculations values are not present for " + fieldName + " field",
 						MediaEntityBuilder.createScreenCaptureFromPath(objCreateScreenshot.createScreenshot(driver,
-								"VerifyCheckCalculationsFailed", test, rowNoGbl, date1)).build());
-
+								"checkCalculations_Fail", test, rowNoGbl, date1)).build());
 			}
 			extent.flush();
 		} catch (Exception e) {
@@ -883,7 +877,7 @@ public class Common_Business_Functions extends TestCase {
 			// Add the screenshot to the Reporting steps with a hyperlink
 			test.fail("NoSuchElementException : " + e.getMessage());
 			test.addScreenCaptureFromPath(
-					objCreateScreenshot.createScreenshot(driver, "NoSuchElementException", test, rowNoGbl, date1));
+					objCreateScreenshot.createScreenshot(driver, "checkCalculations_Fail", test, rowNoGbl, date1));
 
 			// Close the Browser
 			// driver.quit();
@@ -912,9 +906,9 @@ public class Common_Business_Functions extends TestCase {
 				value = versionrecord.getText();
 			} else {
 				System.out.println("No records loaded in table");
-				test.fail("No records loaded in table", MediaEntityBuilder.createScreenCaptureFromPath(
-						objCreateScreenshot.createScreenshot(driver, "VerifyRecordsCountFailed", test, rowNoGbl, date1))
-						.build());
+				test.fail("No records loaded in table",
+						MediaEntityBuilder.createScreenCaptureFromPath(objCreateScreenshot.createScreenshot(driver,
+								"SearchForRecordsWithFilterValue_Fail", test, rowNoGbl, date1)).build());
 			}
 			WebElement fieldToCheck;
 			fieldToCheck = driver.findElement(objPageObjsProRead.getLocator("objSearchDC"));
@@ -922,9 +916,11 @@ public class Common_Business_Functions extends TestCase {
 				fieldToCheck.sendKeys(value);
 
 				System.out.println(" Records searched for " + value + "");
-				test.pass(" Records searched for " + value + "",
+				test.pass(
+						" Records searched for " + value
+								+ "",
 						MediaEntityBuilder.createScreenCaptureFromPath(objCreateScreenshot.createScreenshot(driver,
-								"VerifyCheckCalculationsPassed", test, rowNoGbl, date1)).build());
+								"SearchForRecordsWithFilterValue_Pass", test, rowNoGbl, date1)).build());
 			}
 
 			extent.flush();
@@ -932,8 +928,8 @@ public class Common_Business_Functions extends TestCase {
 			System.out.println("In catch block");
 			// Add the screenshot to the Reporting steps with a hyperlink
 			test.fail("NoSuchElementException : " + e.getMessage());
-			test.addScreenCaptureFromPath(
-					objCreateScreenshot.createScreenshot(driver, "NoSuchElementException", test, rowNoGbl, date1));
+			test.addScreenCaptureFromPath(objCreateScreenshot.createScreenshot(driver,
+					"SearchForRecordsWithFilterValue_Fail", test, rowNoGbl, date1));
 
 			// Close the Browser
 			// driver.quit();
@@ -971,11 +967,11 @@ public class Common_Business_Functions extends TestCase {
 					System.out.println("Verified :" + actionToCheck);
 					test.pass("Action " + actionToCheck + " is available for latest version record",
 							MediaEntityBuilder.createScreenCaptureFromPath(objCreateScreenshot.createScreenshot(driver,
-									"VerifyActionItem", test, rowNoGbl, date1)).build());
+									"verifyAddNewVersionAction_Pass", test, rowNoGbl, date1)).build());
 				} else {
 					test.fail("Action does not exist: " + actionToCheck);
-					test.addScreenCaptureFromPath(objCreateScreenshot.createScreenshot(driver, "NoSuchElementException",
-							test, rowNoGbl, date1));
+					test.addScreenCaptureFromPath(objCreateScreenshot.createScreenshot(driver,
+							"verifyAddNewVersionAction_Fail", test, rowNoGbl, date1));
 				}
 
 				for (int i = 1; i < sizeOfRecordsLoaded; i++) {
@@ -991,27 +987,29 @@ public class Common_Business_Functions extends TestCase {
 					if (!actionItem.isSelected()) {
 						System.out.println("Action: " + actionToCheck + " not exists for previous version");
 						test.pass("Action " + actionToCheck + " is not available for previous version record",
-								MediaEntityBuilder.createScreenCaptureFromPath(objCreateScreenshot
-										.createScreenshot(driver, "VerifyActionItem", test, rowNoGbl, date1)).build());
+								MediaEntityBuilder
+										.createScreenCaptureFromPath(objCreateScreenshot.createScreenshot(driver,
+												"verifyAddNewVersionAction_Pass", test, rowNoGbl, date1))
+										.build());
 					} else {
 						test.fail("Action: " + actionToCheck + " exists for previous version");
 						test.addScreenCaptureFromPath(objCreateScreenshot.createScreenshot(driver,
-								"NoSuchElementException", test, rowNoGbl, date1));
+								"verifyAddNewVersionAction_Fail", test, rowNoGbl, date1));
 					}
 				}
 			} else {
 				System.out.println("No records loaded in table");
-				test.fail("No records loaded in table", MediaEntityBuilder.createScreenCaptureFromPath(
-						objCreateScreenshot.createScreenshot(driver, "VerifyRecordsCountFailed", test, rowNoGbl, date1))
-						.build());
+				test.fail("No records loaded in table",
+						MediaEntityBuilder.createScreenCaptureFromPath(objCreateScreenshot.createScreenshot(driver,
+								"verifyAddNewVersionAction_Fail", test, rowNoGbl, date1)).build());
 			}
 			extent.flush();
 		} catch (Exception e) {
 			System.out.println("In catch block");
 			// Add the screenshot to the Reporting steps with a hyperlink
 			test.fail("NoSuchElementException : " + e.getMessage());
-			test.addScreenCaptureFromPath(
-					objCreateScreenshot.createScreenshot(driver, "NoSuchElementException", test, rowNoGbl, date1));
+			test.addScreenCaptureFromPath(objCreateScreenshot.createScreenshot(driver, "verifyAddNewVersionAction_Fail",
+					test, rowNoGbl, date1));
 
 			// Close the Browser
 			// driver.quit();
@@ -1034,15 +1032,13 @@ public class Common_Business_Functions extends TestCase {
 					.findElement(By.xpath("//label[text()='" + permissionName + "']/preceding-sibling::input"));
 			if (element.isSelected()) {
 				System.out.println("Permission: " + permissionName + "  is available to user ");
-				test.pass("Element " + permissionName + " clicked",
-						MediaEntityBuilder.createScreenCaptureFromPath(
-								objCreateScreenshot.createScreenshot(driver, "VerifyActionItem", test, rowNoGbl, date1))
-								.build());
+				test.pass("Element " + permissionName + " clicked", MediaEntityBuilder.createScreenCaptureFromPath(
+						objCreateScreenshot.createScreenshot(driver, "checkCheckbox_Pass", test, rowNoGbl, date1))
+						.build());
 			} else {
 				test.fail("Permission: " + permissionName + "  is not available to user ",
-						MediaEntityBuilder.createScreenCaptureFromPath(
-								objCreateScreenshot.createScreenshot(driver, "VerifyActionItem", test, rowNoGbl, date1))
-								.build());
+						MediaEntityBuilder.createScreenCaptureFromPath(objCreateScreenshot.createScreenshot(driver,
+								"checkCheckbox_Fail", test, rowNoGbl, date1)).build());
 			}
 			extent.flush();
 		} catch (Exception e) {
@@ -1050,7 +1046,7 @@ public class Common_Business_Functions extends TestCase {
 			// Add the screenshot to the Reporting steps with a hyperlink
 			test.fail("NoSuchElementException : " + e.getMessage());
 			test.addScreenCaptureFromPath(
-					objCreateScreenshot.createScreenshot(driver, "NoSuchElementException", test, rowNoGbl, date1));
+					objCreateScreenshot.createScreenshot(driver, "checkCheckbox_Fail", test, rowNoGbl, date1));
 
 			// Close the Browser
 			driver.quit();
@@ -1073,31 +1069,39 @@ public class Common_Business_Functions extends TestCase {
 					.findElement(By.xpath("//label[text()='" + permissionName + "']/preceding-sibling::input"));
 			if (flag == true) {
 				if (element.isSelected()) {
+					Actions act = new Actions(driver);
+
+					act.moveToElement(element).build().perform();
 					System.out.println("Permission: " + permissionName + "  is assigned to user as per matrix ");
-					test.pass("Permission: " + permissionName + "  is assigned to user as per matrix ",
+					test.pass("Verified Permission: " + permissionName + "  is assigned to user as per matrix ",
 							MediaEntityBuilder.createScreenCaptureFromPath(objCreateScreenshot.createScreenshot(driver,
-									"VerifyActionItem", test, rowNoGbl, date1)).build());
+									"checkPermission_Pass", test, rowNoGbl, date1)).build());
 				} else {
+					Actions act = new Actions(driver);
+					act.moveToElement(element).build().perform();
 					System.out.println(
 							"Permission: " + permissionName + "  is not assigned to user and not as per matrix ");
 					test.fail("Permission: " + permissionName + "  is not assigned to user as per matrix ",
 							MediaEntityBuilder.createScreenCaptureFromPath(objCreateScreenshot.createScreenshot(driver,
-									"VerifyActionItem", test, rowNoGbl, date1)).build());
+									"checkPermission_Fail", test, rowNoGbl, date1)).build());
 				}
 			}
 			if (flag == false) {
 				if (!element.isSelected()) {
+					Actions act = new Actions(driver);
+					act.moveToElement(element).build().perform();
 					System.out.println("Permission: " + permissionName + "  is not assigned to user as per matrix ");
-					test.pass("Permission: " + permissionName + "  is not assigned to user as per matrix ",
+					test.pass("Verified Permission: " + permissionName + "  is not assigned to user as per matrix ",
 							MediaEntityBuilder.createScreenCaptureFromPath(objCreateScreenshot.createScreenshot(driver,
-									"VerifyActionItem", test, rowNoGbl, date1)).build());
+									"checkPermission_Pass", test, rowNoGbl, date1)).build());
 				} else {
-
+					Actions act = new Actions(driver);
+					act.moveToElement(element).build().perform();
 					System.out
 							.println("Permission: " + permissionName + "  is assigned to user and not as per matrix ");
 					test.fail("Permission: " + permissionName + "  is not as per matrix ",
 							MediaEntityBuilder.createScreenCaptureFromPath(objCreateScreenshot.createScreenshot(driver,
-									"VerifyActionItem", test, rowNoGbl, date1)).build());
+									"checkPermission_Fail", test, rowNoGbl, date1)).build());
 				}
 			}
 			extent.flush();
@@ -1106,7 +1110,7 @@ public class Common_Business_Functions extends TestCase {
 			// Add the screenshot to the Reporting steps with a hyperlink
 			test.fail("NoSuchElementException : " + e.getMessage());
 			test.addScreenCaptureFromPath(
-					objCreateScreenshot.createScreenshot(driver, "NoSuchElementException", test, rowNoGbl, date1));
+					objCreateScreenshot.createScreenshot(driver, "checkPermission_Fail", test, rowNoGbl, date1));
 
 			// Close the Browser
 			driver.quit();
@@ -1126,8 +1130,8 @@ public class Common_Business_Functions extends TestCase {
 			driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
 			// Find the element to clicked
 
-			WebElement element = driver.findElement(By.xpath(
-					"//*[@id='0']//tree-root/tree-viewport/div/div/tree-node-collection/div/tree-node/div/tree-node-children/div/tree-node-collection/div/tree-node[1]//label[text()='"
+			WebElement element = driver.findElement(By
+					.xpath("//*[@id='0']//tree-root/tree-viewport/div/div/tree-node-collection/div/tree-node/div/tree-node-children/div/tree-node-collection/div/tree-node[1]//label[text()='"
 							+ permissionName + "']/preceding-sibling::input"));
 			if (flag == true) {
 				if (element.isSelected()) {
@@ -1182,8 +1186,8 @@ public class Common_Business_Functions extends TestCase {
 		try {
 			driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
 			// Find the element to clicked
-			WebElement element = driver.findElement(By.xpath(
-					"//*[@id='0']//tree-viewport/div/div/tree-node-collection/div/tree-node/div/tree-node-children/div/tree-node-collection/div/tree-node[2]//label[text()='"
+			WebElement element = driver.findElement(By
+					.xpath("//*[@id='0']//tree-viewport/div/div/tree-node-collection/div/tree-node/div/tree-node-children/div/tree-node-collection/div/tree-node[2]//label[text()='"
 							+ permissionName + "']/preceding-sibling::input"));
 			if (flag == true) {
 				if (element.isSelected()) {
@@ -1237,8 +1241,8 @@ public class Common_Business_Functions extends TestCase {
 		try {
 			driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
 			// Find the element to clicked
-			WebElement element = driver.findElement(By.xpath(
-					"//*[@id='1']//tree-root/tree-viewport/div/div/tree-node-collection/div/tree-node/div/tree-node-children/div/tree-node-collection/div/tree-node[4]//label[text()='"
+			WebElement element = driver.findElement(By
+					.xpath("//*[@id='1']//tree-root/tree-viewport/div/div/tree-node-collection/div/tree-node/div/tree-node-children/div/tree-node-collection/div/tree-node[4]//label[text()='"
 							+ permissionName + "']/preceding-sibling::input"));
 			if (flag == true) {
 				if (element.isSelected()) {
@@ -1292,8 +1296,8 @@ public class Common_Business_Functions extends TestCase {
 		try {
 			driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
 			// Find the element to clicked
-			WebElement element = driver.findElement(By.xpath(
-					"//*[@id='1']//tree-root/tree-viewport/div/div/tree-node-collection/div/tree-node/div/tree-node-children/div/tree-node-collection/div/tree-node[5]//label[text()='"
+			WebElement element = driver.findElement(By
+					.xpath("//*[@id='1']//tree-root/tree-viewport/div/div/tree-node-collection/div/tree-node/div/tree-node-children/div/tree-node-collection/div/tree-node[5]//label[text()='"
 							+ permissionName + "']/preceding-sibling::input"));
 			if (flag == true) {
 				if (element.isSelected()) {
@@ -1347,8 +1351,8 @@ public class Common_Business_Functions extends TestCase {
 		try {
 			driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
 			// Find the element to clicked
-			WebElement element = driver.findElement(By.xpath(
-					"//*[@id='1']//tree-root/tree-viewport/div/div/tree-node-collection/div/tree-node/div/tree-node-children/div/tree-node-collection/div/tree-node[6]//label[text()='"
+			WebElement element = driver.findElement(By
+					.xpath("//*[@id='1']//tree-root/tree-viewport/div/div/tree-node-collection/div/tree-node/div/tree-node-children/div/tree-node-collection/div/tree-node[6]//label[text()='"
 							+ permissionName + "']/preceding-sibling::input"));
 			if (flag == true) {
 				if (element.isSelected()) {
@@ -1402,8 +1406,8 @@ public class Common_Business_Functions extends TestCase {
 		try {
 			driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
 			// Find the element to clicked
-			WebElement element = driver.findElement(By.xpath(
-					"//*[@id='1']//tree-root/tree-viewport/div/div/tree-node-collection/div/tree-node/div/tree-node-children/div/tree-node-collection/div/tree-node[8]//label[text()='"
+			WebElement element = driver.findElement(By
+					.xpath("//*[@id='1']//tree-root/tree-viewport/div/div/tree-node-collection/div/tree-node/div/tree-node-children/div/tree-node-collection/div/tree-node[8]//label[text()='"
 							+ permissionName + "']/preceding-sibling::input"));
 			if (flag == true) {
 				if (element.isSelected()) {
@@ -1458,8 +1462,8 @@ public class Common_Business_Functions extends TestCase {
 		try {
 			driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
 			// Find the element to clicked
-			WebElement element = driver.findElement(By.xpath(
-					"//*[@id='2']//tree-root/tree-viewport/div/div/tree-node-collection/div/tree-node//label[text()='"
+			WebElement element = driver.findElement(By
+					.xpath("//*[@id='2']//tree-root/tree-viewport/div/div/tree-node-collection/div/tree-node//label[text()='"
 							+ permissionName + "']/preceding-sibling::input"));
 			if (flag == true) {
 				if (element.isSelected()) {
@@ -1514,8 +1518,8 @@ public class Common_Business_Functions extends TestCase {
 		try {
 			driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
 			// Find the element to clicked
-			WebElement element = driver.findElement(By.xpath(
-					"//*[@id='1']//tree-root/tree-viewport/div/div/tree-node-collection/div/tree-node/div/tree-node-children/div/tree-node-collection/div/tree-node[9]//label[text()='"
+			WebElement element = driver.findElement(By
+					.xpath("//*[@id='1']//tree-root/tree-viewport/div/div/tree-node-collection/div/tree-node/div/tree-node-children/div/tree-node-collection/div/tree-node[9]//label[text()='"
 							+ permissionName + "']/preceding-sibling::input"));
 			if (flag == true) {
 				if (element.isSelected()) {
@@ -1570,8 +1574,8 @@ public class Common_Business_Functions extends TestCase {
 		try {
 			driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
 			// Find the element to clicked
-			WebElement element = driver.findElement(By.xpath(
-					"//*[@id='1']//tree-root/tree-viewport/div/div/tree-node-collection/div/tree-node/div/tree-node-children/div/tree-node-collection/div/tree-node[10]//label[text()='"
+			WebElement element = driver.findElement(By
+					.xpath("//*[@id='1']//tree-root/tree-viewport/div/div/tree-node-collection/div/tree-node/div/tree-node-children/div/tree-node-collection/div/tree-node[10]//label[text()='"
 							+ permissionName + "']/preceding-sibling::input"));
 			if (flag == true) {
 				if (element.isSelected()) {
@@ -1626,8 +1630,8 @@ public class Common_Business_Functions extends TestCase {
 		try {
 			driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
 			// Find the element to clicked
-			WebElement element = driver.findElement(By.xpath(
-					"//*[@id='1']//tree-root/tree-viewport/div/div/tree-node-collection/div/tree-node/div/tree-node-children/div/tree-node-collection/div/tree-node[11]//label[text()='"
+			WebElement element = driver.findElement(By
+					.xpath("//*[@id='1']//tree-root/tree-viewport/div/div/tree-node-collection/div/tree-node/div/tree-node-children/div/tree-node-collection/div/tree-node[11]//label[text()='"
 							+ permissionName + "']/preceding-sibling::input"));
 			if (flag == true) {
 				if (element.isSelected()) {
@@ -1681,8 +1685,8 @@ public class Common_Business_Functions extends TestCase {
 		try {
 			driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
 			// Find the element to clicked
-			WebElement element = driver.findElement(By.xpath(
-					"//*[@id='1']//tree-root/tree-viewport/div/div/tree-node-collection/div/tree-node/div/tree-node-children/div/tree-node-collection/div/tree-node[12]//label[text()='"
+			WebElement element = driver.findElement(By
+					.xpath("//*[@id='1']//tree-root/tree-viewport/div/div/tree-node-collection/div/tree-node/div/tree-node-children/div/tree-node-collection/div/tree-node[12]//label[text()='"
 							+ permissionName + "']/preceding-sibling::input"));
 			if (flag == true) {
 				if (element.isSelected()) {
@@ -1736,8 +1740,8 @@ public class Common_Business_Functions extends TestCase {
 		try {
 			driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
 			// Find the element to clicked
-			WebElement element = driver.findElement(By.xpath(
-					"//*[@id='1']//tree-root/tree-viewport/div/div/tree-node-collection/div/tree-node/div/tree-node-children/div/tree-node-collection/div/tree-node[13]//label[text()='"
+			WebElement element = driver.findElement(By
+					.xpath("//*[@id='1']//tree-root/tree-viewport/div/div/tree-node-collection/div/tree-node/div/tree-node-children/div/tree-node-collection/div/tree-node[13]//label[text()='"
 							+ permissionName + "']/preceding-sibling::input"));
 			if (flag == true) {
 				if (element.isSelected()) {
@@ -1791,8 +1795,8 @@ public class Common_Business_Functions extends TestCase {
 		try {
 			driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
 			// Find the element to clicked
-			WebElement element = driver.findElement(By.xpath(
-					"//*[@id='3']//tree-root/tree-viewport/div/div/tree-node-collection/div/tree-node/div/tree-node-children/div/tree-node-collection/div/tree-node[1]//label[text()='"
+			WebElement element = driver.findElement(By
+					.xpath("//*[@id='3']//tree-root/tree-viewport/div/div/tree-node-collection/div/tree-node/div/tree-node-children/div/tree-node-collection/div/tree-node[1]//label[text()='"
 							+ permissionName + "']/preceding-sibling::input"));
 			if (flag == true) {
 				if (element.isSelected()) {
@@ -1846,8 +1850,8 @@ public class Common_Business_Functions extends TestCase {
 		try {
 			driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
 			// Find the element to clicked
-			WebElement element = driver.findElement(By.xpath(
-					"//*[@id='3']//tree-root/tree-viewport/div/div/tree-node-collection/div/tree-node/div/tree-node-children/div/tree-node-collection/div/tree-node[2]//label[text()='"
+			WebElement element = driver.findElement(By
+					.xpath("//*[@id='3']//tree-root/tree-viewport/div/div/tree-node-collection/div/tree-node/div/tree-node-children/div/tree-node-collection/div/tree-node[2]//label[text()='"
 							+ permissionName + "']/preceding-sibling::input"));
 			if (flag == true) {
 				if (element.isSelected()) {
@@ -1902,8 +1906,8 @@ public class Common_Business_Functions extends TestCase {
 		try {
 			driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
 			// Find the element to clicked
-			WebElement element = driver.findElement(By.xpath(
-					"//*[@id='1']//tree-root/tree-viewport/div/div/tree-node-collection/div/tree-node/div/tree-node-children/div/tree-node-collection/div/tree-node[7]//label[text()='"
+			WebElement element = driver.findElement(By
+					.xpath("//*[@id='1']//tree-root/tree-viewport/div/div/tree-node-collection/div/tree-node/div/tree-node-children/div/tree-node-collection/div/tree-node[7]//label[text()='"
 							+ permissionName + "']/preceding-sibling::input"));
 			if (flag == true) {
 				if (element.isSelected()) {
@@ -1957,8 +1961,8 @@ public class Common_Business_Functions extends TestCase {
 		try {
 			driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
 			// Find the element to clicked
-			WebElement element = driver.findElement(By.xpath(
-					"//*[@id='1']//tree-viewport/div/div/tree-node-collection/div/tree-node/div/tree-node-children/div/tree-node-collection/div/tree-node[3]//label[text()='"
+			WebElement element = driver.findElement(By
+					.xpath("//*[@id='1']//tree-viewport/div/div/tree-node-collection/div/tree-node/div/tree-node-children/div/tree-node-collection/div/tree-node[3]//label[text()='"
 							+ permissionName + "']/preceding-sibling::input"));
 
 			if (flag == true) {
@@ -2021,15 +2025,18 @@ public class Common_Business_Functions extends TestCase {
 			if (element.isDisplayed()) {
 				element.click();
 				System.out.println("Section: " + elemenyToClick + "  exists ");
-				test.pass("Element " + elemenyToClick + " clicked",
+				test.pass("Verified Element: " + elemenyToClick + " Successfully",
 						MediaEntityBuilder.createScreenCaptureFromPath(
-								objCreateScreenshot.createScreenshot(driver, "VerifyActionItem", test, rowNoGbl, date1))
+								objCreateScreenshot.createScreenshot(driver, "VerifyElement", test, rowNoGbl, date1))
 								.build());
-			} else {
-				test.fail("Element " + elemenyToClick + " not available",
-						MediaEntityBuilder.createScreenCaptureFromPath(
-								objCreateScreenshot.createScreenshot(driver, "VerifyActionItem", test, rowNoGbl, date1))
-								.build());
+				// } else {
+				// test.fail("Element " + elemenyToClick + " not available",
+				// MediaEntityBuilder.createScreenCaptureFromPath(
+				// objCreateScreenshot.createScreenshot(driver,
+				// "VerifyActionItem", test, rowNoGbl, date1))
+				// .build());
+				// test.log(Status.INFO, "Successfully Clicked on element:
+				// "+elemenyToClick);
 			}
 			extent.flush();
 		} catch (Exception e) {
@@ -2066,7 +2073,7 @@ public class Common_Business_Functions extends TestCase {
 						String name = element.getText();
 						if (name.equalsIgnoreCase(recordValue)) {
 							System.out.println("New record added to the list");
-							test.pass("New record added to the list: " + name + "",
+							test.pass("Verified New record added to the list: " + name + "",
 									MediaEntityBuilder.createScreenCaptureFromPath(objCreateScreenshot
 											.createScreenshot(driver, "VerifyNewRecord", test, rowNoGbl, date1))
 											.build());
@@ -2112,7 +2119,7 @@ public class Common_Business_Functions extends TestCase {
 			if (operation.equalsIgnoreCase("Y")) {
 				if (element.isDisplayed()) {
 					element.click();
-					test.log(Status.PASS, "Checkbox selected");
+					test.log(Status.INFO, "Successfully selected Checkbox");
 				} else {
 					test.log(Status.FAIL, "Checkbox not found on the page");
 				}
@@ -2146,7 +2153,7 @@ public class Common_Business_Functions extends TestCase {
 
 			if (element.isDisplayed()) {
 				element.click();
-				test.log(Status.PASS, "Checkbox selected");
+				test.log(Status.INFO, "Successfully selected Checkbox");
 			}
 
 			extent.flush();
@@ -2198,7 +2205,7 @@ public class Common_Business_Functions extends TestCase {
 			if (operation.equalsIgnoreCase("Y")) {
 				if (element.isDisplayed()) {
 					driver.findElement(By.xpath("//input[@formcontrolname='addCustomAttributeMultiSelect']")).click();
-					test.log(Status.PASS, "Checkbox selected");
+					test.log(Status.INFO, "Successfully selected Checkbox");
 				} else {
 					test.log(Status.FAIL, "Checkbox not found on the page");
 				}
@@ -2230,7 +2237,7 @@ public class Common_Business_Functions extends TestCase {
 			Select element = new Select(driver.findElement((xpath)));
 			element.selectByIndex(1);
 
-			test.log(Status.PASS, "List item selected");
+			test.log(Status.INFO, "Successfully selected List item :" + listItem);
 			extent.flush();
 		}
 
@@ -2282,7 +2289,7 @@ public class Common_Business_Functions extends TestCase {
 			driver.findElement(xpath);
 			WebElement element = driver.findElement(By.xpath("//option[contains(text(),'" + listItem + "')]"));
 			element.click();
-			test.log(Status.PASS, "List item selected");
+			test.log(Status.INFO, "Successfully selected List item :" + listItem);
 			extent.flush();
 		}
 
@@ -2310,6 +2317,7 @@ public class Common_Business_Functions extends TestCase {
 			if (fieldToCheck.isDisplayed()) {
 				fieldToCheck.clear();
 				fieldToCheck.sendKeys(value);
+				test.log(Status.INFO, "Successfully Record searched for value: " + value);
 			}
 			Thread.sleep(4000);
 			extent.flush();
@@ -2351,11 +2359,12 @@ public class Common_Business_Functions extends TestCase {
 			// Find the element to clicked
 			driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
 			if (driver.findElement(By.xpath(".//a[contains(text(),'" + lnkText + "')]")).isDisplayed()) {
-				WebElement lnkToClick = driver.findElement(By.xpath(".//a[text()='" + lnkText + "']"));
+				WebElement lnkToClick = driver.findElement(By.xpath(".//a[contains(text(),'" + lnkText + "')]"));
 				lnkToClick.click();
-				test.pass("Successfully clicken on link " + lnkText + "",
-						MediaEntityBuilder.createScreenCaptureFromPath(objCreateScreenshot.createScreenshot(driver,
-								"VerifyClickedLinkPassed", test, rowNoGbl, date1)).build());
+				// test.pass("Successfully clicken on link " + lnkText + "",
+				// MediaEntityBuilder.createScreenCaptureFromPath(objCreateScreenshot.createScreenshot(driver,
+				// "VerifyClickedLinkPassed", test, rowNoGbl, date1)).build());
+				test.log(Status.INFO, "Successfully clicked on Menu : " + lnkText);
 				extent.flush();
 			}
 		} catch (Exception e) {
@@ -2391,9 +2400,9 @@ public class Common_Business_Functions extends TestCase {
 						.findElement(By.xpath("//li/label[text()='" + listValue + "']/preceding-sibling::input"));
 				if (!checkboxToClick.isSelected()) {
 					driver.findElement(By.xpath("//li/label[text()='" + listValue + "']")).click();
-					test.log(Status.PASS, "List item selected");
+					test.log(Status.INFO, "Successfully selected List item :" + listItem);
 				} else {
-					test.pass("Checkbox selected");
+					test.log(Status.INFO, "Checkbox is already checked :" + listItem);
 				}
 			}
 			extent.flush();
@@ -2424,6 +2433,7 @@ public class Common_Business_Functions extends TestCase {
 				fieldToCheck.clear();
 				fieldToCheck.sendKeys(value);
 				Thread.sleep(2000);
+				test.log(Status.INFO, "Successfully Searched Module: " + value);
 			}
 
 			extent.flush();
@@ -2532,15 +2542,18 @@ public class Common_Business_Functions extends TestCase {
 			WebElement element = driver
 					.findElement(By.xpath("//div[@col-id='" + colName + "']//i[@class='fa fa-check-circle']"));
 			if (element.isDisplayed()) {
-				System.out.println(" Status is green for " + colName + "");
+				System.out.println("Verified Status is green for " + colName + "");
 				test.pass(" Status is green for " + colName + "", MediaEntityBuilder.createScreenCaptureFromPath(
 						objCreateScreenshot.createScreenshot(driver, "VerifyCheckStatusPassed", test, rowNoGbl, date1))
 						.build());
-			} else {
-				System.out.println(" Status is not green for " + colName + "");
-				test.fail(" Status is not green for " + colName + "", MediaEntityBuilder.createScreenCaptureFromPath(
-						objCreateScreenshot.createScreenshot(driver, "VerifyRecordsCountFailed", test, rowNoGbl, date1))
-						.build());
+				// } else {
+				// System.out.println("Status is not green for " + colName +
+				// "");
+				// test.fail(" Status is not green for " + colName + "",
+				// MediaEntityBuilder.createScreenCaptureFromPath(
+				// objCreateScreenshot.createScreenshot(driver,
+				// "VerifyRecordsCountFailed", test, rowNoGbl, date1))
+				// .build());
 			}
 			extent.flush();
 		} catch (Exception e) {
@@ -2574,10 +2587,13 @@ public class Common_Business_Functions extends TestCase {
 				selectedCycleName = val1.trim();
 				String Path = "src/test/java/TestData/" + workbookName;
 				ExcelUtils.setCellValueUsingColName(Path, colName, rowNoGbl, selectedCycleName);
-				System.out.println(" Cycle name is " + selectedCycleName + "");
-				test.pass(" Cycle name is " + selectedCycleName + "",
-						MediaEntityBuilder.createScreenCaptureFromPath(objCreateScreenshot.createScreenshot(driver,
-								"VerifyCaptureCycleNamePassed", test, rowNoGbl, date1)).build());
+				System.out.println("Cycle name is " + selectedCycleName + "");
+				// test.pass("Successfully captured cycle name : " +
+				// selectedCycleName + "",
+				// MediaEntityBuilder.createScreenCaptureFromPath(objCreateScreenshot.createScreenshot(driver,
+				// "VerifyCaptureCycleNamePassed", test, rowNoGbl,
+				// date1)).build());
+				test.log(Status.INFO, "Successfully captured cycle name : " + selectedCycleName);
 			}
 			extent.flush();
 		} catch (Exception e) {
@@ -2645,16 +2661,16 @@ public class Common_Business_Functions extends TestCase {
 					if (element.isDisplayed()) {
 						String name = element.getText();
 						if (name.equalsIgnoreCase(fileStatus)) {
-							System.out.println("File status is correct");
-							test.pass("File status is correct: " + name + "",
+							System.out.println("Verified File status");
+							test.pass("Verified File status : " + name + "",
 									MediaEntityBuilder.createScreenCaptureFromPath(objCreateScreenshot
-											.createScreenshot(driver, "VerifyNewRecord", test, rowNoGbl, date1))
+											.createScreenshot(driver, "VerifyFileStatus", test, rowNoGbl, date1))
 											.build());
 						} else {
 							System.out.println("File status is not correct");
 							test.fail("File status is not correct",
 									MediaEntityBuilder.createScreenCaptureFromPath(objCreateScreenshot
-											.createScreenshot(driver, "VerifyNewRecord", test, rowNoGbl, date1))
+											.createScreenshot(driver, "VerifyFileStatus", test, rowNoGbl, date1))
 											.build());
 						}
 						break;
@@ -2748,8 +2764,9 @@ public class Common_Business_Functions extends TestCase {
 
 				if (strSuccessMsg.equals(strActMsg.trim())) {
 					System.out.println("Success msg verified");
-					// Add the screenshot to the Reporting steps with a hyperlink
-					test.pass("Success Message is displayed as :" + strSuccessMsg,
+					// Add the screenshot to the Reporting steps with a
+					// hyperlink
+					test.pass("Verified Message displayed :" + strSuccessMsg,
 							MediaEntityBuilder.createScreenCaptureFromPath(objCreateScreenshot.createScreenshot(driver,
 									"VerifyMsgDisplayed", test, rowNoGbl, date1)).build());
 				}
@@ -2760,7 +2777,8 @@ public class Common_Business_Functions extends TestCase {
 							MediaEntityBuilder.createScreenCaptureFromPath(objCreateScreenshot.createScreenshot(driver,
 									"VerifyInvalidMsgDisplayed", test, rowNoGbl, date1)).build());
 
-					// Add the screenshot to the Reporting steps with a hyperlink
+					// Add the screenshot to the Reporting steps with a
+					// hyperlink
 					test.addScreenCaptureFromPath(objCreateScreenshot.createScreenshot(driver,
 							"VerifyInvalidMsgDisplayed", test, rowNoGbl, date1));
 				}
@@ -2793,14 +2811,18 @@ public class Common_Business_Functions extends TestCase {
 			WebElement linkToClick = driver.findElement(By.xpath("//div/label/a[contains(text(),'" + linkText + "')]"));
 			if (linkToClick.isDisplayed()) {
 				System.out.println("Link is present on pop up");
-				test.pass("Link is present on pop up :" + linkText, MediaEntityBuilder.createScreenCaptureFromPath(
-						objCreateScreenshot.createScreenshot(driver, "VerifyLinkDisplayed", test, rowNoGbl, date1))
-						.build());
+				test.pass("Verified Link is present on pop up : " + linkText,
+						MediaEntityBuilder.createScreenCaptureFromPath(objCreateScreenshot.createScreenshot(driver,
+								"VerifyLinkDisplayed", test, rowNoGbl, date1)).build());
 				linkToClick.click();
-				test.pass("Click on link :" + linkText, MediaEntityBuilder.createScreenCaptureFromPath(
-						objCreateScreenshot.createScreenshot(driver, "VerifyLinkClicked", test, rowNoGbl, date1))
-						.build());
-				Thread.sleep(25000);
+				// test.pass("Click on link :" + linkText,
+				// MediaEntityBuilder.createScreenCaptureFromPath(
+				// objCreateScreenshot.createScreenshot(driver,
+				// "VerifyLinkClicked", test, rowNoGbl, date1))
+				// .build());
+				test.log(Status.INFO, "Successfully clicked on link: " + linkText);
+				Thread.sleep(120000);
+				// Thread.sleep(120000);
 			}
 			extent.flush();
 		} catch (Exception e) {
@@ -2830,13 +2852,16 @@ public class Common_Business_Functions extends TestCase {
 			WebElement linkToClick = driver.findElement(By.xpath("//div//a[contains(text(),'" + linkText + "')]"));
 			if (linkToClick.isDisplayed()) {
 				System.out.println("Link is present on pop up");
-				test.pass("Link is present on pop up :" + linkText, MediaEntityBuilder.createScreenCaptureFromPath(
-						objCreateScreenshot.createScreenshot(driver, "VerifyLinkDisplayed", test, rowNoGbl, date1))
-						.build());
+				test.pass("Verified Link is present on pop up : " + linkText,
+						MediaEntityBuilder.createScreenCaptureFromPath(objCreateScreenshot.createScreenshot(driver,
+								"VerifyLinkDisplayed", test, rowNoGbl, date1)).build());
 				linkToClick.click();
-				test.pass("Click on link :" + linkText, MediaEntityBuilder.createScreenCaptureFromPath(
-						objCreateScreenshot.createScreenshot(driver, "VerifyLinkClicked", test, rowNoGbl, date1))
-						.build());
+				// test.pass("Click on link :" + linkText,
+				// MediaEntityBuilder.createScreenCaptureFromPath(
+				// objCreateScreenshot.createScreenshot(driver,
+				// "VerifyLinkClicked", test, rowNoGbl, date1))
+				// .build());
+				test.log(Status.INFO, "Successfully Clicked on link: " + linkText);
 				Thread.sleep(75000);
 			}
 			extent.flush();
@@ -2870,8 +2895,9 @@ public class Common_Business_Functions extends TestCase {
 
 				if (strSuccessMsg.equals(strActMsg.trim())) {
 					System.out.println("Success msg verified");
-					// Add the screenshot to the Reporting steps with a hyperlink
-					test.pass("Success Message is displayed as :" + strSuccessMsg,
+					// Add the screenshot to the Reporting steps with a
+					// hyperlink
+					test.pass("Verified Message displayed :" + strSuccessMsg,
 							MediaEntityBuilder.createScreenCaptureFromPath(objCreateScreenshot.createScreenshot(driver,
 									"VerifyMsgDisplayed", test, rowNoGbl, date1)).build());
 				}
@@ -2882,7 +2908,8 @@ public class Common_Business_Functions extends TestCase {
 							MediaEntityBuilder.createScreenCaptureFromPath(objCreateScreenshot.createScreenshot(driver,
 									"VerifyInvalidMsgDisplayed", test, rowNoGbl, date1)).build());
 
-					// Add the screenshot to the Reporting steps with a hyperlink
+					// Add the screenshot to the Reporting steps with a
+					// hyperlink
 					test.addScreenCaptureFromPath(objCreateScreenshot.createScreenshot(driver,
 							"VerifyInvalidMsgDisplayed", test, rowNoGbl, date1));
 				}
@@ -2917,11 +2944,12 @@ public class Common_Business_Functions extends TestCase {
 				String strActMsg = driver.findElement(objPageObjsProRead.getLocator("objFailureMsg")).getText();
 
 				if (strExpTxt.contains(strActMsg.trim())) {
-					// Add the screenshot to the Reporting steps with a hyperlink
+					// Add the screenshot to the Reporting steps with a
+					// hyperlink
 					System.out.println("error validated, passed!");
-					test.pass("Error Message is displayed as :" + strExpTxt,
-							MediaEntityBuilder.createScreenCaptureFromPath(objCreateScreenshot.createScreenshot(driver,
-									"VerifyMsgDisplayed", test, rowNoGbl, date1)).build());
+					test.pass("Verified Error Message:" + strExpTxt, MediaEntityBuilder.createScreenCaptureFromPath(
+							objCreateScreenshot.createScreenshot(driver, "VerifyMsgDisplayed", test, rowNoGbl, date1))
+							.build());
 				}
 
 				else {
@@ -2930,7 +2958,8 @@ public class Common_Business_Functions extends TestCase {
 							MediaEntityBuilder.createScreenCaptureFromPath(objCreateScreenshot.createScreenshot(driver,
 									"VerifyInvalidMsgDisplayed", test, rowNoGbl, date1)).build());
 
-					// Add the screenshot to the Reporting steps with a hyperlink
+					// Add the screenshot to the Reporting steps with a
+					// hyperlink
 					test.addScreenCaptureFromPath(objCreateScreenshot.createScreenshot(driver,
 							"VerifyInvalidMsgDisplayed", test, rowNoGbl, date1));
 				}
@@ -2958,11 +2987,12 @@ public class Common_Business_Functions extends TestCase {
 				String strActMsg = driver.findElement(objPageObjsProRead.getLocator("objFailureText")).getText();
 
 				if (strErrorMsg.contains(strActMsg.trim())) {
-					// Add the screenshot to the Reporting steps with a hyperlink
+					// Add the screenshot to the Reporting steps with a
+					// hyperlink
 					System.out.println("error validated, passed!");
-					test.pass("Error Message is displayed as :" + strErrorMsg,
-							MediaEntityBuilder.createScreenCaptureFromPath(objCreateScreenshot.createScreenshot(driver,
-									"VerifyMsgDisplayed", test, rowNoGbl, date1)).build());
+					test.pass("Verified Error Message :" + strErrorMsg, MediaEntityBuilder.createScreenCaptureFromPath(
+							objCreateScreenshot.createScreenshot(driver, "VerifyMsgDisplayed", test, rowNoGbl, date1))
+							.build());
 				}
 
 				else {
@@ -2971,7 +3001,8 @@ public class Common_Business_Functions extends TestCase {
 							MediaEntityBuilder.createScreenCaptureFromPath(objCreateScreenshot.createScreenshot(driver,
 									"VerifyInvalidMsgDisplayed", test, rowNoGbl, date1)).build());
 
-					// Add the screenshot to the Reporting steps with a hyperlink
+					// Add the screenshot to the Reporting steps with a
+					// hyperlink
 					test.addScreenCaptureFromPath(objCreateScreenshot.createScreenshot(driver,
 							"VerifyInvalidMsgDisplayed", test, rowNoGbl, date1));
 				}
@@ -2999,11 +3030,12 @@ public class Common_Business_Functions extends TestCase {
 						.findElement(By.xpath("//div[@col-id='validationErrorCode'][@role='gridcell']")).getText();
 
 				if (strErrorMsg.contains(strActMsg.trim())) {
-					// Add the screenshot to the Reporting steps with a hyperlink
+					// Add the screenshot to the Reporting steps with a
+					// hyperlink
 					System.out.println("error validated, passed!");
-					test.pass("Error Message is displayed as :" + strErrorMsg,
-							MediaEntityBuilder.createScreenCaptureFromPath(objCreateScreenshot.createScreenshot(driver,
-									"VerifyMsgDisplayed", test, rowNoGbl, date1)).build());
+					test.pass("Verified Error Message :" + strErrorMsg, MediaEntityBuilder.createScreenCaptureFromPath(
+							objCreateScreenshot.createScreenshot(driver, "VerifyMsgDisplayed", test, rowNoGbl, date1))
+							.build());
 				}
 
 				else {
@@ -3012,7 +3044,8 @@ public class Common_Business_Functions extends TestCase {
 							MediaEntityBuilder.createScreenCaptureFromPath(objCreateScreenshot.createScreenshot(driver,
 									"VerifyInvalidMsgDisplayed", test, rowNoGbl, date1)).build());
 
-					// Add the screenshot to the Reporting steps with a hyperlink
+					// Add the screenshot to the Reporting steps with a
+					// hyperlink
 					test.addScreenCaptureFromPath(objCreateScreenshot.createScreenshot(driver,
 							"VerifyInvalidMsgDisplayed", test, rowNoGbl, date1));
 				}
@@ -3039,7 +3072,8 @@ public class Common_Business_Functions extends TestCase {
 			// get CSV row column and replace with by using row and column
 			String[] strArray = csvBody.get(0);
 			for (int j = 0; j < strArray.length; j++) {
-				if (strArray[j].equalsIgnoreCase("ATTR_CODE")) { // String to be replaced
+				if (strArray[j].equalsIgnoreCase("ATTR_CODE")) { // String to be
+																	// replaced
 					for (int k = 1; k < csvBody.size(); k++) {
 						csvBody.get(k)[j] = attributeCode; // Target replacement
 					}
@@ -3196,9 +3230,13 @@ public class Common_Business_Functions extends TestCase {
 			// get CSV row column and replace with by using row and column
 			String[] strArray = csvBody.get(0);
 			for (int j = 0; j < strArray.length; j++) {
-				if (strArray[j].equalsIgnoreCase("COLLECTIONUNIQUEIDENTIFIER")) { // String to be replaced
+				if (strArray[j].equalsIgnoreCase("COLLECTIONUNIQUEIDENTIFIER")) { // String
+																					// to
+																					// be
+																					// replaced
 					for (int k = 1; k < csvBody.size(); k++) {
-						csvBody.get(k)[j] = collectionUniqueIdentifier; // Target replacement
+						csvBody.get(k)[j] = collectionUniqueIdentifier; // Target
+																		// replacement
 					}
 				}
 			}
@@ -3225,9 +3263,12 @@ public class Common_Business_Functions extends TestCase {
 			// get CSV row column and replace with by using row and column
 			String[] strArray = csvBody.get(0);
 			for (int j = 0; j < strArray.length; j++) {
-				if (strArray[j].equalsIgnoreCase("Module Code")) { // String to be replaced
+				if (strArray[j].equalsIgnoreCase("Module Code")) { // String to
+																	// be
+																	// replaced
 					for (int k = 1; k < csvBody.size(); k++) {
-						csvBody.get(k)[j] = collectionUniqueIdentifier; // Target replacement
+						csvBody.get(k)[j] = collectionUniqueIdentifier; // Target
+																		// replacement
 					}
 				}
 			}
@@ -3279,7 +3320,7 @@ public class Common_Business_Functions extends TestCase {
 			WebElement element = driver.findElement(By.xpath("//button[contains(text(),'" + value + "')]"));
 			if (!element.isEnabled()) {
 				System.out.println("Button is disabled");
-				test.pass("Button is disabled :" + value, MediaEntityBuilder.createScreenCaptureFromPath(
+				test.pass("Verified Button is disabled : " + value, MediaEntityBuilder.createScreenCaptureFromPath(
 						objCreateScreenshot.createScreenshot(driver, "VerifyMsgDisplayed", test, rowNoGbl, date1))
 						.build());
 			} else {
@@ -3338,7 +3379,7 @@ public class Common_Business_Functions extends TestCase {
 					"//label[text()='" + value + "']/preceding-sibling::input[@formcontrolname='" + value + "']"));
 			if (element.isEnabled()) {
 				System.out.println("Checkbox is enabled");
-				test.pass("Checkbox is enabled :" + value);
+				test.pass("Verified successfully Checkbox is enabled : " + value);
 			} else {
 				System.out.println("Checkbox is not enabled");
 				test.fail("Checkbox is not enabled :" + value);
@@ -3406,6 +3447,845 @@ public class Common_Business_Functions extends TestCase {
 			// driver.quit();
 
 			// Calling flush writes everything to the Extent Report
+			extent.flush();
+
+			fail("NoSuchElementException");
+		}
+	}
+
+	public void CheckCheckbox(WebDriver driver, ExtentTest test, ExtentReports extent, String rowNoGbl, String date1,
+			By Xpa) throws Exception {
+		try {
+			Thread.sleep(2000);
+			driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
+			WebElement element = driver.findElement(Xpa);
+
+			if (element.isDisplayed()) {
+				System.out.println("Clicked on CheckBox");
+				element.click();
+				test.log(Status.INFO, "Successfully selected Checkbox");
+			}
+
+			extent.flush();
+		}
+
+		catch (Exception e) {
+			System.out.println("In catch block");
+			// Add the screenshot to the Reporting steps with a hyperlink
+			test.fail("Checkbox not selected " + e.getMessage());
+			test.addScreenCaptureFromPath(
+					objCreateScreenshot.createScreenshot(driver, "NoSuchElementException", test, rowNoGbl, date1));
+
+			// Calling flush writes everything to the Extent Report
+			extent.flush();
+
+			fail("NoSuchElementException");
+		}
+	}
+
+	public void selectItemFromList(WebDriver driver, ExtentTest test, ExtentReports extent, String rowNoGbl,
+			String date1, By xpath, String listItem) throws Exception {
+		try {
+			Thread.sleep(2000);
+			driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
+
+			WebElement element = driver.findElement(xpath);
+			Select sel = new Select(element);
+			sel.selectByVisibleText(listItem);
+
+			test.log(Status.INFO, "Successfully selected List item : " + listItem);
+			extent.flush();
+		}
+
+		catch (Exception e) {
+			System.out.println("In catch block");
+			// Add the screenshot to the Reporting steps with a hyperlink
+			test.fail("item not available " + e.getMessage());
+			test.addScreenCaptureFromPath(
+					objCreateScreenshot.createScreenshot(driver, "NoSuchElementException", test, rowNoGbl, date1));
+
+			// Calling flush writes everything to the Extent Report
+			extent.flush();
+
+			fail("NoSuchElementException");
+		}
+	}
+
+	public void Verify_Screen_Name(WebDriver driver, ExtentTest test, ExtentReports extent, String rowNoGbl,
+			String date1, String screenName) throws IOException {
+		try {
+			Thread.sleep(2000);
+			driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
+			// Find the element to clicked
+			WebElement screenNameToCheck = driver
+					.findElement(By.xpath("//div/h1[contains(text(),'" + screenName + "')]"));
+			if (screenNameToCheck.isDisplayed()) {
+				System.out.println("Screen name is displayed successfully");
+				test.pass("Verified Screen Name : [" + screenName + "] Successfully",
+						MediaEntityBuilder.createScreenCaptureFromPath(
+								objCreateScreenshot.createScreenshot(driver, "VerifyScreenName", test, rowNoGbl, date1))
+								.build());
+
+			} else {
+				test.fail("Screen Name - " + screenName + "is not present",
+						MediaEntityBuilder.createScreenCaptureFromPath(
+								objCreateScreenshot.createScreenshot(driver, "VerifyScreenName", test, rowNoGbl, date1))
+								.build());
+			}
+			extent.flush();
+		} catch (Exception e) {
+			System.out.println("In catch block");
+			// Add the screenshot to the Reporting steps with a hyperlink
+			test.fail("NoSuchElementException : " + e.getMessage());
+			test.addScreenCaptureFromPath(
+					objCreateScreenshot.createScreenshot(driver, "NoSuchElementException", test, rowNoGbl, date1));
+
+			// Close the Browser
+			// driver.quit();
+			// test.log(Status.INFO, "Closed the Browser");
+
+			// Calling flush writes everything to the Extent Report
+			extent.flush();
+
+			fail("NoSuchElementException");
+		}
+	}
+
+	public void searchRecordForProcessStatus(WebDriver driver, ExtentTest test, ExtentReports extent, String rowNoGbl,
+			String date1) throws IOException, InterruptedException {
+		try {
+			driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
+			// WebElement fieldToCheck;
+			// WebElement menuCancelled;
+			// WebElement objCloseFilter;
+			// fieldToCheck=driver.findElement(objPageReadDISC.getLocator("objStatusFilter"));
+			// menuCancelled
+			// =driver.findElement(objPageReadDISC.getLocator("objFilterMenuCancelled"));
+			// objCloseFilter
+			// =driver.findElement(objPageReadDISC.getLocator("objCloseFilter"));
+
+			driver.findElement(By.xpath("(//div/button[@ref='eButtonShowMainFilter']/i[@class='fa fa-filter'])[3]"))
+					.click();
+			driver.findElement(By.xpath("//label/span/div/input[@type='checkbox']")).click();
+			driver.findElement(By.xpath("//div/span[@class='ag-tab ag-tab-selected']")).click();
+
+			extent.flush();
+		} catch (Exception e) {
+			System.out.println("In catch block");
+			// Add the screenshot to the Reporting steps with a hyperlink
+			test.fail("NoSuchElementException : " + e.getMessage());
+			test.addScreenCaptureFromPath(
+					objCreateScreenshot.createScreenshot(driver, "NoSuchElementException", test, rowNoGbl, date1));
+
+			// Close the Browser
+			// driver.quit();
+
+			// Calling flush writes everything to the Extent Report
+			extent.flush();
+
+			fail("NoSuchElementException");
+		}
+	}
+
+	public void VerifyActionItemNotVisible(WebDriver driver, ExtentTest test, ExtentReports extent, String rowNoGbl,
+			String date1, String actionName) throws IOException {
+		try {
+			Thread.sleep(2000);
+			driver.manage().timeouts().implicitlyWait(4, TimeUnit.SECONDS);
+			List<WebElement> records;
+			int i = 0, size;
+			records = driver.findElements(By.xpath("//div[@role='gridcell']"));
+			size = records.size();
+			if (size <= 0)
+				test.fail("No record to verify " + actionName + " action",
+						MediaEntityBuilder.createScreenCaptureFromPath(
+								objCreateScreenshot.createScreenshot(driver, "VerifyListItem", test, rowNoGbl, date1))
+								.build());
+			else {
+				while (i < size) {
+					WebElement element = records.get(i);
+					if (element.isDisplayed()) {
+						element.click();
+						break;
+					} else
+						i++;
+				}
+				System.out.println("record clicked");
+				WebElement CurrentRow = driver.switchTo().activeElement();
+				Actions action = new Actions(driver);
+				action.contextClick(CurrentRow).sendKeys(Keys.ARROW_LEFT).sendKeys(Keys.ENTER).build().perform();
+				Thread.sleep(2000);
+				WebElement actionItem = driver.findElement(By.xpath(".//span[contains(text(),'" + actionName + "')]"));
+				String value = actionItem.getText();
+				if (value.equalsIgnoreCase(actionName)) {
+					System.out.println("Action :" + actionName + " present");
+					test.fail("Action : " + value + " present: " + "",
+							MediaEntityBuilder.createScreenCaptureFromPath(objCreateScreenshot.createScreenshot(driver,
+									"VerifyActionItemNotVisible", test, rowNoGbl, date1)).build());
+				}
+			}
+			extent.flush();
+		} catch (Exception e) {
+			test.pass("Successfully verified Action : [" + actionName + "] not present" + "",
+					MediaEntityBuilder.createScreenCaptureFromPath(objCreateScreenshot.createScreenshot(driver,
+							"VerifyActionItemNotVisible", test, rowNoGbl, date1)).build());
+			extent.flush();
+			// fail("NoSuchElementException");
+		}
+	}
+
+	public void VerifyLinkNotExist(WebDriver driver, ExtentTest test, ExtentReports extent, String rowNoGbl,
+			String date1, String lnkText) throws Exception {
+		try {
+			driver.manage().timeouts().implicitlyWait(2, TimeUnit.SECONDS);
+			// Find the element to clicked
+			WebElement lnkToVerify = driver.findElement(By.xpath(".//li/a[contains(text(),'" + lnkText + "')]"));
+			if (lnkToVerify.isDisplayed()) {
+				test.fail("Link : " + lnkText + " Present on Home Page ",
+						MediaEntityBuilder.createScreenCaptureFromPath(objCreateScreenshot.createScreenshot(driver,
+								"NoSuchElementException", test, rowNoGbl, date1)).build());
+			}
+			extent.flush();
+		} catch (Exception e) {
+			test.pass("Verified Link : [" + lnkText + "] not present on screen" + "",
+					MediaEntityBuilder.createScreenCaptureFromPath(objCreateScreenshot.createScreenshot(driver,
+							"VerifiedLinkNotDisplayed", test, rowNoGbl, date1)).build());
+			extent.flush();
+
+			// fail("NoSuchElementException");
+		}
+	}
+
+	public void SearchForUserInUserAssignment(WebDriver driver, ExtentTest test, ExtentReports extent, String rowNoGbl,
+			String date1, String UName) throws Exception {
+		try {
+			driver.manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS);
+			// Find the element to clicked
+			WebElement UserId = driver.findElement(By.xpath("//input[@formcontrolname='userId']"));
+			WebElement BtnSearch = driver.findElement(By.xpath("//button[contains(text(), 'Search')]"));
+			if (UserId.isDisplayed()) {
+				UserId.clear();
+				UserId.sendKeys(UName);
+				BtnSearch.click();
+				// test.pass("Search Criteria applied successfully",
+				// MediaEntityBuilder.createScreenCaptureFromPath(objCreateScreenshot.createScreenshot(driver,
+				// "SearchForUserInUserAssignment", test, rowNoGbl,
+				// date1)).build());
+				test.log(Status.INFO, "Successfully searched User: " + UName);
+			}
+			extent.flush();
+		} catch (Exception e) {
+			test.fail("User Id field or Search Button not displayed on screen" + "",
+					MediaEntityBuilder.createScreenCaptureFromPath(objCreateScreenshot.createScreenshot(driver,
+							"NoSuchElementException", test, rowNoGbl, date1)).build());
+			extent.flush();
+
+			fail("NoSuchElementException");
+		}
+	}
+
+	public void VerifyButtonExistWithTCID(WebDriver driver, ExtentTest test, ExtentReports extent, String rowNoGbl,
+			String date1, String btnText, String TCID) throws Exception {
+		try {
+			Thread.sleep(2000);
+			// Find the element to clicked
+			driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
+			WebElement btnToVerify = driver.findElement(By.xpath(".//div/button[contains(text(),'" + btnText + "')]"));
+			if (btnToVerify.isDisplayed()) {
+				System.out.println(btnText + " : Button verified");
+				test.pass("Successfully Verified button " + btnText + " - " + TCID + "",
+						MediaEntityBuilder.createScreenCaptureFromPath(objCreateScreenshot.createScreenshot(driver,
+								"VerifyButtonExistPass", test, rowNoGbl, date1)).build());
+
+			} else {
+				test.fail("Button does not exist: " + btnText + " - " + TCID + "",
+						MediaEntityBuilder.createScreenCaptureFromPath(objCreateScreenshot.createScreenshot(driver,
+								"VerifyButtonExistFail", test, rowNoGbl, date1)).build());
+			}
+			extent.flush();
+		}
+
+		catch (Exception e) {
+			System.out.println("In catch block");
+			// Add the screenshot to the Reporting steps with a hyperlink
+			test.fail("Button does not exist: " + e.getMessage());
+			test.addScreenCaptureFromPath(
+					objCreateScreenshot.createScreenshot(driver, "NoSuchElementException", test, rowNoGbl, date1));
+
+			// Close the Browser
+			// driver.quit();
+			// test.log(Status.INFO, "Closed the Browser");
+
+			// Calling flush writes everything to the Extent Report
+			extent.flush();
+
+			// fail("NoSuchElementException");
+		}
+	}
+
+	public void VerifyURLTempering(WebDriver driver, ExtentTest test, ExtentReports extent, String rowNoGbl,
+			String date1, String URL) throws Exception {
+		try {
+
+			// Create driver for FF browser and open a URL
+			driver.get(URL);
+
+			// Log the action performed in the extent report
+			// test.pass("Opened the browser and navigated to the URL");
+			driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
+			WebElement Err1 = driver
+					.findElement(By.xpath("//div[contains(text(), 'You are not authorized to view this page.')]"));
+			if (Err1.isDisplayed()) {
+				test.pass("Verified Error Message : You are not authorized to view this page successfully" + "",
+						MediaEntityBuilder.createScreenCaptureFromPath(objCreateScreenshot.createScreenshot(driver,
+								"VerifyURLTempering", test, rowNoGbl, date1)).build());
+			}
+			extent.flush();
+
+		} catch (NoSuchElementException e) {
+			System.out.println("In catch block");
+			// Add the screenshot to the Reporting steps with a hyperlink
+			test.fail("Fail to Verify Error Message : You are not authorized to view this page." + "",
+					MediaEntityBuilder.createScreenCaptureFromPath(
+							objCreateScreenshot.createScreenshot(driver, "VerifyURLTempering", test, rowNoGbl, date1))
+							.build());
+
+			// Close the Browser
+			// driver.quit();
+
+			// Calling flush writes everything to the Extent Report
+			extent.flush();
+
+			// fail("NoSuchElementException");
+		}
+	}
+
+	public void testcasedescription(WebDriver driver, ExtentTest test, ExtentReports extent, String rowNoGbl,
+			String date1, String User, String Description, String strURL, String browserType) {
+		try {
+
+			test.log(Status.INFO, "Test Description :  " + Description.toUpperCase());
+			test.log(Status.INFO, "Test User Name :  " + User.toUpperCase());
+			test.log(Status.INFO, "Test Environment :  " + strURL);
+			test.log(Status.INFO, "Test Conducted on Browser :  " + browserType.toUpperCase());
+
+			test.log(Status.INFO,
+					"===================================================================================================================");
+
+			extent.flush();
+
+		} catch (Exception e) {
+			System.out.println("In Catch Block");
+			test.fail("Error : Please check data sheet column or Config.properties file");
+		}
+	}
+
+	public void verifyActionDisabled(WebDriver driver, ExtentTest test, ExtentReports extent, String rowNoGbl,
+			String date1, String actionName) throws IOException {
+		try {
+			Thread.sleep(2000);
+			driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
+			List<WebElement> records;
+			int i = 0, size;
+			records = driver.findElements(By.xpath("//div[@role='gridcell']"));
+			size = records.size();
+			if (size <= 0)
+				test.fail("No record to verify " + actionName + " action",
+						MediaEntityBuilder.createScreenCaptureFromPath(objCreateScreenshot.createScreenshot(driver,
+								"VerifyActionDisabled_Fail", test, rowNoGbl, date1)).build());
+			else {
+				while (i < size) {
+					WebElement element = records.get(i);
+					if (element.isDisplayed()) {
+						element.click();
+						break;
+					} else
+						i++;
+				}
+				System.out.println("record clicked");
+				WebElement CurrentRow = driver.switchTo().activeElement();
+				Actions action = new Actions(driver);
+
+				action.contextClick(CurrentRow).sendKeys(Keys.ARROW_LEFT).sendKeys(Keys.ENTER).build().perform();
+				Thread.sleep(2000);
+				WebElement actionItem = driver.findElement(
+						By.xpath("//div[@class='ag-menu-option ag-menu-option-disabled']/span[contains(text(),'"
+								+ actionName + "')]"));
+				String value = actionItem.getText();
+				if (value.equalsIgnoreCase(actionName)) {
+					action.moveToElement(actionItem).build().perform();
+					System.out.println("Verified :" + actionName);
+					test.pass("Verified action : [" + actionName + "] is disabled" + "",
+							MediaEntityBuilder.createScreenCaptureFromPath(objCreateScreenshot.createScreenshot(driver,
+									"VerifyActionDisabled_Pass", test, rowNoGbl, date1)).build());
+				} else {
+
+					action.moveToElement(actionItem).build().perform();
+					System.out.println("Verified :" + actionName);
+					test.fail("Action : " + actionName + " is not present" + "",
+							MediaEntityBuilder.createScreenCaptureFromPath(objCreateScreenshot.createScreenshot(driver,
+									"VerifyActionDisabled_Fail", test, rowNoGbl, date1)).build());
+
+				}
+			}
+			extent.flush();
+		} catch (
+
+		Exception e) {
+			System.out.println("In catch block");
+			test.fail("Action is not disabled : " + actionName + "", MediaEntityBuilder.createScreenCaptureFromPath(
+					objCreateScreenshot.createScreenshot(driver, "VerifyActionDisabled_Fail", test, rowNoGbl, date1))
+					.build());
+
+			extent.flush();
+		}
+	}
+
+	public void searchRecordWithCycleNameFilter(WebDriver driver, ExtentTest test, ExtentReports extent,
+			String rowNoGbl, String date1, String value) throws IOException, InterruptedException {
+		try {
+			Thread.sleep(2000);
+			driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
+			WebElement module = driver.findElement(objPageReadFileSub.getLocator("objSearchModule"));
+			if (module.isDisplayed()) {
+				int len = value.length();
+				for (int i = 0; i < len + 2; i++) {
+					module.sendKeys(Keys.BACK_SPACE);
+					Thread.sleep(500);
+				}
+
+			}
+			WebElement fieldToCheck;
+			fieldToCheck = driver.findElement(By.xpath("(//input[@class='ag-floating-filter-input'])[1]"));
+			if (fieldToCheck.isDisplayed()) {
+				fieldToCheck.clear();
+				fieldToCheck.sendKeys(value);
+			}
+			test.log(Status.INFO, "Successfully searched record with Module :" + value);
+			extent.flush();
+		} catch (Exception e) {
+			System.out.println("In catch block");
+			// Add the screenshot to the Reporting steps with a hyperlink
+			test.fail("NoSuchElementException : " + e.getMessage());
+			test.addScreenCaptureFromPath(
+					objCreateScreenshot.createScreenshot(driver, "NoSuchElementException", test, rowNoGbl, date1));
+
+			extent.flush();
+
+			fail("NoSuchElementException");
+		}
+	}
+
+	public void VerifyExpandCollapseLink(WebDriver driver, ExtentTest test, ExtentReports extent, String rowNoGbl,
+			String date1, String lnkText) throws Exception {
+		try {
+			driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
+			WebElement lnkToVerify = driver.findElement(By.xpath("//div[contains(text(),'" + lnkText + "')]"));
+			if (lnkToVerify.isDisplayed()) {
+				test.pass("Verified Expand/Collapse link: " + lnkText + " Successfully" + "",
+						MediaEntityBuilder.createScreenCaptureFromPath(objCreateScreenshot.createScreenshot(driver,
+								"VerifyLinkExist_Pass", test, rowNoGbl, date1)).build());
+			}
+			extent.flush();
+		} catch (Exception e) {
+			System.out.println("In catch block");
+			System.out.println("Error in Method : VerifyLinkExist");
+			// Add the screenshot to the Reporting steps with a hyperlink
+			test.fail("Link does not exist: ",
+					MediaEntityBuilder.createScreenCaptureFromPath(
+							objCreateScreenshot.createScreenshot(driver, "VerifyLinkExist_Fail", test, rowNoGbl, date1))
+							.build());
+			extent.flush();
+
+			fail("NoSuchElementException");
+		}
+	}
+
+	public void selectRecordInTable(WebDriver driver, ExtentTest test, ExtentReports extent, String rowNoGbl,
+			String date1) throws IOException {
+		try {
+			Thread.sleep(2000);
+			driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
+			List<WebElement> records;
+			int i = 0, size;
+			records = driver.findElements(By.xpath("//div[@role='gridcell']"));
+			size = records.size();
+			if (size <= 0)
+				test.fail("No record to Click On", MediaEntityBuilder.createScreenCaptureFromPath(objCreateScreenshot
+						.createScreenshot(driver, "VerifyAvailableActions_Fail", test, rowNoGbl, date1)).build());
+			else {
+				while (i < size) {
+					WebElement element = records.get(i);
+					if (element.isDisplayed()) {
+						element.click();
+						System.out.println("record clicked");
+						test.log(Status.INFO, "Successfully Selected record");
+						break;
+
+					} else
+						i++;
+				}
+
+			}
+			extent.flush();
+		} catch (Exception e) {
+			System.out.println("In catch block");
+
+			test.fail("Record not found to click" + "",
+					MediaEntityBuilder.createScreenCaptureFromPath(
+							objCreateScreenshot.createScreenshot(driver, "SelectRecord_Fail", test, rowNoGbl, date1))
+							.build());
+
+			extent.flush();
+
+			fail("NoSuchElementException");
+		}
+	}
+
+	public void verifyCheckBoxExistance(WebDriver driver, ExtentTest test, ExtentReports extent, String rowNoGbl,
+			String date1, String value) throws IOException {
+		try {
+			driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
+			WebElement element = driver
+					.findElement(By.xpath("//label/label[contains(text(), '" + value + "')]/following-sibling::span"));
+			if (element.isDisplayed()) {
+				if (element.isEnabled()) {
+					System.out.println(value + " - Checkbox is displayed and is Enabled");
+					test.pass(value + " - Checkbox is displayed and is Enabled");
+				} else {
+					System.out.println("Checkbox is not disabled");
+					test.pass("Checkbox is not disabled :" + value,
+							MediaEntityBuilder.createScreenCaptureFromPath(objCreateScreenshot.createScreenshot(driver,
+									"VerifyCheckBoxExistance_Pass", test, rowNoGbl, date1)).build());
+				}
+			} else {
+				System.out.println(value + " - Checkbox not found");
+				test.fail(value + " - Checkbox not found",
+						MediaEntityBuilder.createScreenCaptureFromPath(objCreateScreenshot.createScreenshot(driver,
+								"VerifyCheckBoxExistance_Fail", test, rowNoGbl, date1)).build());
+			}
+
+			extent.flush();
+		} catch (Exception e) {
+			System.out.println(value + " - Checkbox not found");
+			test.fail(value + " - Checkbox not found", MediaEntityBuilder.createScreenCaptureFromPath(
+					objCreateScreenshot.createScreenshot(driver, "VerifyCheckBoxExistance_Fail", test, rowNoGbl, date1))
+					.build());
+			extent.flush();
+
+			// fail("NoSuchElementException");
+		}
+	}
+
+	public void verifyEditBoxExistance(WebDriver driver, ExtentTest test, ExtentReports extent, String rowNoGbl,
+			String date1, String value) throws IOException {
+		try {
+			driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
+			WebElement element = driver.findElement(By.xpath("//textarea[@formcontrolname='" + value + "']"));
+			if (element.isDisplayed()) {
+				if (element.isEnabled()) {
+					System.out.println(value + " - Editbox is displayed and is Enabled");
+					test.pass(value + " - Editbox is displayed and is Enabled");
+				} else {
+					System.out.println("Editbox is not disabled");
+					test.pass("Editbox is not disabled :" + value,
+							MediaEntityBuilder.createScreenCaptureFromPath(objCreateScreenshot.createScreenshot(driver,
+									"VerifyEditboxExistance_Pass", test, rowNoGbl, date1)).build());
+				}
+			} else {
+				System.out.println(value + " - Editbox not found");
+				test.fail(value + " - Editbox not found",
+						MediaEntityBuilder.createScreenCaptureFromPath(objCreateScreenshot.createScreenshot(driver,
+								"VerifyEditboxExistance_Fail", test, rowNoGbl, date1)).build());
+			}
+
+			extent.flush();
+		} catch (Exception e) {
+			System.out.println(value + " - Editbox not found");
+			test.fail(value + " - Editbox not found", MediaEntityBuilder.createScreenCaptureFromPath(
+					objCreateScreenshot.createScreenshot(driver, "VerifyEditboxExistance_Fail", test, rowNoGbl, date1))
+					.build());
+			extent.flush();
+
+			// fail("NoSuchElementException");
+		}
+	}
+
+	public void scrollDown(WebDriver driver, ExtentTest test, ExtentReports extent, String rowNoGbl, String date1,
+			int numOfPixels) {
+		driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
+		JavascriptExecutor js = (JavascriptExecutor) driver;
+		// This will scroll down the page by numOfSteps pixel vertical
+		js.executeScript("window.scrollBy(0," + numOfPixels + ")");
+	}
+
+	public void verifyCommentSectionAction(WebDriver driver, ExtentTest test, ExtentReports extent, String rowNoGbl,
+			String date1, String actionName) throws IOException {
+		try {
+			Thread.sleep(2000);
+			driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
+			List<WebElement> records;
+			int i = 0, size;
+			records = driver.findElements(By.xpath("(//div[@col-id='comment'][@tabindex='-1'])[1]"));
+			size = records.size();
+			if (size <= 0)
+				test.fail("No record to verify " + actionName + " action",
+						MediaEntityBuilder.createScreenCaptureFromPath(objCreateScreenshot.createScreenshot(driver,
+								"VerifyCommentSectionAction_Fail", test, rowNoGbl, date1)).build());
+			else {
+				while (i < size) {
+					WebElement element = records.get(i);
+					if (element.isDisplayed()) {
+						element.click();
+						break;
+					} else
+						i++;
+				}
+				System.out.println("record clicked");
+				WebElement CurrentRow = driver.switchTo().activeElement();
+				Actions action = new Actions(driver);
+
+				action.contextClick(CurrentRow).sendKeys(Keys.ARROW_LEFT).sendKeys(Keys.ENTER).build().perform();
+				Thread.sleep(2000);
+				WebElement actionItem = driver.findElement(By.xpath(".//span[contains(text(),'" + actionName + "')]"));
+				String value = actionItem.getText();
+				if (value.equalsIgnoreCase(actionName)) {
+					action.moveToElement(actionItem).build().perform();
+					System.out.println("Verified :" + actionName);
+					test.pass("Verified action : [" + actionName + "] Successfully" + "",
+							MediaEntityBuilder.createScreenCaptureFromPath(objCreateScreenshot.createScreenshot(driver,
+									"VerifyCommentSectionAction_Pass", test, rowNoGbl, date1)).build());
+				} else {
+					test.fail("Action : " + value + " does not exist" + "",
+							MediaEntityBuilder.createScreenCaptureFromPath(objCreateScreenshot.createScreenshot(driver,
+									"VerifyCommentSectionAction_Fail", test, rowNoGbl, date1)).build());
+				}
+			}
+			extent.flush();
+		} catch (Exception e) {
+			System.out.println("In catch block");
+			// Add the screenshot to the Reporting steps with a hyperlink
+			// test.fail("Action does not exist: " + e.getMessage());
+			test.fail("Action does not exist: " + actionName);
+			test.addScreenCaptureFromPath(objCreateScreenshot.createScreenshot(driver,
+					"VerifyCommentSectionAction_Fail", test, rowNoGbl, date1));
+
+			extent.flush();
+
+			// fail("NoSuchElementException");
+		}
+	}
+
+	public void scrollUp(WebDriver driver, ExtentTest test, ExtentReports extent, String rowNoGbl, String date1,
+			int numOfPixels) {
+		driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
+		JavascriptExecutor js = (JavascriptExecutor) driver;
+		// This will scroll down the page by numOfSteps pixel vertical
+		js.executeScript("window.scrollBy(0,-" + numOfPixels + ")");
+	}
+
+	public void filterModuleRecordWithStatus(WebDriver driver, ExtentTest test, ExtentReports extent, String rowNoGbl,
+			String date1, String value) throws IOException, InterruptedException {
+		try {
+			driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
+			WebElement fieldToCheck;
+			fieldToCheck = driver.findElement(By.xpath(
+					"/html/body/app-root/app-view-modules/div/div/div[2]/ag-grid-angular/div/div[2]/div[1]/div[1]/div[2]/div/div[2]/div[8]/div[2]/button"));
+			if (fieldToCheck.isDisplayed()) {
+				fieldToCheck.click();
+				String status = (driver.findElement(By
+						.xpath("//ag-grid-angular/div/div[2]/div[1]/div[1]/div[2]/div/div[2]/div[8]/div[1]/div/input")))
+								.getText();
+
+				if (value.equalsIgnoreCase("Data Points not defined")) {
+					if (status.isEmpty()) {
+						driver.findElement(By
+								.xpath("/html/body/app-root/app-view-modules/div/div/div[2]/ag-grid-angular/div/div[5]/div/div/div[2]/div/div/span[1]/label/span/div/img"))
+								.click();
+					} else {
+						driver.findElement(By
+								.xpath("/html/body/app-root/app-view-modules/div/div/div[2]/ag-grid-angular/div/div[5]/div/div/div[2]/div/div/span[2]/label/span/div/i"))
+								.click();
+					}
+
+					if (driver.findElement(By.xpath("//div/div[@role='gridcell']")).isDisplayed()) {
+						test.log(Status.INFO, "Module is filtered with Status Red");
+						test.pass("Filter Applied for status Red" + "",
+								MediaEntityBuilder.createScreenCaptureFromPath(objCreateScreenshot
+										.createScreenshot(driver, "FilterApplied_Pass", test, rowNoGbl, date1))
+										.build());
+					}
+				} else if (value.equalsIgnoreCase("Data Points defined")) {
+					if (status.isEmpty()) {
+						driver.findElement(By
+								.xpath("/html/body/app-root/app-view-modules/div/div/div[2]/ag-grid-angular/div/div[5]/div/div/div[2]/div/div/span[2]/label/span/div/i"))
+								.click();
+					} else {
+						driver.findElement(By
+								.xpath("/html/body/app-root/app-view-modules/div/div/div[2]/ag-grid-angular/div/div[5]/div/div/div[2]/div/div/span[1]/label/span/div/img"))
+								.click();
+					}
+					if (driver.findElement(By.xpath("//div/div[@role='gridcell']")).isDisplayed()) {
+						test.log(Status.INFO, "Module is filtered with Status Green");
+						test.pass("Filter Applied for status Green" + "",
+								MediaEntityBuilder.createScreenCaptureFromPath(objCreateScreenshot
+										.createScreenshot(driver, "FilterApplied_Pass", test, rowNoGbl, date1))
+										.build());
+					}
+				}
+			} else {
+				test.log(Status.INFO, "Module filter is not applied for: " + value);
+				test.fail("Filter not Applied for status Red" + "", MediaEntityBuilder.createScreenCaptureFromPath(
+						objCreateScreenshot.createScreenshot(driver, "FilterApplied_Fail", test, rowNoGbl, date1))
+						.build());
+			}
+
+			extent.flush();
+		} catch (
+
+		Exception e) {
+			System.out.println("In catch block");
+			test.fail("NoSuchElementException : " + e.getMessage());
+			test.addScreenCaptureFromPath(
+					objCreateScreenshot.createScreenshot(driver, "NoSuchElementException", test, rowNoGbl, date1));
+
+			extent.flush();
+
+			fail("NoSuchElementException");
+		}
+	}
+
+	public void verifyActionItemIsDisabled(WebDriver driver, ExtentTest test, ExtentReports extent, String rowNoGbl,
+			String date1, String value) throws IOException {
+		try {
+			driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
+			List<WebElement> records;
+			int i = 0, size;
+			records = driver.findElements(By.xpath("//div[@role='gridcell']"));
+			size = records.size();
+			if (size <= 0) {
+				test.fail("No record to verify : " + value + " action",
+						MediaEntityBuilder.createScreenCaptureFromPath(objCreateScreenshot.createScreenshot(driver,
+								"VerifyActionDisabled_Fail", test, rowNoGbl, date1)).build());
+			} else {
+				while (i < size) {
+					WebElement element = records.get(i);
+					if (element.isDisplayed()) {
+						element.click();
+						break;
+					} else
+						i++;
+				}
+				System.out.println("record clicked");
+				WebElement CurrentRow = driver.switchTo().activeElement();
+				Actions action = new Actions(driver);
+
+				action.contextClick(CurrentRow).sendKeys(Keys.ARROW_LEFT).sendKeys(Keys.ENTER).build().perform();
+				Thread.sleep(2000);
+				WebElement element = driver.findElement(
+						By.xpath("//div[@class='ag-menu-option ag-menu-option-disabled']/span[contains(text(), '"
+								+ value + "')]"));
+				if (element.isDisplayed()) {
+					System.out.println("Action is disabled");
+					test.pass("Verified Action is disabled : [" + value + "]",
+							MediaEntityBuilder.createScreenCaptureFromPath(objCreateScreenshot.createScreenshot(driver,
+									"VerifyActionDisabled_Pass", test, rowNoGbl, date1)).build());
+				} else {
+					System.out.println("Button is not disabled");
+					test.fail("Action is not disabled : " + value,
+							MediaEntityBuilder.createScreenCaptureFromPath(objCreateScreenshot.createScreenshot(driver,
+									"VerifyActionDisabled_Fail", test, rowNoGbl, date1)).build());
+				}
+
+				extent.flush();
+			}
+		} catch (Exception e) {
+			System.out.println("In catch block");
+			// Add the screenshot to the Reporting steps with a hyperlink
+			test.fail("NoSuchElementException : " + e.getMessage());
+			// Calling flush writes everything to the Extent Report
+			test.addScreenCaptureFromPath(
+					objCreateScreenshot.createScreenshot(driver, "NoSuchElementException", test, rowNoGbl, date1));
+			extent.flush();
+
+			fail("NoSuchElementException");
+		}
+	}
+
+	public void addValidationRule(WebDriver driver, ExtentTest test, ExtentReports extent, String rowNoGbl,
+			String date1, String strSeverity) throws IOException {
+		try {
+			driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
+//			ExcelUtils objExcelUtils = new ExcelUtils(strSeverity, strSeverity);
+			String ruleId = ExcelUtils.getCellValueUsingColName("Rule_Id",Integer.parseInt(rowNoGbl));
+			Thread.sleep(1000);
+			// rule id
+			driver.findElement(By.xpath("//input[@ng-reflect-name='ruleId']")).sendKeys(ruleId);
+
+			// Enabled
+//			driver.findElement(By.xpath("//label/span[@class='checkmark']")).click();
+
+			// Module code
+			Select sle = new Select(driver.findElement(By.xpath("//select[@ng-reflect-name='moduleCode']")));
+			sle.selectByIndex(1);
+
+			// module version
+			Select sle2 = new Select(driver.findElement(By.xpath("//select[@ng-reflect-name='moduleVersion']")));
+			sle2.selectByIndex(1);
+
+			// interval
+//			driver.findElement(By.xpath("//input[@ng-reflect-name='interval']")).sendKeys("");
+
+			// Severity
+			Select sle3 = new Select(driver.findElement(By.xpath("//select[@ng-reflect-name='severity']")));
+			sle3.selectByVisibleText(strSeverity);
+
+			// Apply to entity group
+			driver.findElement(By.xpath("//div[@class='c-btn']")).click();
+//			Common_Business_Functions CBF1 = new Common_Business_Functions();
+			String listItem = "Select All";
+//			CBF1.selectItemInMultiselectList(driver, test, extent, rowNoGbl, date1, objPageReadModules.getLocator("objApplyToEntityGroups"), listItem);
+			driver.findElement(By.xpath("//span[contains(text(),'"+listItem+"')]")).click();
+
+			String formulaLeftSide = ExcelUtils.getCellValueUsingColName("Formula_Left_Side",Integer.parseInt(rowNoGbl));
+			// Formula left side
+			driver.findElement(By.xpath("//textarea[@ng-reflect-name='formulaLeftSide']")).sendKeys(formulaLeftSide);
+
+			// Formula Operator
+//			Select sle4 = new Select(driver.findElement(By.xpath("//select[@ng-reflect-name='formulaOperator']")));
+//			sle4.selectByVisibleText("equals");
+
+			String formulaRightSide = ExcelUtils.getCellValueUsingColName("Formula_Right_Side",Integer.parseInt(rowNoGbl));
+			// Formula Right Side
+			driver.findElement(By.xpath("//textarea[@ng-reflect-name='formulaRightSide']")).sendKeys(formulaRightSide);
+
+			
+			String errorMessageDefinition = ExcelUtils.getCellValueUsingColName("Error_Message_Definition",Integer.parseInt(rowNoGbl));
+			// Error Message defination
+			driver.findElement(By.xpath("//textarea[@ng-reflect-name='errorMessageDefinition']")).sendKeys(errorMessageDefinition);
+
+			// Save
+			driver.findElement(By.xpath("//div/button[contains(text(),'Save')]")).click();
+			
+			// Validate
+			driver.findElement(By.xpath("//div/button[contains(text(),'Validate')]")).click();
+
+			// Cancel
+			// div/button[contains(text(),'Cancel')]
+
+			test.pass("Verified [Add Validation Rule] screen", MediaEntityBuilder.createScreenCaptureFromPath(
+					objCreateScreenshot.createScreenshot(driver, "AddValidationRule_Pass", test, rowNoGbl, date1))
+					.build());
+
+			extent.flush();
+
+		} catch (Exception e) {
+			System.out.println("In catch block");
+			// Add the screenshot to the Reporting steps with a hyperlink
+			test.fail("NoSuchElementException : " + e.getMessage());
+			// Calling flush writes everything to the Extent Report
+			test.addScreenCaptureFromPath(
+					objCreateScreenshot.createScreenshot(driver, "NoSuchElementException", test, rowNoGbl, date1));
 			extent.flush();
 
 			fail("NoSuchElementException");

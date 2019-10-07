@@ -1,6 +1,7 @@
 package CollectionConcept;
 
 import java.util.ArrayList;
+import java.util.List;
 //import java.util.List;
 
 public class ListCollection 
@@ -8,7 +9,7 @@ public class ListCollection
 
 	public static void main(String[] args) 
 	{
-		ArrayList<Integer> l = new ArrayList<Integer>();
+		List<Integer> l = new ArrayList<Integer>();
 		l.add(123);
 		l.add(456);
 		l.add(789);

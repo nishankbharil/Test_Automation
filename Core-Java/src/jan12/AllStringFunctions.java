@@ -1,6 +1,6 @@
 package jan12;
 
-public class TestString
+public class AllStringFunctions
 {
 
 	public static void main(String[] args)
@@ -44,10 +44,10 @@ public class TestString
 		System.out.println("s7 = "+ s7 );// HeLLO World
 		
 		String s8 = s.substring(4);
-		System.out.println("s8 = "+ s8 );//
+		System.out.println("s8 = "+ s8 );//o World
 		
 		String s9 = s.substring(4, 7);
-		System.out.println("s9 = "+ s9 );//
+		System.out.println("s9 = "+ s9 );//o w
 		
 		String [] arr = s.split(" ");
 		for (String temp: arr)

@@ -13,6 +13,4 @@ public abstract class AbstractConcept
 	{
 		int c = a*b;
 	}
-
-
 }

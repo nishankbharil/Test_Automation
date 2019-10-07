@@ -3,11 +3,11 @@
 <suite guice-stage="DEVELOPMENT" name="Failed suite [Default suite]">
   <test thread-count="5" name="Default test(failed)">
     <classes>
-      <class name="database.ConnectMySQL">
+      <class name="Test_Cases.TC002_POST_Request">
         <methods>
-          <include name="testDB"/>
+          <include name="RegistrationSuccessful"/>
         </methods>
-      </class> <!-- database.ConnectMySQL -->
+      </class> <!-- Test_Cases.TC002_POST_Request -->
     </classes>
   </test> <!-- Default test(failed) -->
 </suite> <!-- Failed suite [Default suite] -->

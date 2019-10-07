@@ -9,11 +9,12 @@ public class TestFinally
 		try
 		{
 			int a = 1/0;
+			
 			System.out.println(a);
 			
 			System.out.println(s.length());
 			
-		}catch(ArithmeticException ex)
+		}catch(NullPointerException ex)
 		{
 			System.out.println("Cant divide by zero");
 			ex.printStackTrace();

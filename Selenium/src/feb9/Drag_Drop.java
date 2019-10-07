@@ -17,6 +17,7 @@ public class Drag_Drop {
 		WebDriver driver = new ChromeDriver();
 
 		driver.get("file:///C:/My%20Documents/Selenium/Selenium_Softwares/websites/dragdrop.html");
+		driver.manage().deleteAllCookies();
 		driver.manage().window().maximize();
 		driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
 
@@ -26,7 +27,7 @@ public class Drag_Drop {
 		WebElement sou = driver.findElement(By.id("//li[.='Item #3']"));
 		WebElement dest = driver.findElement(By.id("drop"));
 		action.dragAndDrop(sou, dest).perform();
-
+		action.moveToElement(sou);
 	}
 
 }

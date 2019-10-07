@@ -2,12 +2,12 @@
 <testng-results skipped="0" failed="2" ignored="0" total="2" passed="0">
   <reporter-output>
   </reporter-output>
-  <suite name="Default suite" duration-ms="69" started-at="2019-06-05T12:54:35Z" finished-at="2019-06-05T12:54:35Z">
+  <suite name="Default suite" duration-ms="64" started-at="2019-07-28T07:34:41Z" finished-at="2019-07-28T07:34:41Z">
     <groups>
     </groups>
-    <test name="Default test" duration-ms="69" started-at="2019-06-05T12:54:35Z" finished-at="2019-06-05T12:54:35Z">
+    <test name="Default test" duration-ms="64" started-at="2019-07-28T07:34:41Z" finished-at="2019-07-28T07:34:41Z">
       <class name="Assertion_Demo.Assert">
-        <test-method status="FAIL" signature="HardAssert()[pri:0, instance:Assertion_Demo.Assert@1810399e]" name="HardAssert" duration-ms="19" started-at="2019-06-05T12:54:35Z" finished-at="2019-06-05T12:54:35Z">
+        <test-method status="FAIL" signature="HardAssert()[pri:0, instance:Assertion_Demo.Assert@1810399e]" name="HardAssert" duration-ms="17" started-at="2019-07-28T07:34:41Z" finished-at="2019-07-28T07:34:41Z">
           <exception class="java.lang.AssertionError">
             <message>
               <![CDATA[expected [true] but found [false]]]>
@@ -50,7 +50,7 @@ at org.testng.remote.RemoteTestNG.main(RemoteTestNG.java:77)
           <reporter-output>
           </reporter-output>
         </test-method> <!-- HardAssert -->
-        <test-method status="FAIL" signature="SoftAssert()[pri:0, instance:Assertion_Demo.Assert@1810399e]" name="SoftAssert" duration-ms="12" started-at="2019-06-05T12:54:35Z" finished-at="2019-06-05T12:54:35Z">
+        <test-method status="FAIL" signature="SoftAssert()[pri:0, instance:Assertion_Demo.Assert@1810399e]" name="SoftAssert" duration-ms="0" started-at="2019-07-28T07:34:41Z" finished-at="2019-07-28T07:34:41Z">
           <exception class="java.lang.AssertionError">
             <message>
               <![CDATA[The following asserts failed:

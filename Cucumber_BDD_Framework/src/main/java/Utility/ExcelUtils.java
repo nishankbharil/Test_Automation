@@ -79,7 +79,6 @@ public class ExcelUtils {
 			for (int j=startCol;j<=totalCols;j++, cj++)
 			{
 				tabArray[ci][cj]=getCellData(iTestCaseRow,j);
-				//System.out.println(tabArray[ci][cj]);
 			}	
 		}
 
@@ -191,7 +190,8 @@ public class ExcelUtils {
 			e.printStackTrace();
 			throw e;
 		}	
-	}	
+	}
+	
 	public static String getDateCellValueUsingColName(String ColName, int RowNo) throws Exception 
 	{	
 		try
@@ -263,9 +263,5 @@ public class ExcelUtils {
 			e.printStackTrace();
 			throw e;
 		}              
-	}              
-
-
-
-
+	}
 }

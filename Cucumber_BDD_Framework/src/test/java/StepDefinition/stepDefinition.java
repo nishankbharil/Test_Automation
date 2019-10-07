@@ -10,18 +10,19 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
-import javax.net.ssl.SSLEngineResult.Status;
-
+import org.apache.bcel.generic.Select;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
+import com.aventstack.extentreports.ExtentReports;
+import com.aventstack.extentreports.ExtentTest;
+import com.aventstack.extentreports.Status;
 import com.aventstack.extentreports.reporter.ExtentHtmlReporter;
-import com.relevantcodes.extentreports.ExtentReports;
-import com.relevantcodes.extentreports.ExtentTest;
 
 import Business_Functions.Common_Business_Functions;
 import Business_Functions.DataDictionary;
@@ -54,6 +55,7 @@ public class stepDefinition extends TestCase {
 	PropertyReader objPageReadModules = new PropertyReader("src/test/java/Page_Objects/Modules.properties");
 	PropertyReader objPageReadValidationRules = new PropertyReader(
 			"src/test/java/Page_Objects/Business_validation_rule.properties");
+	PropertyReader objPageReadDISCExport = new PropertyReader("src/test/java/Page_Objects/DISC.properties");
 
 	Common_Business_Functions objCBF = new Common_Business_Functions();
 	File_Submission objFileSub = new File_Submission();
@@ -80,34 +82,15 @@ public class stepDefinition extends TestCase {
 	static String rowNoGbl = null;
 	Date date;
 
-	// This is the function executed before the class initiates
-	@Before
-	public void initialize() {
-		System.out.println("3. Calling Initialize in SD");
-		String strDBUrl = null;
-		String strDBUserName = null;
-		String strDBPassword = null;
-		try {
-			strDBUrl = objProRead.getData("DBURL");
-			strDBUserName = objProRead.getData("DBUserName");
-			strDBPassword = objProRead.getData("DBPassword");
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
-		objDBUtil = new DBUtil(strDBUrl, strDBUserName, strDBPassword);
-	}
-
 	// Implementation of Given Feature step
 	@Given("^Open Casper Application in Web Browser \"([^\"]*)\" \"([^\"]*)\" \"([^\"]*)\"$")
 	public void open_Casper_Application_in_Web_Browser(String workbookName, String sheetName, String rowNo)
 			throws Throwable {
 		try {
 
-			System.out.println("4.. Open Capser function line 107 ");
+			System.out.println("Opening Casper Application in Web Browser");
 			// Assign the date format
-			dateFormat = new SimpleDateFormat("MMddyyyy_HHmmss");
+			dateFormat = new SimpleDateFormat("dd-MM-yyyy_HH.mm.ss");
 			// Get current date time with Date()
 			date = new Date();
 
@@ -124,7 +107,8 @@ public class stepDefinition extends TestCase {
 			// Attach the Html Reporter object to the Extent Report object
 			extent.attachReporter(htmlReporter);
 			// Create a test object for the Extent report object
-			// test = extent.createTest("Demo Sample Test Name Iteration - " + rowNo);
+			// test = extent.createTest("Demo Sample Test Name Iteration - " +
+			// rowNo);
 			test = extent.createTest("Test Report for Iteration - " + rowNo);
 			// Duplicating the Sheet Name for further usage
 			sheet = sheetName;
@@ -133,8 +117,8 @@ public class stepDefinition extends TestCase {
 			String browserType = objProRead.getData("Browser");
 
 			// Get the URL and Browser from system property for command line
-//			String strURL = System.getProperty("URL");
-//			String browserType = System.getProperty("Browser");
+			// String strURL = System.getProperty("URL");
+			// String browserType = System.getProperty("Browser");
 
 			// Created object for all excel data file
 			String strTestDataFilePathDict = objProRead.getData("TestDataFilePath_DataDict");
@@ -148,11 +132,13 @@ public class stepDefinition extends TestCase {
 					.getData("TestDataFilePath_BusinessValidationRules_FileName");
 			String strTestDataFilePathModules = objProRead.getData("TestDataFilePath_Modules");
 			String strTestDataFilePathModuleFileNames = objProRead.getData("TestDataFilePath_Modules_FileName");
+			String strTestDataFilePathDISC = objProRead.getData("TestDataFilePath_DISC_FileName");
 			// System.out.println(" TID_RECEIVEDFILE =
 			// "+objDBUtil.verifyRecordInDB("metacasper.tbl_cspr_receivedfile","TID_RECEIVEDFILE"
 			// ,"28400"));
 			// Initialise the excel object for the Test Data sheet
-			// objExcelUtilsLogin = new ExcelUtils(strTestDataFilePathLogin,"Login");
+			// objExcelUtilsLogin = new
+			// ExcelUtils(strTestDataFilePathLogin,"Login");
 
 			if (workbookName.equalsIgnoreCase("Submissions")) {
 				objExcelUtils = new ExcelUtils(strTestDataFilePathSub, sheet);
@@ -161,7 +147,7 @@ public class stepDefinition extends TestCase {
 				objExcelUtils = new ExcelUtils(strTestDataFilePath, sheet);
 				System.out.println("Created object");
 			}
-			if (workbookName.equalsIgnoreCase("CASPERLogin")) {
+			if (workbookName.equalsIgnoreCase("SanityTestData")) {
 				objExcelUtils = new ExcelUtils(strTestDataFilePathLogin, sheet);
 				System.out.println("Created object");
 			}
@@ -181,7 +167,11 @@ public class stepDefinition extends TestCase {
 			if (workbookName.equalsIgnoreCase("ModuleFileNames")) {
 				objExcelUtils = new ExcelUtils(strTestDataFilePathModuleFileNames, sheet);
 			}
-			// Get the Username and Password values from Test Data CASPERLogin Sheet
+			if (workbookName.equalsIgnoreCase("DISCTesting")) {
+				objExcelUtils = new ExcelUtils(strTestDataFilePathDISC, sheet);
+			}
+			// Get the Username and Password values from Test Data CASPERLogin
+			// Sheet
 			userName = objExcelUtils.getCellValueUsingColName("UserName", Integer.parseInt(rowNo));
 			password = objExcelUtils.getCellValueUsingColName("Password", Integer.parseInt(rowNo));
 
@@ -192,7 +182,8 @@ public class stepDefinition extends TestCase {
 			objCBF.loginCasper(driver, strURL, userName, password, test, rowNoGbl, date1, extent);
 
 		} catch (IOException e) {
-
+			System.out.println("In catch block " + e);
+			System.out.println("Login failed, Please check screenshot for more detail");
 		}
 	}
 
@@ -200,12 +191,17 @@ public class stepDefinition extends TestCase {
 	@When("^I Upload the Incorrect File$")
 	public void i_Upload_the_Incorrect_File() throws Throwable {
 		try {
+			dateFormat = new SimpleDateFormat("dd-MM-yyyy_HH.mm.ss");
+			date = new Date();
+			date1 = dateFormat.format(date);
+
 			strFilePath = objExcelUtils.getCellValueUsingColName("FilePath", Integer.parseInt(rowNoGbl));
 
 			// Upload a File to Casper
 			objFileSub.uploadZipFile(driver, rowNoGbl, test, strFilePath);
 		} catch (IOException e) {
-			System.out.println("In the catch block");
+			System.out.println("In catch block " + e);
+			System.out.println("Step Failed : I Upload the Incorrect File");
 		}
 
 	}
@@ -215,6 +211,10 @@ public class stepDefinition extends TestCase {
 	@Then("^Error should be displayed$")
 	public void error_should_be_displayed() throws Throwable {
 		try {
+			dateFormat = new SimpleDateFormat("dd-MM-yyyy_HH.mm.ss");
+			date = new Date();
+			date1 = dateFormat.format(date);
+
 			strExpErrMsg = objExcelUtils.getCellValueUsingColName("ErrorMessage", Integer.parseInt(rowNoGbl));
 			// Verify the error message displayed after upload
 			objFileSub.verifyUploadFileErrorMessageDialog(driver, test, strFilePath, extent, rowNoGbl, date1,
@@ -222,7 +222,8 @@ public class stepDefinition extends TestCase {
 			// The zip file has already been processed
 			// The zip file is empty
 		} catch (Exception e) {
-			System.out.println("In catch block");
+			System.out.println("In catch block " + e);
+			System.out.println("Step Failed : Error should be displayed");
 		}
 	}
 
@@ -235,7 +236,8 @@ public class stepDefinition extends TestCase {
 			// objFileSub.uploadFileDragNDrop(driver,rowNoGbl,test,strFilePath);
 			objFileSub.uploadZipFile(driver, rowNoGbl, test, strFilePath);
 		} catch (IOException e) {
-			System.out.println("In the catch block");
+			System.out.println("In catch block " + e);
+			System.out.println("Step Failed : I Upload a File");
 		}
 	}
 
@@ -253,7 +255,8 @@ public class stepDefinition extends TestCase {
 						strExpErrMsg);
 			}
 		} catch (Exception e) {
-			System.out.println("In catch block");
+			System.out.println("In catch block " + e);
+			System.out.println("Step Failed : Verify File Upload");
 		}
 	}
 
@@ -271,7 +274,8 @@ public class stepDefinition extends TestCase {
 						strExpErrMsg);
 			}
 		} catch (Exception e) {
-			System.out.println("In catch block");
+			System.out.println("In catch block " + e);
+			System.out.println("Step Failed : Verify File is Rejected when File Type is Missing");
 		}
 	}
 
@@ -289,7 +293,8 @@ public class stepDefinition extends TestCase {
 						strExpErrMsg);
 			}
 		} catch (Exception e) {
-			System.out.println("In catch block");
+			System.out.println("In catch block " + e);
+			System.out.println("Step Failed : Verify File is Rejected when Reference Date is Missing");
 		}
 	}
 
@@ -308,7 +313,9 @@ public class stepDefinition extends TestCase {
 				objFileSub.closeBrowserAndReport(driver, test, extent, rowNoGbl, date1);
 			}
 		} catch (Exception e) {
-			System.out.println("In catch block");
+			System.out.println("In catch block " + e);
+			System.out.println(
+					"Step Failed : Verify File is Rejected when Data Collection and Reporting Cycle is Missing");
 		}
 	}
 
@@ -327,7 +334,8 @@ public class stepDefinition extends TestCase {
 				objFileSub.closeBrowserAndReport(driver, test, extent, rowNoGbl, date1);
 			}
 		} catch (Exception e) {
-			System.out.println("In catch block");
+			System.out.println("In catch block " + e);
+			System.out.println("Step Failed : Verify File is Accepted when Data Collection is Present");
 		}
 	}
 
@@ -340,7 +348,9 @@ public class stepDefinition extends TestCase {
 			// objFileSub.uploadFileDragNDrop(driver,rowNoGbl,test,strFilePath);
 			objFileSub.selectFile(driver, rowNoGbl, test, strFilePath);
 		} catch (IOException e) {
-			System.out.println("In the catch block");
+			System.out.println("In catch block " + e);
+			System.out.println("Step Failed : I Select a File");
+
 		}
 	}
 
@@ -360,7 +370,8 @@ public class stepDefinition extends TestCase {
 						strExpErrMsg);
 			}
 		} catch (Exception e) {
-			System.out.println("In catch block");
+			System.out.println("In catch block " + e);
+			System.out.println("Step Failed : Verify File Selected on Upload Page");
 		}
 	}
 
@@ -373,7 +384,8 @@ public class stepDefinition extends TestCase {
 			// Upload a File to Casper
 			objFileSub.uploadZipFile(driver, rowNo, test, strFilePath);
 		} catch (IOException e) {
-			System.out.println("in the block");
+			System.out.println("In catch block " + e);
+			System.out.println("Step Failed : Upload the file one to Ninety Nine.*");
 		}
 
 	}
@@ -386,7 +398,8 @@ public class stepDefinition extends TestCase {
 			// Verify the error message displayed after upload
 			objFileSub.verifyUploadSequenceCheck(driver, test, strFilePath, extent, rowNoGbl, date1, "");
 		} catch (Exception e) {
-			System.out.println("In catch block");
+			System.out.println("In catch block " + e);
+			System.out.println("Step Failed : File Upload should be successful for valid sequence");
 		}
 	}
 
@@ -394,8 +407,9 @@ public class stepDefinition extends TestCase {
 	 * @Then("^File Upload should be Successful$") public void
 	 * file_Upload_should_be_Successful() throws Throwable { try { //Verify the
 	 * error message displayed after upload
-	 * objFileSub.verifyUploadFileSuccess(driver,test,strFilePath,extent,rowNoGbl,
-	 * date1); } catch (Exception e) { System.out.println("In catch block"); } }
+	 * objFileSub.verifyUploadFileSuccess(driver,test,strFilePath,extent,
+	 * rowNoGbl,date1); } catch (Exception e) {
+	 * System.out.println("In catch block " + e ); } }
 	 */
 
 	@Then("^File Upload should be Successful$")
@@ -406,7 +420,8 @@ public class stepDefinition extends TestCase {
 			// The zip file has already been processed
 			// The zip file is empty
 		} catch (Exception e) {
-			System.out.println("In catch block");
+			System.out.println("In catch block " + e);
+			System.out.println("Step Failed : File Upload should be Successful");
 		}
 	}
 
@@ -419,7 +434,8 @@ public class stepDefinition extends TestCase {
 			// Upload a File to Casper
 			objFileSub.uploadZipFile(driver, rowNo, test, strFilePath);
 		} catch (IOException e) {
-			System.out.println("in the block");
+			System.out.println("In catch block " + e);
+			System.out.println("Step Failed : Upload the valid and invalid file in zip file.*");
 		}
 	}
 
@@ -434,7 +450,8 @@ public class stepDefinition extends TestCase {
 			objFileSub.verifyValidandInvalidFileIpload(driver, test, strFilePath, extent, rowNoGbl, date1,
 					NoOfValidFile, NoofInvalidFile);
 		} catch (Exception e) {
-			System.out.println("In catch block");
+			System.out.println("In catch block " + e);
+			System.out.println("Step Failed : File is accepted or rejected");
 		}
 	}
 
@@ -446,7 +463,8 @@ public class stepDefinition extends TestCase {
 			// Upload a File to Casper
 			objFileSub.uploadZipFile(driver, rowNo, test, strFilePath);
 		} catch (IOException e) {
-			System.out.println("in the block");
+			System.out.println("In catch block " + e);
+			System.out.println("Step Failed : A file is uploaded.*");
 		}
 	}
 
@@ -457,7 +475,8 @@ public class stepDefinition extends TestCase {
 			// Verify each filename component length and error message
 			objFileSub.verifyFileComponentsLength(driver, test, strFilePath, extent, rowNoGbl, date1);
 		} catch (Exception e) {
-			System.out.println("In catch block");
+			System.out.println("In catch block " + e);
+			System.out.println("Step Failed : Verify the maximum length of filename components");
 		}
 	}
 
@@ -469,7 +488,8 @@ public class stepDefinition extends TestCase {
 			objFileSub.verifyMandatoryFileNameComponentsSameSubmission(driver, test, strFilePath, extent, rowNoGbl,
 					date1);
 		} catch (Exception e) {
-			System.out.println("In catch block");
+			System.out.println("In catch block " + e);
+			System.out.println("Step Failed : Mandatory filename components identify same submission");
 		}
 	}
 
@@ -481,7 +501,8 @@ public class stepDefinition extends TestCase {
 			objFileSub.verifyUploadPassMultipleFile(driver, test, strFilePath, extent, rowNoGbl, date1, NoOfFiles);
 
 		} catch (Exception e) {
-			System.out.println("In catch block");
+			System.out.println("In catch block " + e);
+			System.out.println("Step Failed : Multiple File Upload should be Successful");
 		}
 
 	}
@@ -495,7 +516,8 @@ public class stepDefinition extends TestCase {
 			objFileSub.verifyReportingCycleStatusAsStarted(driver, test, strFilePath, extent, rowNoGbl, date1,
 					objDBUtil);
 		} catch (IOException e) {
-			System.out.println("In the catch block");
+			System.out.println("In catch block " + e);
+			System.out.println("Step Failed : Verify the Reporting Cycle as Started");
 		}
 	}
 
@@ -508,7 +530,8 @@ public class stepDefinition extends TestCase {
 			objFileSub.verifyReportingCycleStatusAsClosed(driver, test, strFilePath, extent, rowNoGbl, date1,
 					objDBUtil);
 		} catch (IOException e) {
-			System.out.println("In the catch block");
+			System.out.println("In catch block " + e);
+			System.out.println("Step Failed : Verify the Reporting Cycle as Closed");
 		}
 	}
 
@@ -521,7 +544,8 @@ public class stepDefinition extends TestCase {
 			objFileSub.verifyReportingCycleStatusAsInPrep(driver, test, strFilePath, extent, rowNoGbl, date1,
 					objDBUtil);
 		} catch (IOException e) {
-			System.out.println("In the catch block");
+			System.out.println("In catch block " + e);
+			System.out.println("Step Failed : Verify the Reporting Cycle as In Preparation");
 		}
 	}
 
@@ -533,7 +557,8 @@ public class stepDefinition extends TestCase {
 			// Upload a File to Casper
 			objFileSub.verifyFileTypeAndReportingCycle(driver, test, strFilePath, extent, rowNoGbl, date1, objDBUtil);
 		} catch (IOException e) {
-			System.out.println("In the catch block");
+			System.out.println("In catch block " + e);
+			System.out.println("Step Failed : Verify the Filetype and Reporting Cycle");
 		}
 	}
 
@@ -547,7 +572,8 @@ public class stepDefinition extends TestCase {
 			objFileSub.verifyFileTypeAndReportingCycleAsInPrep(driver, test, strFilePath, extent, rowNoGbl, date1,
 					objDBUtil);
 		} catch (IOException e) {
-			System.out.println("In the catch block");
+			System.out.println("In catch block " + e);
+			System.out.println("Step Failed : Verify the Filetype and Reporting Cycle As In Preparation");
 		}
 	}
 
@@ -560,7 +586,8 @@ public class stepDefinition extends TestCase {
 			// Upload a File to Casper
 			objFileSub.verifyReportingCycleStatusClosed(driver, test, strFilePath, extent, rowNoGbl, date1, objDBUtil);
 		} catch (IOException e) {
-			System.out.println("In the catch block");
+			System.out.println("In catch block " + e);
+			System.out.println("Step Failed : Verify the File Status and Reporting Cycle As Closed");
 		}
 	}
 
@@ -569,7 +596,8 @@ public class stepDefinition extends TestCase {
 		try {
 			objEntityGroup.EntityGroup(driver, test, extent);
 		} catch (IOException e) {
-			System.out.println("In the catch block");
+			System.out.println("In catch block " + e);
+			System.out.println("Step Failed : Add Entity Group");
 		}
 	}
 
@@ -582,7 +610,8 @@ public class stepDefinition extends TestCase {
 			objEntityGroup.addEntityGroup(driver, test, extent, rowNoGbl, date1, EntityGroupName, EntityGroupDesc,
 					strExpErrorMsg, objDBUtil);
 		} catch (IOException e) {
-			System.out.println("In the catch block");
+			System.out.println("In catch block " + e);
+			System.out.println("Step Failed : Validate Entity Groups");
 		}
 	}
 
@@ -591,7 +620,8 @@ public class stepDefinition extends TestCase {
 		try {
 			objEntityGroup.EntityGroup(driver, test, extent);
 		} catch (IOException e) {
-			System.out.println("In the catch block");
+			System.out.println("In catch block " + e);
+			System.out.println("Step Failed : Add Duplicate Entity Group");
 		}
 	}
 
@@ -604,7 +634,8 @@ public class stepDefinition extends TestCase {
 			objEntityGroup.duplicateEntityGroup(driver, test, extent, rowNoGbl, date1, EntityGroupName, EntityGroupDesc,
 					strExpErrorMsg, objDBUtil);
 		} catch (IOException e) {
-			System.out.println("In the catch block");
+			System.out.println("In catch block " + e);
+			System.out.println("Step Failed : Validate Duplicate Entity Groups");
 		}
 
 	}
@@ -614,7 +645,8 @@ public class stepDefinition extends TestCase {
 		try {
 			objEntityGroup.EntityGroup(driver, test, extent);
 		} catch (IOException e) {
-			System.out.println("In the catch block");
+			System.out.println("In catch block " + e);
+			System.out.println("Step Failed : Edit Entity Group");
 		}
 	}
 
@@ -626,7 +658,8 @@ public class stepDefinition extends TestCase {
 			objEntityGroup.editEntityGroup(driver, test, extent, rowNoGbl, date1, EntityGroupName, EntityGroupDesc,
 					strExpErrorMsg, objDBUtil);
 		} catch (IOException e) {
-			System.out.println("In the catch block");
+			System.out.println("In catch block " + e);
+			System.out.println("Step Failed : Validate Entity Group update");
 		}
 	}
 
@@ -635,7 +668,8 @@ public class stepDefinition extends TestCase {
 		try {
 			objEntityGroup.EntityGroup(driver, test, extent);
 		} catch (IOException e) {
-			System.out.println("In the catch block");
+			System.out.println("In catch block " + e);
+			System.out.println("Step Failed : Delete Entity Group");
 		}
 	}
 
@@ -645,7 +679,8 @@ public class stepDefinition extends TestCase {
 			String strExpErrorMsg = objExcelUtils.getCellValueUsingColName("ErrorMessage", Integer.parseInt(rowNoGbl));
 			objEntityGroup.deleteEntityGroup(driver, test, extent, rowNoGbl, date1, strExpErrorMsg, objDBUtil);
 		} catch (IOException e) {
-			System.out.println("In the catch block");
+			System.out.println("In catch block " + e);
+			System.out.println("Step Failed : Validate Entity Group deletion");
 		}
 	}
 
@@ -654,8 +689,8 @@ public class stepDefinition extends TestCase {
 		try {
 			objDataDef.ReportingCycle(driver, test, extent);
 		} catch (IOException e) {
-			System.out.println("In the catch block");
-
+			System.out.println("In catch block " + e);
+			System.out.println("Step Failed : Adding a Reporting Cycle");
 		}
 	}
 
@@ -674,7 +709,9 @@ public class stepDefinition extends TestCase {
 					Description, extent, rowNoGbl, date1, strExpErrMsg);
 
 		} catch (IOException e) {
-			System.out.println("In the catch block");
+			System.out.println("In catch block " + e);
+			System.out.println(
+					"Step Failed : Verify the Added Successfully Message displayed after adding a reporting cycle");
 			throw new PendingException();
 		}
 	}
@@ -684,8 +721,8 @@ public class stepDefinition extends TestCase {
 		try {
 			objDataDef.ReportingCycle(driver, test, extent);
 		} catch (IOException e) {
-			System.out.println("In the catch block");
-
+			System.out.println("In catch block " + e);
+			System.out.println("Step Failed : Adding an Existing Reporting Cycle");
 		}
 	}
 
@@ -704,7 +741,8 @@ public class stepDefinition extends TestCase {
 					StartDate, EndDate, Description, extent, rowNoGbl, date1, strExpErrMsg);
 
 		} catch (IOException e) {
-			System.out.println("In the catch block");
+			System.out.println("In catch block " + e);
+			System.out.println("Step Failed : Verify Add Message displayed");
 			throw new PendingException();
 		}
 	}
@@ -714,8 +752,8 @@ public class stepDefinition extends TestCase {
 		try {
 			objDataDef.ReportingCycle(driver, test, extent);
 		} catch (IOException e) {
-			System.out.println("In the catch block");
-
+			System.out.println("In catch block " + e);
+			System.out.println("Step Failed : Editing a Reporting Cycle");
 		}
 	}
 
@@ -733,12 +771,13 @@ public class stepDefinition extends TestCase {
 					EndDate, Description, extent, rowNoGbl, date1, strExpErrMsg);
 
 		} catch (IOException e) {
-			System.out.println("In the catch block");
+			System.out.println("In catch block " + e);
+			System.out.println("Step Failed : Verify Edit Message displayed");
 			throw new PendingException();
 		}
 	}
 
-//Zip file upload
+	// Zip file upload
 	@When("^Upload a Zip File$")
 	public void upload_a_Zip_File() throws Throwable {
 		try {
@@ -749,7 +788,8 @@ public class stepDefinition extends TestCase {
 			// Upload a File to Casper
 			objFileSub.uploadZipFile(driver, rowNoGbl, test, strFilePath);
 		} catch (IOException e) {
-			System.out.println("in the block");
+			System.out.println("In catch block " + e);
+			System.out.println("Step Failed : Upload a Zip File");
 		}
 	}
 
@@ -766,7 +806,8 @@ public class stepDefinition extends TestCase {
 			objFileSub.verifyUploadFileDialog(driver, test, strFilePath, extent, rowNoGbl, date1, strExpMsg,
 					ScenarioType);
 		} catch (IOException e) {
-			System.out.println("In the catch block");
+			System.out.println("In catch block " + e);
+			System.out.println("Step Failed : Validate success message");
 		}
 	}
 
@@ -781,7 +822,8 @@ public class stepDefinition extends TestCase {
 			Thread.sleep(1000);
 			objCBF.verifyUploadFileDialog(driver, test, strFilePath, extent, rowNoGbl, date1, strExpMsg);
 		} catch (IOException e) {
-			System.out.println("In the catch block");
+			System.out.println("In catch block " + e);
+			System.out.println("Step Failed : Verify success message");
 		}
 	}
 
@@ -790,7 +832,8 @@ public class stepDefinition extends TestCase {
 		try {
 			objCBF.verifyLinkOnPopUp(driver, test, extent, rowNoGbl, date1, linkText);
 		} catch (Exception e) {
-			System.out.println("In the catch block");
+			System.out.println("In catch block " + e);
+			System.out.println("Step Failed : verify_and_click_on_link_on_pop_up");
 		}
 	}
 
@@ -799,7 +842,8 @@ public class stepDefinition extends TestCase {
 		try {
 			objCBF.ClickLinkOnPopUp(driver, test, extent, rowNoGbl, date1, linkText);
 		} catch (Exception e) {
-			System.out.println("In the catch block");
+			System.out.println("In catch block " + e);
+			System.out.println("Step Failed : click_on_link_on_pop_up");
 		}
 	}
 
@@ -810,6 +854,7 @@ public class stepDefinition extends TestCase {
 			objDataDef.NavigateToEntityGroups(driver, test, extent, StrDataCollName);
 		} catch (IOException e) {
 			System.out.println("In catch block navigate entity");
+			System.out.println("Step Failed : Navigate to Entity group");
 		}
 
 	}
@@ -825,6 +870,7 @@ public class stepDefinition extends TestCase {
 					strExpMessage, objDBUtil);
 		} catch (Exception e) {
 			System.out.println("In catch block " + e);
+			System.out.println("Step Failed : Add and Validate Entity Groups");
 		}
 
 	}
@@ -841,13 +887,14 @@ public class stepDefinition extends TestCase {
 					strExpMessage, objDBUtil);
 		} catch (Exception e) {
 			System.out.println("In catch block " + e);
+			System.out.println("Step Failed : Edit and Verify Entity Groups");
 		}
 
 	}
 
 	@After
 	public void tearDown() {
-		System.out.println("Calling teardown");
+		System.out.println("Closing The Browser");
 		driver.quit();
 	}
 
@@ -864,6 +911,7 @@ public class stepDefinition extends TestCase {
 			System.out.println(Tab1 + "tab verified");
 		} catch (Exception e) {
 			System.out.println("In catch block " + e);
+			System.out.println("Step Failed : Verify tabs on home screen " + Tab1);
 		}
 	}
 
@@ -873,24 +921,35 @@ public class stepDefinition extends TestCase {
 			objCBF.clickOnLink(driver, test, extent, rowNoGbl, date1, menu);
 		} catch (Exception e) {
 			System.out.println("In catch block " + e);
+			System.out.println("Step Failed : click_on_menu");
 		}
 	}
 
 	@Then("^Verify \"([^\"]*)\" button exists$")
 	public void verify_button_exists(String btnName) throws Throwable {
 		try {
+			dateFormat = new SimpleDateFormat("dd-MM-yyyy_HH.mm.ss");
+			date = new Date();
+			date1 = dateFormat.format(date);
 			objCBF.VerifyButtonExist(driver, test, extent, rowNoGbl, date1, btnName);
+			;
 		} catch (Exception e) {
 			System.out.println("In catch block " + e);
+			System.out.println("Step Failed : verify_button_exists");
 		}
 	}
 
 	@Then("^Verify \"([^\"]*)\" Action for table record$")
 	public void verify_Action_for_table_record(String actionName) throws Throwable {
 		try {
+			dateFormat = new SimpleDateFormat("dd-MM-yyyy_HH.mm.ss");
+			date = new Date();
+			date1 = dateFormat.format(date);
+
 			objCBF.VerifyAvailableActions(driver, test, extent, rowNoGbl, date1, actionName);
 		} catch (Exception e) {
 			System.out.println("In catch block " + e);
+			System.out.println("Step Failed : verify_Action_for_table_record");
 		}
 	}
 
@@ -900,6 +959,7 @@ public class stepDefinition extends TestCase {
 			objCBF.verifyScreenName(driver, test, extent, rowNoGbl, date1, screenName);
 		} catch (Exception e) {
 			System.out.println("In catch block " + e);
+			System.out.println("Step Failed : screen_displayed");
 		}
 	}
 
@@ -909,6 +969,7 @@ public class stepDefinition extends TestCase {
 			objCBF.verifyNumberOfRecords(driver, test, extent, rowNoGbl, date1, colName);
 		} catch (Exception e) {
 			System.out.println("In catch block " + e);
+			System.out.println("Step Failed : verify_the_record_count");
 		}
 	}
 
@@ -918,6 +979,7 @@ public class stepDefinition extends TestCase {
 			objCBF.verifyDataInTable(driver, test, extent, rowNoGbl, date1, colName);
 		} catch (Exception e) {
 			System.out.println("In catch block " + e);
+			System.out.println("Step Failed : verify_data_loaded_in_table_for_column");
 		}
 	}
 
@@ -927,6 +989,7 @@ public class stepDefinition extends TestCase {
 			objCBF.clickOnAction(driver, test, extent, rowNoGbl, date1, actionName);
 		} catch (Exception e) {
 			System.out.println("In catch block " + e);
+			System.out.println("Step Failed : click_on_action");
 		}
 	}
 
@@ -936,6 +999,7 @@ public class stepDefinition extends TestCase {
 			objCBF.clickOnButton(driver, test, extent, rowNoGbl, date1, buttonName);
 		} catch (Exception e) {
 			System.out.println("In catch block " + e);
+			System.out.println("Step Failed : click_on_button");
 		}
 	}
 
@@ -945,6 +1009,7 @@ public class stepDefinition extends TestCase {
 			objCBF.verifyLeftMenu(driver, test, extent, rowNoGbl, date1, leftMenuName);
 		} catch (Exception e) {
 			System.out.println("In catch block " + e);
+			System.out.println("Step Failed : left_menu_get_displayed");
 		}
 	}
 
@@ -955,6 +1020,7 @@ public class stepDefinition extends TestCase {
 			;
 		} catch (Exception e) {
 			System.out.println("In catch block " + e);
+			System.out.println("Step Failed : verify_Action_for_Submission_List_table_record");
 		}
 	}
 
@@ -965,6 +1031,7 @@ public class stepDefinition extends TestCase {
 			;
 		} catch (Exception e) {
 			System.out.println("In catch block " + e);
+			System.out.println("Step Failed : verify_pop_up_displayed");
 		}
 	}
 
@@ -975,6 +1042,7 @@ public class stepDefinition extends TestCase {
 			;
 		} catch (Exception e) {
 			System.out.println("In catch block " + e);
+			System.out.println("Step Failed : check_Calculations_for");
 		}
 	}
 
@@ -985,6 +1053,7 @@ public class stepDefinition extends TestCase {
 			;
 		} catch (Exception e) {
 			System.out.println("In catch block " + e);
+			System.out.println("Step Failed : search_record_with_filter_value");
 		}
 	}
 
@@ -995,6 +1064,7 @@ public class stepDefinition extends TestCase {
 			;
 		} catch (Exception e) {
 			System.out.println("In catch block " + e);
+			System.out.println("Step Failed : verify_module_Add_New_Version_action");
 		}
 	}
 
@@ -1005,6 +1075,7 @@ public class stepDefinition extends TestCase {
 			;
 		} catch (Exception e) {
 			System.out.println("In catch block " + e);
+			System.out.println("Step Failed : click_on_element");
 		}
 	}
 
@@ -1015,6 +1086,7 @@ public class stepDefinition extends TestCase {
 			;
 		} catch (Exception e) {
 			System.out.println("In catch block " + e);
+			System.out.println("Step Failed : verify_checkbox_is_checked");
 		}
 	}
 
@@ -1024,6 +1096,7 @@ public class stepDefinition extends TestCase {
 			objDataDict.NavigateToDataDictionary(driver, test, rowNoGbl, date1, extent, lnkText);
 		} catch (Exception e) {
 			System.out.println("In catch block " + e);
+			System.out.println("Step Failed : navigate_to_screen");
 		}
 	}
 
@@ -1043,6 +1116,7 @@ public class stepDefinition extends TestCase {
 
 		} catch (Exception e) {
 			System.out.println("In catch block " + e);
+			System.out.println("Step Failed : enter_Data_Dictionary_details");
 		}
 
 	}
@@ -1059,12 +1133,17 @@ public class stepDefinition extends TestCase {
 					DDDescription);
 		} catch (Exception e) {
 			System.out.println("In catch block " + e);
+			System.out.println("Step Failed : edit_Data_Dictionary_details");
 		}
 	}
 
 	@Then("^Verify new entry created in Data Dictionary List \"([^\"]*)\"$")
 	public void verify_new_entry_created_in_data_dictionary_List(String columnName) throws Throwable {
 		try {
+			dateFormat = new SimpleDateFormat("dd-MM-yyyy_HH.mm.ss");
+			date = new Date();
+			date1 = dateFormat.format(date);
+
 			if (columnName.equals("name")) {
 				String DDName = ExcelUtils.getCellValueUsingColName("DD_Name", Integer.parseInt(rowNoGbl));
 				objCBF.VerifyNewRecordInTheList(driver, test, extent, rowNoGbl, date1, columnName, DDName);
@@ -1081,6 +1160,7 @@ public class stepDefinition extends TestCase {
 			}
 		} catch (Exception e) {
 			System.out.println("In catch block " + e);
+			System.out.println("Step Failed : verify_new_entry_created_in_data_dictionary_List");
 		}
 	}
 
@@ -1092,6 +1172,7 @@ public class stepDefinition extends TestCase {
 			;
 		} catch (Exception e) {
 			System.out.println("In catch block " + e);
+			System.out.println("Step Failed : search_record_for_filter_value");
 		}
 	}
 
@@ -1104,6 +1185,7 @@ public class stepDefinition extends TestCase {
 			;
 		} catch (Exception e) {
 			System.out.println("In catch block " + e);
+			System.out.println("Step Failed : search_record_for_import_entity");
 		}
 	}
 
@@ -1115,7 +1197,8 @@ public class stepDefinition extends TestCase {
 			String RandomString = objCBF.generateRandomString(rowNoGbl, workbookName, colName);
 			objCBF.enterData(driver, test, date1, rowNoGbl, extent, objPageReadDefiniton.getLocator("objAddDCCode"),
 					RandomString);
-			// String RandomName= objCBF.generateRandomString(rowNoGbl, workbookName);
+			// String RandomName= objCBF.generateRandomString(rowNoGbl,
+			// workbookName);
 			String DCName = objExcelUtils.getCellValueUsingColName("DC_Name", Integer.parseInt(rowNoGbl));
 			objCBF.enterData(driver, test, date1, rowNoGbl, extent, objPageReadDefiniton.getLocator("objAddDCName"),
 					DCName);
@@ -1126,7 +1209,8 @@ public class stepDefinition extends TestCase {
 			objCBF.enterData(driver, test, date1, rowNoGbl, extent, objPageReadDefiniton.getLocator("objAddDCOwner"),
 					DCOwner);
 			String DCValidFrom = objExcelUtils.getDateCellValueUsingColName("DC_ValidFrom", Integer.parseInt(rowNoGbl));
-			// int DCValidFrom = objExcelUtils.getIntCellValueUsingColName("DC_ValidFrom",
+			// int DCValidFrom =
+			// objExcelUtils.getIntCellValueUsingColName("DC_ValidFrom",
 			// Integer.parseInt(rowNoGbl));
 			objCBF.enterData(driver, test, date1, rowNoGbl, extent,
 					objPageReadDefiniton.getLocator("objAddDCValidFrom"), DCValidFrom);
@@ -1143,6 +1227,7 @@ public class stepDefinition extends TestCase {
 					objPageReadDefiniton.getLocator("objAddDCPrimaryDCOwner"), DCPrimaryDDOwner);
 		} catch (Exception e) {
 			System.out.println("In catch block " + e);
+			System.out.println("Step Failed : search_record_for_import_entity");
 		}
 	}
 
@@ -1154,7 +1239,8 @@ public class stepDefinition extends TestCase {
 			String RandomString = objCBF.generateRandomString(rowNoGbl, workbookName, colName);
 			objCBF.enterData(driver, test, date1, rowNoGbl, extent, objPageReadDefiniton.getLocator("objAddDCCode"),
 					RandomString);
-			// String RandomName= objCBF.generateRandomString(rowNoGbl, workbookName);
+			// String RandomName= objCBF.generateRandomString(rowNoGbl,
+			// workbookName);
 			String DCName = objExcelUtils.getCellValueUsingColName("DC_Name", Integer.parseInt(rowNoGbl));
 			objCBF.enterData(driver, test, date1, rowNoGbl, extent, objPageReadDefiniton.getLocator("objAddDCName"),
 					DCName);
@@ -1165,7 +1251,8 @@ public class stepDefinition extends TestCase {
 			objCBF.enterData(driver, test, date1, rowNoGbl, extent, objPageReadDefiniton.getLocator("objAddDCOwner"),
 					DCOwner);
 			String DCValidFrom = objExcelUtils.getDateCellValueUsingColName("DC_ValidFrom", Integer.parseInt(rowNoGbl));
-			// int DCValidFrom = objExcelUtils.getIntCellValueUsingColName("DC_ValidFrom",
+			// int DCValidFrom =
+			// objExcelUtils.getIntCellValueUsingColName("DC_ValidFrom",
 			// Integer.parseInt(rowNoGbl));
 			objCBF.enterData(driver, test, date1, rowNoGbl, extent,
 					objPageReadDefiniton.getLocator("objAddDCValidFrom"), DCValidFrom);
@@ -1181,17 +1268,23 @@ public class stepDefinition extends TestCase {
 					objPageReadDefiniton.getLocator("objAddDCPrimaryDCOwner"), DCPrimaryDDOwner);
 		} catch (Exception e) {
 			System.out.println("In catch block " + e);
+			System.out.println("Step Failed : enter_DataCollection_details_E2E");
 		}
 	}
 
 	@Then("^Verify new entry created in DataCollection List \"([^\"]*)\"$")
 	public void verify_new_entry_created_in_DataCollection_List(String ColName) throws Throwable {
 		try {
+			dateFormat = new SimpleDateFormat("dd-MM-yyyy_HH.mm.ss");
+			date = new Date();
+			date1 = dateFormat.format(date);
+
 			String colName = "DC_Code";
 			String codeName = objExcelUtils.getCellValueUsingColName(colName, Integer.parseInt(rowNoGbl));
 			objCBF.VerifyNewRecordInTheList(driver, test, extent, rowNoGbl, date1, ColName, codeName);
 		} catch (Exception e) {
 			System.out.println("In catch block " + e);
+			System.out.println("Step Failed : verify_new_entry_created_in_DataCollection_List");
 		}
 	}
 
@@ -1226,6 +1319,7 @@ public class stepDefinition extends TestCase {
 					objPageReadDefiniton.getLocator("objAddDCPrimaryDCOwner"), DCPrimaryDDOwner);
 		} catch (Exception e) {
 			System.out.println("In catch block " + e);
+			System.out.println("Step Failed : edit_DataCollection_details");
 		}
 	}
 
@@ -1243,7 +1337,8 @@ public class stepDefinition extends TestCase {
 		objCBF.selectFirstListItem(driver, test, extent, rowNoGbl, date1,
 				objPageReadDefiniton.getLocator("objRepEntityType"), ReportingEntityType);
 		String StartDate = objExcelUtils.getCellValueUsingColName("ENT_StartDate", Integer.parseInt(rowNoGbl));
-		// int DCValidFrom = objExcelUtils.getIntCellValueUsingColName("DC_ValidFrom",
+		// int DCValidFrom =
+		// objExcelUtils.getIntCellValueUsingColName("DC_ValidFrom",
 		// Integer.parseInt(rowNoGbl));
 		objCBF.enterData(driver, test, date1, rowNoGbl, extent,
 				objPageReadDefiniton.getLocator("objRepEntityStartDate"), StartDate);
@@ -1278,7 +1373,8 @@ public class stepDefinition extends TestCase {
 		objCBF.selectFirstListItem(driver, test, extent, rowNoGbl, date1,
 				objPageReadDefiniton.getLocator("objRepEntityType"), ReportingEntityType);
 		String StartDate = objExcelUtils.getCellValueUsingColName("ENT_StartDate", Integer.parseInt(rowNoGbl));
-		// int DCValidFrom = objExcelUtils.getIntCellValueUsingColName("DC_ValidFrom",
+		// int DCValidFrom =
+		// objExcelUtils.getIntCellValueUsingColName("DC_ValidFrom",
 		// Integer.parseInt(rowNoGbl));
 		objCBF.enterData(driver, test, date1, rowNoGbl, extent,
 				objPageReadDefiniton.getLocator("objRepEntityStartDate"), StartDate);
@@ -1307,7 +1403,8 @@ public class stepDefinition extends TestCase {
 		objCBF.selectFirstListItem(driver, test, extent, rowNoGbl, date1,
 				objPageReadDefiniton.getLocator("objRepEntityType"), ReportingEntityType);
 		String StartDate = objExcelUtils.getCellValueUsingColName("ENT_StartDate", Integer.parseInt(rowNoGbl));
-		// int DCValidFrom = objExcelUtils.getIntCellValueUsingColName("DC_ValidFrom",
+		// int DCValidFrom =
+		// objExcelUtils.getIntCellValueUsingColName("DC_ValidFrom",
 		// Integer.parseInt(rowNoGbl));
 		objCBF.enterData(driver, test, date1, rowNoGbl, extent,
 				objPageReadDefiniton.getLocator("objRepEntityStartDate"), StartDate);
@@ -1331,22 +1428,32 @@ public class stepDefinition extends TestCase {
 	@Then("^Verify new entry created in Entities List \"([^\"]*)\"$")
 	public void verify_new_entry_created_in_Entities_List(String ColName) throws Throwable {
 		try {
+			dateFormat = new SimpleDateFormat("dd-MM-yyyy_HH.mm.ss");
+			date = new Date();
+			date1 = dateFormat.format(date);
+
 			String ENT_CollUniqueID = "ENT_CollUniqueID";
 			String ColUniqueID = objExcelUtils.getCellValueUsingColName(ENT_CollUniqueID, Integer.parseInt(rowNoGbl));
 			objCBF.VerifyNewRecordInTheList(driver, test, extent, rowNoGbl, date1, ColName, ColUniqueID);
 		} catch (Exception e) {
 			System.out.println("In catch block " + e);
+			System.out.println("Step Failed : verify_new_entry_created_in_Entities_List");
 		}
 	}
 
 	@Then("^Verify new entry created in Entities List via CSV Upload \"([^\"]*)\"$")
 	public void verify_new_entry_created_in_Entities_List_via_CSV_Upload(String ColName) throws Throwable {
 		try {
+			dateFormat = new SimpleDateFormat("dd-MM-yyyy_HH.mm.ss");
+			date = new Date();
+			date1 = dateFormat.format(date);
+
 			String ColUniqueID = objExcelUtils.getCellValueUsingColName("COLLECTIONUNIQUEIDENTIFIER",
 					Integer.parseInt(rowNoGbl));
 			objCBF.VerifyNewRecordInTheList(driver, test, extent, rowNoGbl, date1, ColName, ColUniqueID);
 		} catch (Exception e) {
 			System.out.println("In catch block " + e);
+			System.out.println("Step Failed : verify_new_entry_created_in_Entities_List_via_CSV_Upload");
 		}
 	}
 
@@ -1389,6 +1496,7 @@ public class stepDefinition extends TestCase {
 			objCBF.SearchDataCollection(driver, test, extent, rowNoGbl, date1, DCName);
 		} catch (Exception e) {
 			System.out.println("In catch block " + e);
+			System.out.println("Step Failed : search_datacollection_in_list");
 		}
 	}
 
@@ -1433,6 +1541,7 @@ public class stepDefinition extends TestCase {
 
 		} catch (Exception e) {
 			System.out.println("In catch block " + e);
+			System.out.println("Step Failed : Enter Attribute Details for Attribute1");
 		}
 	}
 
@@ -1450,6 +1559,7 @@ public class stepDefinition extends TestCase {
 					objPageReadDefiniton.getLocator("objCstmEntityAttrIsIdChkbox"), "N");
 		} catch (Exception e) {
 			System.out.println("In catch block " + e);
+			System.out.println("Step Failed : Enter Attribute Details for Attribute2");
 		}
 	}
 
@@ -1463,6 +1573,7 @@ public class stepDefinition extends TestCase {
 			objCBF.VerifyFileStatus(driver, test, extent, rowNoGbl, date1, colName, fileStatus);
 		} catch (Exception e) {
 			System.out.println("In catch block " + e);
+			System.out.println("Step Failed : Search for file and verify status in import history");
 		}
 	}
 
@@ -1478,6 +1589,7 @@ public class stepDefinition extends TestCase {
 					attributeCode);
 		} catch (Exception e) {
 			System.out.println("In catch block " + e);
+			System.out.println("Step Failed : Verify the result for reporting entity imported file");
 		}
 	}
 
@@ -1491,6 +1603,7 @@ public class stepDefinition extends TestCase {
 			objDataDef.verifyErrMsgInImportHisForDataPoint(driver, test, extent, rowNoGbl, date1, error_message);
 		} catch (Exception e) {
 			System.out.println("In catch block " + e);
+			System.out.println("Step Failed : Verify the result of datapoint imported file");
 		}
 	}
 
@@ -1500,6 +1613,7 @@ public class stepDefinition extends TestCase {
 			Thread.sleep(180000);
 		} catch (Exception e) {
 			System.out.println("In catch block " + e);
+			System.out.println("Step Failed : Wait for few minutes");
 		}
 	}
 
@@ -1550,11 +1664,16 @@ public class stepDefinition extends TestCase {
 	@Then("^Verify new entry created in Attributes List \"([^\"]*)\"$")
 	public void verify_new_entry_created_in_Attributes_List(String ColName) throws Throwable {
 		try {
+			dateFormat = new SimpleDateFormat("dd-MM-yyyy_HH.mm.ss");
+			date = new Date();
+			date1 = dateFormat.format(date);
+
 			String attributeCode = "ATTR_Code";
 			String AttrCode = objExcelUtils.getCellValueUsingColName(attributeCode, Integer.parseInt(rowNoGbl));
 			objCBF.VerifyNewRecordInTheList(driver, test, extent, rowNoGbl, date1, ColName, AttrCode);
 		} catch (Exception e) {
 			System.out.println("In catch block " + e);
+			System.out.println("Step Failed : verify_new_entry_created_in_Attributes_List");
 		}
 	}
 
@@ -1564,6 +1683,7 @@ public class stepDefinition extends TestCase {
 			objCBF.clickOnMenu(driver, test, extent, rowNoGbl, date1, menu);
 		} catch (Exception e) {
 			System.out.println("In catch block " + e);
+			System.out.println("Step Failed : click_on_left_menu");
 		}
 	}
 
@@ -1587,6 +1707,7 @@ public class stepDefinition extends TestCase {
 					objPageReadModules.getLocator("objExtensions"), MDExtension);
 		} catch (Exception e) {
 			System.out.println("In catch block " + e);
+			System.out.println("Step Failed : enter_Modules_details");
 		}
 	}
 
@@ -1608,6 +1729,7 @@ public class stepDefinition extends TestCase {
 					objPageReadModules.getLocator("objExtensions"), MDExtension);
 		} catch (Exception e) {
 			System.out.println("In catch block " + e);
+			System.out.println("Step Failed : enter_Modules_details");
 		}
 	}
 
@@ -1630,6 +1752,7 @@ public class stepDefinition extends TestCase {
 					objPageReadModules.getLocator("objExtensions"), MDExtension);
 		} catch (Exception e) {
 			System.out.println("In catch block " + e);
+			System.out.println("Step Failed : edir_Modules_details");
 		}
 	}
 
@@ -1642,6 +1765,7 @@ public class stepDefinition extends TestCase {
 			;
 		} catch (Exception e) {
 			System.out.println("In catch block " + e);
+			System.out.println("Step Failed : search_record_for_module");
 		}
 	}
 
@@ -1654,6 +1778,7 @@ public class stepDefinition extends TestCase {
 			;
 		} catch (Exception e) {
 			System.out.println("In catch block " + e);
+			System.out.println("Step Failed : search_record_for_module_name");
 		}
 	}
 
@@ -1666,12 +1791,17 @@ public class stepDefinition extends TestCase {
 			;
 		} catch (Exception e) {
 			System.out.println("In catch block " + e);
+			System.out.println("Step Failed : search_record_for_cycle_name");
 		}
 	}
 
 	@Then("^Verify new entry created in Modules List \"([^\"]*)\"$")
 	public void verify_new_entry_created_in_Modules_List(String ColName) throws Throwable {
 		try {
+			dateFormat = new SimpleDateFormat("dd-MM-yyyy_HH.mm.ss");
+			date = new Date();
+			date1 = dateFormat.format(date);
+
 			if (ColName.equals("moduleCode")) {
 				String codeName = objExcelUtils.getCellValueUsingColName("MD_Code", Integer.parseInt(rowNoGbl));
 				objCBF.VerifyNewRecordInTheList(driver, test, extent, rowNoGbl, date1, ColName, codeName);
@@ -1692,6 +1822,7 @@ public class stepDefinition extends TestCase {
 			}
 		} catch (Exception e) {
 			System.out.println("In catch block " + e);
+			System.out.println("Step Failed : verify_new_entry_created_in_Modules_List");
 		}
 	}
 
@@ -1712,6 +1843,7 @@ public class stepDefinition extends TestCase {
 					objPageReadModules.getLocator("objExtensions"), MDExtension);
 		} catch (Exception e) {
 			System.out.println("In catch block " + e);
+			System.out.println("Step Failed : enter_Add_New_Version_details");
 		}
 	}
 
@@ -1729,7 +1861,8 @@ public class stepDefinition extends TestCase {
 			objDataDef.uploadTemplate(driver, rowNoGbl, test, strFilePath3,
 					objPageReadModules.getLocator("objlabelTemplate"));
 		} catch (IOException e) {
-			System.out.println("in the block");
+			System.out.println("In catch block " + e);
+			System.out.println("Step Failed : upload_a_template");
 		}
 	}
 
@@ -1742,16 +1875,19 @@ public class stepDefinition extends TestCase {
 			objDataDef.uploadValidationRule(driver, rowNoGbl, test, strFilePath1,
 					objPageReadValidationRules.getLocator("objUploadFile"));
 		} catch (IOException e) {
-			System.out.println("in the block");
+			System.out.println("In catch block " + e);
+			System.out.println("Step Failed : upload_business_rules");
 		}
 	}
 
 	@Then("^Check the status \"([^\"]*)\"$")
 	public void check_the_status(String colName) throws Throwable {
 		try {
+			Thread.sleep(2000);
 			objCBF.checkStatus(driver, test, extent, date1, rowNoGbl, colName);
 		} catch (Exception e) {
-			System.out.println("in the block");
+			System.out.println("In catch block " + e);
+			System.out.println("Step Failed : check_the_status");
 		}
 	}
 
@@ -1763,6 +1899,7 @@ public class stepDefinition extends TestCase {
 					objPageReadDefiniton.getLocator("objBrowseFileBtn"));
 		} catch (IOException e) {
 			System.out.println("in the block: " + e);
+			System.out.println("Step Failed : upload_entity_CSV_File");
 		}
 	}
 
@@ -1774,6 +1911,7 @@ public class stepDefinition extends TestCase {
 					objPageReadDefiniton.getLocator("objBrowseFileBtn"));
 		} catch (IOException e) {
 			System.out.println("in the block: " + e);
+			System.out.println("Step Failed : upload_data_point_CSV_File");
 		}
 	}
 
@@ -1816,20 +1954,30 @@ public class stepDefinition extends TestCase {
 	@Then("^Verify new entry created in EntityGroup List \"([^\"]*)\"$")
 	public void verify_new_entry_created_in_EntityGroup_List(String ColName) throws Throwable {
 		try {
+			dateFormat = new SimpleDateFormat("dd-MM-yyyy_HH.mm.ss");
+			date = new Date();
+			date1 = dateFormat.format(date);
+
 			String entityGrpName = objExcelUtils.getCellValueUsingColName("EG_Name", Integer.parseInt(rowNoGbl));
 			objCBF.VerifyNewRecordInTheList(driver, test, extent, rowNoGbl, date1, ColName, entityGrpName);
 		} catch (Exception e) {
 			System.out.println("In catch block " + e);
+			System.out.println("Step Failed : verify_new_entry_created_in_EntityGroup_List");
 		}
 	}
 
 	@Then("^Verify new entry in AssignedEntityGroup List \"([^\"]*)\"$")
 	public void verify_new_entry_in_AssignedEntityGroup_List(String ColName) throws Throwable {
 		try {
+			dateFormat = new SimpleDateFormat("dd-MM-yyyy_HH.mm.ss");
+			date = new Date();
+			date1 = dateFormat.format(date);
+
 			String entities = "1";
 			objCBF.VerifyNewRecordInTheList(driver, test, extent, rowNoGbl, date1, ColName, entities);
 		} catch (Exception e) {
 			System.out.println("In catch block " + e);
+			System.out.println("Step Failed : verify_new_entry_in_AssignedEntityGroup_List");
 		}
 	}
 
@@ -1840,7 +1988,8 @@ public class stepDefinition extends TestCase {
 			String cycleName = objCBF.generateRandomString(rowNoGbl, workbookName, colName);
 			objCBF.enterData(driver, test, date1, rowNoGbl, extent,
 					objPageReadDefiniton.getLocator("objObliCycleAddName"), cycleName);
-			// String startDate=objExcelUtils.getDateCellValueUsingColName("CY_ValidFrom",
+			// String
+			// startDate=objExcelUtils.getDateCellValueUsingColName("CY_ValidFrom",
 			// Integer.parseInt(rowNoGbl));
 			DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 			LocalDate localDate = LocalDate.now();
@@ -1855,6 +2004,7 @@ public class stepDefinition extends TestCase {
 					objPageReadDefiniton.getLocator("objObliCycleDescription"), description);
 		} catch (Exception e) {
 			System.out.println("In catch block " + e);
+			System.out.println("Step Failed : enter_Cycles_Details");
 		}
 	}
 
@@ -1870,12 +2020,16 @@ public class stepDefinition extends TestCase {
 					objPageReadDefiniton.getLocator("objObliCycleEditDescription"), description);
 		} catch (Exception e) {
 			System.out.println("In catch block " + e);
+			System.out.println("Step Failed : edit_Cycles_details");
 		}
 	}
 
 	@Then("^Verify new entry created in Cycles List \"([^\"]*)\"$")
 	public void verify_new_entry_created_in_cycles_List(String ColName) throws Throwable {
 		try {
+			dateFormat = new SimpleDateFormat("dd-MM-yyyy_HH.mm.ss");
+			date = new Date();
+			date1 = dateFormat.format(date);
 
 			if (ColName.equals("name")) {
 				String cycleName = objExcelUtils.getCellValueUsingColName("CY_Name", Integer.parseInt(rowNoGbl));
@@ -1890,6 +2044,7 @@ public class stepDefinition extends TestCase {
 			}
 		} catch (Exception e) {
 			System.out.println("In catch block " + e);
+			System.out.println("Step Failed : verify_new_entry_created_in_cycles_List");
 		}
 	}
 
@@ -1922,6 +2077,7 @@ public class stepDefinition extends TestCase {
 					objPageReadDefiniton.getLocator("objModuleSelectionCheckbox"), "Y");
 		} catch (Exception e) {
 			System.out.println("In catch block " + e);
+			System.out.println("Step Failed : enter_Obligations_per_group_Details");
 		}
 	}
 
@@ -1933,12 +2089,17 @@ public class stepDefinition extends TestCase {
 			;
 		} catch (Exception e) {
 			System.out.println("In catch block " + e);
+			System.out.println("Step Failed : search_record_for_CycleName");
 		}
 	}
 
 	@Then("^Verify new entry created in Obligations per group List \"([^\"]*)\"$")
 	public void verify_new_entry_created_in_Obligations_per_group_List(String ColName) throws Throwable {
 		try {
+			dateFormat = new SimpleDateFormat("dd-MM-yyyy_HH.mm.ss");
+			date = new Date();
+			date1 = dateFormat.format(date);
+
 			DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 			LocalDate localDate = LocalDate.now();
 
@@ -1960,6 +2121,7 @@ public class stepDefinition extends TestCase {
 			}
 		} catch (Exception e) {
 			System.out.println("In catch block " + e);
+			System.out.println("Step Failed : verify_new_entry_created_in_Obligations_per_group_List");
 		}
 	}
 
@@ -1973,6 +2135,7 @@ public class stepDefinition extends TestCase {
 					objPageReadDefiniton.getLocator("objObliPerGrpEditRemittanceDate"), remittanceDate);
 		} catch (Exception e) {
 			System.out.println("In catch block " + e);
+			System.out.println("Step Failed : edit_Obligations_per_group_details");
 		}
 	}
 
@@ -1982,6 +2145,7 @@ public class stepDefinition extends TestCase {
 			objCBF.VerifyNoRecordInTheList(driver, test, extent, rowNoGbl, date1);
 		} catch (Exception e) {
 			System.out.println("In catch block " + e);
+			System.out.println("Step Failed : verify_no_entry_in_table_list");
 		}
 	}
 
@@ -2045,7 +2209,8 @@ public class stepDefinition extends TestCase {
 			filePath = objExcelUtils.getCellValueUsingColName("Sub_ZipFilePath", Integer.parseInt(rowNoGbl));
 			objFileSub.uploadZipFile(driver, rowNoGbl, test, filePath);
 		} catch (Exception e) {
-			System.out.println("in the block");
+			System.out.println("In catch block " + e);
+			System.out.println("Step Failed : upload_a_Zip_File_submission_list");
 		}
 	}
 
@@ -2055,6 +2220,7 @@ public class stepDefinition extends TestCase {
 			objFileSub.FilterForStatusInFileVault(driver, test, extent, fileStatus, fileStatus, fileStatus);
 		} catch (Exception e) {
 			System.out.println("In catch block " + e);
+			System.out.println("Step Failed : filter_for_status");
 		}
 	}
 
@@ -2066,6 +2232,7 @@ public class stepDefinition extends TestCase {
 			objCBF.setFileCountInExcel(driver, test, extent, rowNoGbl, date1, workbookName, sheetName, rowNo, colName);
 		} catch (Exception e) {
 			System.out.println("In catch block " + e);
+			System.out.println("Step Failed : save_the_completed_status_file_count_in");
 		}
 	}
 
@@ -2076,6 +2243,7 @@ public class stepDefinition extends TestCase {
 			objFileSub.uploadIndividualFile(driver, rowNoGbl, test, filePath);
 		} catch (Exception e) {
 			System.out.println("In catch block " + e);
+			System.out.println("Step Failed : Upload individual file in submission list");
 		}
 	}
 
@@ -2086,6 +2254,7 @@ public class stepDefinition extends TestCase {
 			objFileSub.uploadIndividualFile(driver, rowNoGbl, test, filePath);
 		} catch (Exception e) {
 			System.out.println("In catch block " + e);
+			System.out.println("Step Failed : upload_invalid_individual_file_in_submission_list_for_column");
 		}
 	}
 
@@ -2096,6 +2265,7 @@ public class stepDefinition extends TestCase {
 			objCBF.VerifySubmissionStatus(driver, test, extent, rowNoGbl, date1, ColName, fileStatus);
 		} catch (Exception e) {
 			System.out.println("In catch block " + e);
+			System.out.println("Step Failed : verify_file_status_in_submission_list_for_column");
 		}
 	}
 
@@ -2105,6 +2275,7 @@ public class stepDefinition extends TestCase {
 			objFileSub.verifyChildRecords(driver, test, extent, rowNoGbl, date1, ColName);
 		} catch (Exception e) {
 			System.out.println("In catch block " + e);
+			System.out.println("Step Failed : verify_the_child_records_for_submission");
 		}
 	}
 
@@ -2116,6 +2287,7 @@ public class stepDefinition extends TestCase {
 			objFileSub.CheckCountOfFilesInBrackets(driver, test, extent, rowNoGbl, date1, ColName, countInFileVault);
 		} catch (Exception e) {
 			System.out.println("In catch block " + e);
+			System.out.println("Step Failed : verify_count_of_files_correct_for_submission");
 		}
 	}
 
@@ -2126,6 +2298,7 @@ public class stepDefinition extends TestCase {
 			objFileSub.verifyModuleFilterInSubmissionList(driver, test, extent, rowNoGbl, date1, moduleName);
 		} catch (Exception e) {
 			System.out.println("In catch block " + e);
+			System.out.println("Step Failed : verify_module_filter_in_submission_list");
 		}
 	}
 
@@ -2138,6 +2311,7 @@ public class stepDefinition extends TestCase {
 			objFileSub.verifyReceptionDateFilterInSubmissionList(driver, test, extent, rowNoGbl, date1, receptionDate);
 		} catch (Exception e) {
 			System.out.println("In catch block " + e);
+			System.out.println("Step Failed : verify_reception_date_filter_in_submission_list");
 		}
 	}
 
@@ -2150,6 +2324,7 @@ public class stepDefinition extends TestCase {
 			objFileSub.verifyFileNameInFileVault(driver, test, extent, rowNoGbl, date1, fileName);
 		} catch (Exception e) {
 			System.out.println("In catch block " + e);
+			System.out.println("Step Failed : verify_file_name_filter_in_file_vault");
 		}
 	}
 
@@ -2160,6 +2335,7 @@ public class stepDefinition extends TestCase {
 			objFileSub.verifyReceptionDateFilterInFileVault(driver, test, extent, rowNoGbl, date1, receptionDate);
 		} catch (Exception e) {
 			System.out.println("In catch block " + e);
+			System.out.println("Step Failed : verify_reception_date_filter_in_file_vault");
 		}
 	}
 
@@ -2169,6 +2345,7 @@ public class stepDefinition extends TestCase {
 			objFileSub.selectRecordInSubmissionList(driver, test, extent, rowNoGbl, date1);
 		} catch (Exception e) {
 			System.out.println("In catch block " + e);
+			System.out.println("Step Failed : select_record_in_submission_list ");
 		}
 	}
 
@@ -2181,6 +2358,7 @@ public class stepDefinition extends TestCase {
 			objFileSub.verifyFileIsDownloaded(driver, test, extent, rowNoGbl, date1, datacollectionCode, userName);
 		} catch (Exception e) {
 			System.out.println("In catch block " + e);
+			System.out.println("Step Failed : verify_file_gets_downloaded");
 		}
 	}
 
@@ -2190,6 +2368,7 @@ public class stepDefinition extends TestCase {
 			objCBF.SelectToggleColumn(driver, test, extent, rowNoGbl, date1, columnName);
 		} catch (Exception e) {
 			System.out.println("In catch block " + e);
+			System.out.println("Step Failed : select_toggle_column");
 		}
 	}
 
@@ -2199,17 +2378,23 @@ public class stepDefinition extends TestCase {
 			objFileSub.verifyLatestVersionOfFile(driver, test, extent, rowNoGbl, date1, ColName);
 		} catch (Exception e) {
 			System.out.println("In catch block " + e);
+			System.out.println("Step Failed : verify_latest_version_is_on_top");
 		}
 	}
 
 	@Then("^Verify new entry created in Submission List \"([^\"]*)\"$")
 	public void verify_new_entry_created_in_Submission_List(String ColName) throws Throwable {
 		try {
+			dateFormat = new SimpleDateFormat("dd-MM-yyyy_HH.mm.ss");
+			date = new Date();
+			date1 = dateFormat.format(date);
+
 			String cycleName = objExcelUtils.getCellValueUsingColName("Cycle_Name", Integer.parseInt(rowNoGbl));
 			String newCycleName = cycleName + "(0)";
 			objCBF.VerifyNewRecordInTheList(driver, test, extent, rowNoGbl, date1, ColName, newCycleName);
 		} catch (Exception e) {
 			System.out.println("In catch block " + e);
+			System.out.println("Step Failed : verify_new_entry_created_in_Submission_List");
 		}
 	}
 
@@ -2220,6 +2405,7 @@ public class stepDefinition extends TestCase {
 			objCBF.VerifyFileStatus(driver, test, extent, rowNoGbl, date1, ColName, fileStatus);
 		} catch (Exception e) {
 			System.out.println("In catch block " + e);
+			System.out.println("Step Failed : verify_file_status_in_file_vault_list_for_column");
 		}
 	}
 
@@ -2230,6 +2416,7 @@ public class stepDefinition extends TestCase {
 			objCBF.setAttributeValueInCSVFile(driver, test, extent, rowNoGbl, date1, attributeCode);
 		} catch (Exception e) {
 			System.out.println("In catch block " + e);
+			System.out.println("Step Failed : save_Attribute_code_for_import_entities");
 		}
 	}
 
@@ -2242,6 +2429,7 @@ public class stepDefinition extends TestCase {
 					sheetName, rowNo, colName);
 		} catch (Exception e) {
 			System.out.println("In catch block " + e);
+			System.out.println("Step Failed : save_Data_collection_code");
 		}
 	}
 
@@ -2254,6 +2442,7 @@ public class stepDefinition extends TestCase {
 					sheetName, rowNo, colName);
 		} catch (Exception e) {
 			System.out.println("In catch block " + e);
+			System.out.println("Step Failed : save_module_code");
 		}
 	}
 
@@ -2266,6 +2455,7 @@ public class stepDefinition extends TestCase {
 					sheetName, rowNo, colName);
 		} catch (Exception e) {
 			System.out.println("In catch block " + e);
+			System.out.println("Step Failed : save_cycle_name");
 		}
 	}
 
@@ -2279,6 +2469,7 @@ public class stepDefinition extends TestCase {
 					colName);
 		} catch (Exception e) {
 			System.out.println("In catch block " + e);
+			System.out.println("Step Failed : save_Data_collection_code_in");
 		}
 	}
 
@@ -2297,6 +2488,7 @@ public class stepDefinition extends TestCase {
 				System.out.println("abc");
 		} catch (Exception e) {
 			System.out.println("In catch block " + e);
+			System.out.println("Step Failed : pick_and_change_module_code_in_CSV_file");
 		}
 	}
 
@@ -2314,6 +2506,7 @@ public class stepDefinition extends TestCase {
 			}
 		} catch (Exception e) {
 			System.out.println("In catch block " + e);
+			System.out.println("Step Failed : pick_and_change_the_collection_unique_identifier_in_CSV");
 		}
 	}
 
@@ -2327,6 +2520,7 @@ public class stepDefinition extends TestCase {
 					COLLECTIONUNIQUEIDENTIFIER, fileName);
 		} catch (Exception e) {
 			System.out.println("In catch block " + e);
+			System.out.println("Step Failed : change_the_COLLECTIONUNIQUEIDENTIFIER_in_CSV_file");
 		}
 	}
 
@@ -2343,19 +2537,25 @@ public class stepDefinition extends TestCase {
 			objCBF.enterData(driver, test, date1, rowNoGbl, extent, objPageReadDataDict.getLocator("objDesc"),
 					DDDescription);
 		} catch (IOException e) {
-			System.out.println("In the catch block");
+			System.out.println("In catch block " + e);
+			System.out.println("Step Failed : enter_duplicate_Data_Dictionary_details");
 		}
 	}
 
 	@Then("^Verify error message for entry exists$")
 	public void verify_error_message_for_entry_exist() throws Throwable {
 		try {
+			dateFormat = new SimpleDateFormat("dd-MM-yyyy_HH.mm.ss");
+			date = new Date();
+			date1 = dateFormat.format(date);
+
 			String strExpMsg = objExcelUtils.getCellValueUsingColName("ErrorMessage_EntryExist",
 					Integer.parseInt(rowNoGbl));
 			Thread.sleep(1000);
 			objCBF.verifyErrorMessage(driver, test, strFilePath, extent, rowNoGbl, date1, strExpMsg);
 		} catch (IOException e) {
-			System.out.println("In the catch block");
+			System.out.println("In catch block " + e);
+			System.out.println("Step Failed : verify_error_message_for_entry_exist");
 		}
 	}
 
@@ -2372,7 +2572,8 @@ public class stepDefinition extends TestCase {
 			objCBF.enterData(driver, test, date1, rowNoGbl, extent, objPageReadDefiniton.getLocator("objAddDCOwner"),
 					DCOwner);
 			String DCValidFrom = objExcelUtils.getDateCellValueUsingColName("DC_ValidFrom", Integer.parseInt(rowNoGbl));
-			// int DCValidFrom = objExcelUtils.getIntCellValueUsingColName("DC_ValidFrom",
+			// int DCValidFrom =
+			// objExcelUtils.getIntCellValueUsingColName("DC_ValidFrom",
 			// Integer.parseInt(rowNoGbl));
 			objCBF.enterData(driver, test, date1, rowNoGbl, extent,
 					objPageReadDefiniton.getLocator("objAddDCValidFrom"), DCValidFrom);
@@ -2381,19 +2582,25 @@ public class stepDefinition extends TestCase {
 			objCBF.enterData(driver, test, date1, rowNoGbl, extent, objPageReadDefiniton.getLocator("objAddDCValidTo"),
 					DCValidTo);
 		} catch (IOException e) {
-			System.out.println("In the catch block");
+			System.out.println("In catch block " + e);
+			System.out.println("Step Failed : enter_invalid_date_in_Data_Collection");
 		}
 	}
 
 	@Then("^Verify error message for invalid date format$")
 	public void verify_error_message_for_invalid_date_format() throws Throwable {
 		try {
+			dateFormat = new SimpleDateFormat("dd-MM-yyyy_HH.mm.ss");
+			date = new Date();
+			date1 = dateFormat.format(date);
+
 			String strExpTxt = objExcelUtils.getCellValueUsingColName("ErrorMessage_InvalidDate",
 					Integer.parseInt(rowNoGbl));
 			Thread.sleep(1000);
 			objCBF.verifyErrorText(driver, test, strFilePath, extent, rowNoGbl, date1, strExpTxt);
 		} catch (IOException e) {
-			System.out.println("In the catch block");
+			System.out.println("In catch block " + e);
+			System.out.println("Step Failed : verify_error_message_for_invalid_date_format");
 		}
 	}
 
@@ -2413,7 +2620,8 @@ public class stepDefinition extends TestCase {
 			objCBF.enterData(driver, test, date1, rowNoGbl, extent, objPageReadDefiniton.getLocator("objAddDCOwner"),
 					DCOwner);
 			String DCValidFrom = objExcelUtils.getDateCellValueUsingColName("DC_ValidFrom", Integer.parseInt(rowNoGbl));
-			// int DCValidFrom = objExcelUtils.getIntCellValueUsingColName("DC_ValidFrom",
+			// int DCValidFrom =
+			// objExcelUtils.getIntCellValueUsingColName("DC_ValidFrom",
 			// Integer.parseInt(rowNoGbl));
 			objCBF.enterData(driver, test, date1, rowNoGbl, extent,
 					objPageReadDefiniton.getLocator("objAddDCValidFrom"), DCValidFrom);
@@ -2437,31 +2645,43 @@ public class stepDefinition extends TestCase {
 			objCBF.enterData(driver, test, date1, rowNoGbl, extent,
 					objPageReadDefiniton.getLocator("objAddDCMaxRepEntities"), Integer.toString(DCRepEntities));
 		} catch (IOException e) {
-			System.out.println("In the catch block");
+			System.out.println("In catch block " + e);
+			System.out.println("Step Failed : enter_invalid_value_for_max_entites");
 		}
 	}
 
 	@Then("^Verify error message for invalid value$")
 	public void verify_error_message_for_invalid_value() throws Throwable {
 		try {
+			dateFormat = new SimpleDateFormat("dd-MM-yyyy_HH.mm.ss");
+			date = new Date();
+			date1 = dateFormat.format(date);
+
 			String strExpTxt = objExcelUtils.getCellValueUsingColName("ErrorMessage_MaxValue",
 					Integer.parseInt(rowNoGbl));
 			Thread.sleep(1000);
 			objCBF.verifyErrorText(driver, test, strFilePath, extent, rowNoGbl, date1, strExpTxt);
 		} catch (IOException e) {
-			System.out.println("In the catch block");
+			System.out.println("In catch block " + e);
+			System.out.println("Step Failed : verify_error_message_for_invalid_value");
 		}
 	}
 
 	@Then("^Verify error message for empty value$")
 	public void verify_error_message_for_empty_value() throws Throwable {
 		try {
+			dateFormat = new SimpleDateFormat("dd-MM-yyyy_HH.mm.ss");
+			// Get current date time with Date()
+			date = new Date();
+			// Now format the date
+			date1 = dateFormat.format(date);
 			String strExpTxt = objExcelUtils.getCellValueUsingColName("ErrorMessage_MandatoryField",
 					Integer.parseInt(rowNoGbl));
 			Thread.sleep(1000);
 			objCBF.verifyErrorText(driver, test, strFilePath, extent, rowNoGbl, date1, strExpTxt);
 		} catch (IOException e) {
-			System.out.println("In the catch block");
+			System.out.println("In catch block " + e);
+			System.out.println("Step Failed : verify_error_message_for_empty_value");
 		}
 	}
 
@@ -2480,7 +2700,8 @@ public class stepDefinition extends TestCase {
 			objCBF.enterData(driver, test, date1, rowNoGbl, extent, objPageReadModules.getLocator("objValidTo"),
 					MDValidTo);
 		} catch (IOException e) {
-			System.out.println("In the catch block");
+			System.out.println("In catch block " + e);
+			System.out.println("Step Failed : enter_empty_date_in_Modules");
 		}
 	}
 
@@ -2498,7 +2719,8 @@ public class stepDefinition extends TestCase {
 			objCBF.enterData(driver, test, date1, rowNoGbl, extent, objPageReadModules.getLocator("objValidTo"),
 					MDValidTo);
 		} catch (IOException e) {
-			System.out.println("In the catch block");
+			System.out.println("In catch block " + e);
+			System.out.println("Step Failed : enter_invalid_date_in_Modules");
 		}
 	}
 
@@ -2519,18 +2741,24 @@ public class stepDefinition extends TestCase {
 					objPageReadModules.getLocator("objExtensions"), MDExtension);
 		} catch (Exception e) {
 			System.out.println("In catch block " + e);
+			System.out.println("Step Failed : enter_past_date_in_Add_new_verion");
 		}
 	}
 
 	@Then("^Verify error message for date limit$")
 	public void verify_error_message_for_date_limit() throws Throwable {
 		try {
+			dateFormat = new SimpleDateFormat("dd-MM-yyyy_HH.mm.ss");
+			date = new Date();
+			date1 = dateFormat.format(date);
+
 			String strExpTxt = objExcelUtils.getCellValueUsingColName("ErrorMessage_FromDateLimit",
 					Integer.parseInt(rowNoGbl));
 			Thread.sleep(1000);
 			objCBF.verifyErrorText(driver, test, strFilePath, extent, rowNoGbl, date1, strExpTxt);
 		} catch (IOException e) {
-			System.out.println("In the catch block");
+			System.out.println("In catch block " + e);
+			System.out.println("Step Failed : verify_error_message_for_date_limit");
 		}
 	}
 
@@ -2548,7 +2776,8 @@ public class stepDefinition extends TestCase {
 			objCBF.selectFirstListItem(driver, test, extent, rowNoGbl, date1,
 					objPageReadDefiniton.getLocator("objCtsmEntityAttrDataType"), DataType);
 		} catch (IOException e) {
-			System.out.println("In the catch block");
+			System.out.println("In catch block " + e);
+			System.out.println("Step Failed : enter_empty_description_in_custom_attributes");
 		}
 	}
 
@@ -2566,7 +2795,8 @@ public class stepDefinition extends TestCase {
 						objPageReadDefiniton.getLocator("objCstmEntityAttrEntries"));
 			}
 		} catch (IOException e) {
-			System.out.println("In the catch block");
+			System.out.println("In catch block " + e);
+			System.out.println("Step Failed : enter_empty_entries_in_custom_attributes");
 		}
 	}
 
@@ -2592,7 +2822,8 @@ public class stepDefinition extends TestCase {
 			objCBF.enterData(driver, test, date1, rowNoGbl, extent,
 					objPageReadDefiniton.getLocator("objRepEntityEndDate"), EndDate);
 		} catch (IOException e) {
-			System.out.println("In the catch block");
+			System.out.println("In catch block " + e);
+			System.out.println("Step Failed : enter_invalid_start_date_in_entities");
 		}
 	}
 
@@ -2615,7 +2846,8 @@ public class stepDefinition extends TestCase {
 			objCBF.enterData(driver, test, date1, rowNoGbl, extent,
 					objPageReadDefiniton.getLocator("objRepEntityEndDate"), EndDate);
 		} catch (IOException e) {
-			System.out.println("In the catch block");
+			System.out.println("In catch block " + e);
+			System.out.println("Step Failed : enter_start_date_after_end_date_in_entities");
 		}
 	}
 
@@ -2633,31 +2865,42 @@ public class stepDefinition extends TestCase {
 			objDataDef.EnterAttributeDetails(driver, ReportingEntityType, test, extent, StartDate, "1", attrVal1,
 					repCode1, validFrom1, validTo1);
 		} catch (IOException e) {
-			System.out.println("In the catch block");
+			System.out.println("In catch block " + e);
+			System.out.println("Step Failed : enter_validFrom_date_after_ValidTo_date_in_entities");
 		}
 	}
 
 	@Then("^Verify error message for start date$")
 	public void verify_error_message_for_start_date() throws Throwable {
 		try {
+			dateFormat = new SimpleDateFormat("dd-MM-yyyy_HH.mm.ss");
+			date = new Date();
+			date1 = dateFormat.format(date);
+
 			String strExpTxt = objExcelUtils.getCellValueUsingColName("ErrorMessage_StartDateLimit",
 					Integer.parseInt(rowNoGbl));
 			Thread.sleep(1000);
 			objCBF.verifyErrorText(driver, test, strFilePath, extent, rowNoGbl, date1, strExpTxt);
 		} catch (IOException e) {
-			System.out.println("In the catch block");
+			System.out.println("In catch block " + e);
+			System.out.println("Step Failed : verify_error_message_for_start_date");
 		}
 	}
 
 	@Then("^Verify error message for valid from date$")
 	public void verify_error_message_for_valid_from_date() throws Throwable {
 		try {
+			dateFormat = new SimpleDateFormat("dd-MM-yyyy_HH.mm.ss");
+			date = new Date();
+			date1 = dateFormat.format(date);
+
 			String strExpTxt = objExcelUtils.getCellValueUsingColName("ErrorMessage_ValidFromDateLimit",
 					Integer.parseInt(rowNoGbl));
 			Thread.sleep(1000);
 			objCBF.verifyErrorText(driver, test, strFilePath, extent, rowNoGbl, date1, strExpTxt);
 		} catch (IOException e) {
-			System.out.println("In the catch block");
+			System.out.println("In catch block " + e);
+			System.out.println("Step Failed : verify_error_message_for_valid_from_date");
 		}
 	}
 
@@ -2669,19 +2912,25 @@ public class stepDefinition extends TestCase {
 			objDataDef.uploadTemplate(driver, rowNoGbl, test, FilePath,
 					objPageReadDefiniton.getLocator("objBrowseFileBtn"));
 		} catch (IOException e) {
-			System.out.println("in the block: " + e);
+			System.out.println("In catch block " + e);
+			System.out.println("Step Failed : upload_incorrect_headers_CSV_File");
 		}
 	}
 
 	@Then("^Verify error message for incorrect headers$")
 	public void verify_error_message_for_incorrect_headers() throws Throwable {
 		try {
+			dateFormat = new SimpleDateFormat("dd-MM-yyyy_HH.mm.ss");
+			date = new Date();
+			date1 = dateFormat.format(date);
+
 			String strExpTxt = objExcelUtils.getCellValueUsingColName("ErrorMessage_IncorrectHeaders",
 					Integer.parseInt(rowNoGbl));
 			Thread.sleep(1000);
 			objCBF.verifyErrorForIncorrectCSV(driver, test, strFilePath, extent, rowNoGbl, date1, strExpTxt);
 		} catch (IOException e) {
-			System.out.println("In the catch block");
+			System.out.println("In catch block " + e);
+			System.out.println("Step Failed : verify_error_message_for_incorrect_headers");
 		}
 	}
 
@@ -2698,12 +2947,17 @@ public class stepDefinition extends TestCase {
 	@Then("^Verify error message for entity exists$")
 	public void verify_error_message_for_entity_exists() throws Throwable {
 		try {
+			dateFormat = new SimpleDateFormat("dd-MM-yyyy_HH.mm.ss");
+			date = new Date();
+			date1 = dateFormat.format(date);
+
 			String strExpMsg = objExcelUtils.getCellValueUsingColName("ErrorMessage_EntityExists",
 					Integer.parseInt(rowNoGbl));
 			Thread.sleep(1000);
 			objCBF.verifyErrorMessage(driver, test, strFilePath, extent, rowNoGbl, date1, strExpMsg);
 		} catch (IOException e) {
-			System.out.println("In the catch block");
+			System.out.println("In catch block " + e);
+			System.out.println("Step Failed : verify_error_message_for_entity_exists");
 		}
 	}
 
@@ -2732,6 +2986,7 @@ public class stepDefinition extends TestCase {
 					objPageReadDefiniton.getLocator("objObliCycleDescription"), description);
 		} catch (Exception e) {
 			System.out.println("In catch block " + e);
+			System.out.println("Step Failed : enter_empty_start_date_in_Cycles");
 		}
 	}
 
@@ -2748,18 +3003,24 @@ public class stepDefinition extends TestCase {
 					objPageReadDefiniton.getLocator("objObliCycleEditDescription"), description);
 		} catch (Exception e) {
 			System.out.println("In catch block " + e);
+			System.out.println("Step Failed : enter_past_end_date_in_Cycles");
 		}
 	}
 
 	@Then("^Verify error message for past end date$")
 	public void verify_error_message_for_past_end_date() throws Throwable {
 		try {
+			dateFormat = new SimpleDateFormat("dd-MM-yyyy_HH.mm.ss");
+			date = new Date();
+			date1 = dateFormat.format(date);
+
 			String strExpMsg = objExcelUtils.getCellValueUsingColName("ErrorMessage_PastDate",
 					Integer.parseInt(rowNoGbl));
 			Thread.sleep(1000);
 			objCBF.verifyErrorText(driver, test, strFilePath, extent, rowNoGbl, date1, strExpMsg);
 		} catch (IOException e) {
-			System.out.println("In the catch block");
+			System.out.println("In catch block " + e);
+			System.out.println("Step Failed : verify_error_message_for_past_end_date");
 		}
 	}
 
@@ -2785,18 +3046,24 @@ public class stepDefinition extends TestCase {
 					objPageReadDefiniton.getLocator("objModuleSelectionCheckbox"), "Y");
 		} catch (Exception e) {
 			System.out.println("In catch block " + e);
+			System.out.println("Step Failed : enter_outside_cycle_remittance_date");
 		}
 	}
 
 	@Then("^Verify error message for outside cycle remittance date$")
 	public void verify_error_message_for_outside_cycle_remittance_date() throws Throwable {
 		try {
+			dateFormat = new SimpleDateFormat("dd-MM-yyyy_HH.mm.ss");
+			date = new Date();
+			date1 = dateFormat.format(date);
+
 			String strExpMsg = objExcelUtils.getCellValueUsingColName("ErrorMessage_RemittanceDateLimit",
 					Integer.parseInt(rowNoGbl));
 			Thread.sleep(1000);
 			objCBF.verifyErrorMessage(driver, test, strFilePath, extent, rowNoGbl, date1, strExpMsg);
 		} catch (Exception e) {
-			System.out.println("In the catch block");
+			System.out.println("In catch block " + e);
+			System.out.println("Step Failed : verify_error_message_for_outside_cycle_remittance_date");
 		}
 	}
 
@@ -2811,18 +3078,24 @@ public class stepDefinition extends TestCase {
 					objPageReadDefiniton.getLocator("objObliPerGrpEditRemittanceoffset"), remittanceOffset);
 		} catch (Exception e) {
 			System.out.println("In catch block " + e);
+			System.out.println("Step Failed : enter_invalid_remittance_offset");
 		}
 	}
 
 	@Then("^Verify error message for cycle remittance offset$")
 	public void verify_error_message_for_cycle_remittance_offset() throws Throwable {
 		try {
+			dateFormat = new SimpleDateFormat("dd-MM-yyyy_HH.mm.ss");
+			date = new Date();
+			date1 = dateFormat.format(date);
+
 			String strExpMsg = objExcelUtils.getCellValueUsingColName("ErrorMessage_RemittanceOffsetLimit",
 					Integer.parseInt(rowNoGbl));
 			Thread.sleep(1000);
 			objCBF.verifyErrorText(driver, test, strFilePath, extent, rowNoGbl, date1, strExpMsg);
 		} catch (Exception e) {
-			System.out.println("In the catch block");
+			System.out.println("In catch block " + e);
+			System.out.println("Step Failed : verify_error_message_for_cycle_remittance_offset");
 		}
 	}
 
@@ -2831,7 +3104,8 @@ public class stepDefinition extends TestCase {
 		try {
 			objCBF.verifyCheckboxIsDisabled(driver, test, extent, rowNoGbl, date1, value);
 		} catch (Exception e) {
-			System.out.println("In the catch block");
+			System.out.println("In catch block " + e);
+			System.out.println("Step Failed : verify_checbox_is_disabled");
 		}
 	}
 
@@ -2840,7 +3114,8 @@ public class stepDefinition extends TestCase {
 		try {
 			objCBF.verifyCheckboxIsNotSelected(driver, test, extent, rowNoGbl, date1, value);
 		} catch (Exception e) {
-			System.out.println("In the catch block");
+			System.out.println("In catch block " + e);
+			System.out.println("Step Failed : verify_checbox_is_not_selected");
 		}
 	}
 
@@ -2849,7 +3124,8 @@ public class stepDefinition extends TestCase {
 		try {
 			objCBF.verifyButtonIsDisabled(driver, test, extent, rowNoGbl, date1, value);
 		} catch (Exception e) {
-			System.out.println("In the catch block");
+			System.out.println("In catch block " + e);
+			System.out.println("Step Failed : verify_button_is_disabled");
 		}
 	}
 
@@ -2858,25 +3134,56 @@ public class stepDefinition extends TestCase {
 		try {
 			objCBF.verifyCheckboxIsEnabled(driver, test, extent, rowNoGbl, date1, value);
 		} catch (Exception e) {
-			System.out.println("In the catch block");
+			System.out.println("In catch block " + e);
+			System.out.println("Step Failed : verify_checkbox_is_enabled");
 		}
 	}
 
 	@When("^Enter Edit DISC export settings details$")
 	public void enter_Edit_DISC_export_settings_details() throws Throwable {
 		try {
-			objCBF.ClickOnCheckbox(driver, test, extent, rowNoGbl, date1, "active");
-			String labName = objExcelUtils.getCellValueUsingColName("DISC_DataLabName", Integer.parseInt(rowNoGbl));
-			objCBF.enterData(driver, test, date1, rowNoGbl, extent, objPageReadDefiniton.getLocator("objDISCLabName"),
-					labName);
-			String interval = objExcelUtils.getCellValueUsingColName("DISC_Interval", Integer.parseInt(rowNoGbl));
-			objCBF.selectListItem(driver, test, extent, rowNoGbl, date1,
-					objPageReadDefiniton.getLocator("objDISCInterval"), interval);
+			// objCBF.ClickOnCheckbox(driver, test, extent, rowNoGbl, date1,
+			// "active");
+			// String discTarget =
+			// objExcelUtils.getCellValueUsingColName("DISC_Target",
+			// Integer.parseInt(rowNoGbl));
+			// objCBF.enterData(driver, test, date1, rowNoGbl, extent,
+			// objPageReadDefiniton.getLocator("objDISCLabName"),
+			// labName);
+			// objCBF.selectListItem(driver, test, extent, rowNoGbl, date1,
+			// objPageReadDefiniton.getLocator("objDISCInterval"), discTarget);
+			//
+			// String targetPath =
+			// objExcelUtils.getCellValueUsingColName("Target_Path",
+			// Integer.parseInt(rowNoGbl));
+			// objCBF.enterData(driver, test, date1, rowNoGbl, extent,
+			// objPageReadDefiniton.getLocator("objDISCLabName"),
+			// targetPath);
+			// String interval =
+			// objExcelUtils.getCellValueUsingColName("DISC_Interval",
+			// Integer.parseInt(rowNoGbl));
+			// objCBF.selectListItem(driver, test, extent, rowNoGbl, date1,
+			// objPageReadDefiniton.getLocator("objDISCInterval"), interval);
+
+			String DISC_Target = objExcelUtils.getCellValueUsingColName("DISC_Target", Integer.parseInt(rowNoGbl));
+			String Target_Path = objExcelUtils.getCellValueUsingColName("Target_Path", Integer.parseInt(rowNoGbl));
+			String Interval = objExcelUtils.getCellValueUsingColName("Interval", Integer.parseInt(rowNoGbl));
+
+			objCBF.CheckCheckbox(driver, test, extent, rowNoGbl, date1, objPageReadDISCExport.getLocator("objActive"));
+			objCBF.selectItemFromList(driver, test, extent, rowNoGbl, date1,
+					objPageReadDISCExport.getLocator("objDiscTarget"), DISC_Target);
+			objCBF.CheckCheckbox(driver, test, extent, rowNoGbl, date1,
+					objPageReadDISCExport.getLocator("objDataMerge"));
+			objCBF.enterData(driver, test, date1, rowNoGbl, extent, objPageReadDISCExport.getLocator("objTargetPath"),
+					Target_Path);
+			objCBF.selectItemFromList(driver, test, extent, rowNoGbl, date1,
+					objPageReadDISCExport.getLocator("objInterval"), Interval);
 			String SheduleTime = objExcelUtils.getCellValueUsingColName("DISC_SheduleTime", Integer.parseInt(rowNoGbl));
 			objCBF.selectListItem(driver, test, extent, rowNoGbl, date1,
 					objPageReadDefiniton.getLocator("objDISCSheduleTime"), SheduleTime);
 		} catch (Exception e) {
-			System.out.println("In the catch block");
+			System.out.println("In catch block " + e);
+			System.out.println("Step Failed : enter_Edit_DISC_export_settings_details");
 		}
 	}
 
@@ -2888,7 +3195,8 @@ public class stepDefinition extends TestCase {
 			Thread.sleep(1000);
 			objCBF.verifySuccessMessageOnScreen(driver, test, strFilePath, extent, rowNoGbl, date1, strExpMsg);
 		} catch (Exception e) {
-			System.out.println("In the catch block");
+			System.out.println("In catch block " + e);
+			System.out.println("Step Failed : verify_updates_successfully_message");
 		}
 	}
 
@@ -2901,7 +3209,8 @@ public class stepDefinition extends TestCase {
 			objCBF.verifySuccessMessageOnScreen(driver, test, strFilePath, extent, rowNoGbl, date1, strExpMsg);
 			Thread.sleep(30000);
 		} catch (Exception e) {
-			System.out.println("In the catch block");
+			System.out.println("In catch block " + e);
+			System.out.println("Step Failed : verify_export_triggered_success_message");
 		}
 	}
 
@@ -2919,7 +3228,8 @@ public class stepDefinition extends TestCase {
 				objCBF.verifyValueOnScreen(driver, test, extent, rowNoGbl, date1, SheduleTime, value);
 			}
 		} catch (Exception e) {
-			System.out.println("In the catch block");
+			System.out.println("In catch block " + e);
+			System.out.println("Step Failed : verify_Verify_value_on_DISC_screen_for");
 		}
 	}
 
@@ -2929,12 +3239,17 @@ public class stepDefinition extends TestCase {
 			objCBF.searchRecordForProcessStatusInStatus(driver, test, extent, rowNoGbl, date1, value);
 		} catch (Exception e) {
 			System.out.println("In catch block " + e);
+			System.out.println("Step Failed : search_record_for_DISC_process_status");
 		}
 	}
 
 	@Then("^Verify new entry created in DISC List \"([^\"]*)\"$")
 	public void verify_new_entry_created_in_DISC_List(String ColName) throws Throwable {
 		try {
+			dateFormat = new SimpleDateFormat("dd-MM-yyyy_HH.mm.ss");
+			date = new Date();
+			date1 = dateFormat.format(date);
+
 			if (ColName.equals("processStatus")) {
 				String status = objExcelUtils.getCellValueUsingColName("DISC_TransmissionStatus",
 						Integer.parseInt(rowNoGbl));
@@ -2945,12 +3260,17 @@ public class stepDefinition extends TestCase {
 			}
 		} catch (Exception e) {
 			System.out.println("In catch block " + e);
+			System.out.println("Step Failed : verify_new_entry_created_in_DISC_List");
 		}
 	}
 
 	@Then("^Verify new entry created in DISC List for cancelled \"([^\"]*)\"$")
 	public void verify_new_entry_created_in_DISC_List_for_cancelled(String ColName) throws Throwable {
 		try {
+			dateFormat = new SimpleDateFormat("dd-MM-yyyy_HH.mm.ss");
+			date = new Date();
+			date1 = dateFormat.format(date);
+
 			if (ColName.equals("processStatus")) {
 				String status = objExcelUtils.getCellValueUsingColName("DISC_CancelledStatus",
 						Integer.parseInt(rowNoGbl));
@@ -2958,6 +3278,7 @@ public class stepDefinition extends TestCase {
 			}
 		} catch (Exception e) {
 			System.out.println("In catch block " + e);
+			System.out.println("Step Failed : verify_new_entry_created_in_DISC_List_for_cancelled");
 		}
 	}
 
@@ -2969,6 +3290,7 @@ public class stepDefinition extends TestCase {
 			;
 		} catch (Exception e) {
 			System.out.println("In catch block " + e);
+			System.out.println("Step Failed : search_record_for_DISC_triggered_by");
 		}
 	}
 
@@ -2980,7 +3302,8 @@ public class stepDefinition extends TestCase {
 			Thread.sleep(1000);
 			objCBF.verifySuccessMessageOnScreen(driver, test, strFilePath, extent, rowNoGbl, date1, strExpMsg);
 		} catch (Exception e) {
-			System.out.println("In the catch block");
+			System.out.println("In catch block " + e);
+			System.out.println("Step Failed : verify_export_cancelled_success_message");
 		}
 	}
 
@@ -3014,6 +3337,7 @@ public class stepDefinition extends TestCase {
 			}
 		} catch (Exception e) {
 			System.out.println("In catch block " + e);
+			System.out.println("Step Failed : verify_submission_permission");
 		}
 	}
 
@@ -3043,6 +3367,7 @@ public class stepDefinition extends TestCase {
 			}
 		} catch (Exception e) {
 			System.out.println("In catch block " + e);
+			System.out.println("Step Failed : verify_file_vault_permission");
 		}
 	}
 
@@ -3062,6 +3387,7 @@ public class stepDefinition extends TestCase {
 			}
 		} catch (Exception e) {
 			System.out.println("In catch block " + e);
+			System.out.println("Step Failed : verify_definitions_permission");
 		}
 	}
 
@@ -3105,6 +3431,7 @@ public class stepDefinition extends TestCase {
 			}
 		} catch (Exception e) {
 			System.out.println("In catch block " + e);
+			System.out.println("Step Failed : verify_metadata_permission");
 		}
 	}
 
@@ -3143,6 +3470,7 @@ public class stepDefinition extends TestCase {
 			}
 		} catch (Exception e) {
 			System.out.println("In catch block " + e);
+			System.out.println("Step Failed : verify_module_permission");
 		}
 	}
 
@@ -3172,6 +3500,7 @@ public class stepDefinition extends TestCase {
 			}
 		} catch (Exception e) {
 			System.out.println("In catch block " + e);
+			System.out.println("Step Failed : verify_data_points_permission");
 		}
 	}
 
@@ -3225,6 +3554,7 @@ public class stepDefinition extends TestCase {
 			}
 		} catch (Exception e) {
 			System.out.println("In catch block " + e);
+			System.out.println("Step Failed : verify_entity_permission");
 		}
 	}
 
@@ -3259,6 +3589,7 @@ public class stepDefinition extends TestCase {
 			}
 		} catch (Exception e) {
 			System.out.println("In catch block " + e);
+			System.out.println("Step Failed : verify_custom_attribute_permission");
 		}
 	}
 
@@ -3303,6 +3634,7 @@ public class stepDefinition extends TestCase {
 			}
 		} catch (Exception e) {
 			System.out.println("In catch block " + e);
+			System.out.println("Step Failed : verify_entity_group_permission");
 		}
 	}
 
@@ -3342,6 +3674,7 @@ public class stepDefinition extends TestCase {
 			}
 		} catch (Exception e) {
 			System.out.println("In catch block " + e);
+			System.out.println("Step Failed : verify_data_dictionary_permission");
 		}
 	}
 
@@ -3376,6 +3709,7 @@ public class stepDefinition extends TestCase {
 			}
 		} catch (Exception e) {
 			System.out.println("In catch block " + e);
+			System.out.println("Step Failed : verify_reporting_cycle_permission");
 		}
 	}
 
@@ -3410,6 +3744,7 @@ public class stepDefinition extends TestCase {
 			}
 		} catch (Exception e) {
 			System.out.println("In catch block " + e);
+			System.out.println("Step Failed : verify_obligation_per_group_permission");
 		}
 	}
 
@@ -3429,6 +3764,7 @@ public class stepDefinition extends TestCase {
 			}
 		} catch (Exception e) {
 			System.out.println("In catch block " + e);
+			System.out.println("Step Failed : verify_obligation_per_entity_permission");
 		}
 	}
 
@@ -3484,6 +3820,7 @@ public class stepDefinition extends TestCase {
 
 		} catch (Exception e) {
 			System.out.println("In catch block " + e);
+			System.out.println("Step Failed : verify_validations_permission");
 		}
 	}
 
@@ -3518,6 +3855,7 @@ public class stepDefinition extends TestCase {
 			}
 		} catch (Exception e) {
 			System.out.println("In catch block " + e);
+			System.out.println("Step Failed : verify_disc_export_permission");
 		}
 	}
 
@@ -3552,6 +3890,7 @@ public class stepDefinition extends TestCase {
 			}
 		} catch (Exception e) {
 			System.out.println("In catch block " + e);
+			System.out.println("Step Failed : verify_user_and_roles_permission");
 		}
 	}
 
@@ -3575,6 +3914,7 @@ public class stepDefinition extends TestCase {
 			}
 		} catch (Exception e) {
 			System.out.println("In catch block " + e);
+			System.out.println("Step Failed : verify_roles_permission");
 		}
 	}
 
@@ -3585,6 +3925,7 @@ public class stepDefinition extends TestCase {
 			objCBF.clickOnLink(driver, test, extent, rowNoGbl, date1, user);
 		} catch (Exception e) {
 			System.out.println("In catch block " + e);
+			System.out.println("Step Failed : click_on_user_role");
 		}
 	}
 
@@ -3599,7 +3940,340 @@ public class stepDefinition extends TestCase {
 					FileToCompareName);
 		} catch (Exception e) {
 			System.out.println("In catch block " + e);
+			System.out.println("Step Failed : compare_the_results_of_uploaded_rules");
 		}
 
 	}
+
+	@Then("^Edit DISC export settings$")
+	public void Edit_DISC_export_settings() throws Throwable {
+		try {
+			String DISC_Target = objExcelUtils.getCellValueUsingColName("DISC_Target", Integer.parseInt(rowNoGbl));
+			String Target_Path = objExcelUtils.getCellValueUsingColName("Target_Path", Integer.parseInt(rowNoGbl));
+			String Interval = objExcelUtils.getCellValueUsingColName("Interval", Integer.parseInt(rowNoGbl));
+
+			objCBF.CheckCheckbox(driver, test, extent, rowNoGbl, date1, objPageReadDISCExport.getLocator("objActive"));
+			objCBF.selectItemFromList(driver, test, extent, rowNoGbl, date1,
+					objPageReadDISCExport.getLocator("objDiscTarget"), DISC_Target);
+			objCBF.CheckCheckbox(driver, test, extent, rowNoGbl, date1,
+					objPageReadDISCExport.getLocator("objDataMerge"));
+			objCBF.enterData(driver, test, date1, rowNoGbl, extent, objPageReadDISCExport.getLocator("objTargetPath"),
+					Target_Path);
+			objCBF.selectItemFromList(driver, test, extent, rowNoGbl, date1,
+					objPageReadDISCExport.getLocator("objInterval"), Interval);
+
+		} catch (Exception e) {
+			System.out.println("In catch block " + e);
+			System.out.println("Step Failed : Edit_DISC_export_settings");
+		}
+	}
+
+	@Then("^Verify the \"([^\"]*)\" Screen Name$")
+	public void ScreenDisplayed(String screenName) throws Throwable {
+		try {
+			objCBF.Verify_Screen_Name(driver, test, extent, rowNoGbl, date1, screenName);
+		} catch (Exception e) {
+			System.out.println("In catch block " + e);
+			System.out.println("Step Failed : ScreenDisplayed");
+		}
+	}
+
+	@Given("^Launch Casper Application with Requestly$")
+	public void LaunchCasper() throws Throwable {
+		try {
+			String strURL = objProRead.getData("URL");
+			String browserType = objProRead.getData("Browser");
+			driver = objCBF.getDriver(driver, browserType);
+			// Create driver for FF browser and open a URL
+			driver.get(strURL);
+			// Log the action performed in the extent report
+			driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
+		} catch (Exception e) {
+			System.out.println("In catch block " + e);
+			System.out.println("Step Failed : LaunchCasper");
+		}
+	}
+
+	@When("^Upload RA template$")
+	public void upload_RA_template() throws Throwable {
+		try {
+
+			File obj = new File("src/test/resources/FilesToUpload/STE09_Liquidity_t1_RA_template.xlsx");
+			String Path = obj.getAbsolutePath();
+
+			driver.findElement(By.xpath("//input[@class='upload ng-untouched ng-pristine ng-valid']")).sendKeys(Path);
+
+		} catch (Exception e) {
+			System.out.println("In catch block " + e);
+			System.out.println("Step Failed : upload_RA_template");
+		}
+	}
+
+	@Then("^Click on close button$")
+	public void Click_Close() throws Throwable {
+		try {
+
+			driver.findElement(By.xpath("//button[@type='button'][@class='btn btn-secondary']")).click();
+			// Thread.sleep(1000);
+
+		} catch (Exception e) {
+			System.out.println("In catch block " + e);
+			System.out.println("Step Failed : Click_Close");
+		}
+	}
+
+	@When("^Filter record for DISC process status Cancelled$")
+	public void Filter_record_for_DISC_process_status_Cancelled() throws Throwable {
+		try {
+			objCBF.searchRecordForProcessStatus(driver, test, extent, rowNoGbl, date1);
+		} catch (Exception e) {
+			System.out.println("In catch block " + e);
+			System.out.println("Step Failed : Filter_record_for_DISC_process_status_Cancelled");
+		}
+	}
+
+	@Then("^Verify \"([^\"]*)\" action item not present$")
+	public void Verify_Action_Item_Not_Present(String actionName) throws Throwable {
+		try {
+			objCBF.VerifyActionItemNotVisible(driver, test, extent, rowNoGbl, date1, actionName);
+			System.out.println(actionName + " Action is not present");
+		} catch (Exception e) {
+			System.out.println("In catch block " + e);
+			System.out.println("Step Failed : Verify_Action_Item_Not_Present");
+		}
+	}
+
+	@Then("^Verify tab not present on home screen \"([^\"]*)\"$")
+	public void verify_tabs_not_present_on_home_screen(String Tab1) throws Throwable {
+		try {
+			objCBF.VerifyLinkNotExist(driver, test, extent, rowNoGbl, date1, Tab1);
+			System.out.println(Tab1 + " tab not present on home page");
+		} catch (Exception e) {
+			System.out.println("In catch block " + e);
+			System.out.println("Step Failed : verify_tabs_not_present_on_home_screen");
+		}
+	}
+
+	@Then("^Search for User \"([^\"]*)\" in User Assignment$")
+	public void Search_for_User_in_User_Assignment(String UserName) throws Throwable {
+		try {
+			String UName = objExcelUtils.getCellValueUsingColName(UserName, Integer.parseInt(rowNoGbl));
+			objCBF.SearchForUserInUserAssignment(driver, test, extent, rowNoGbl, date1, UName);
+			System.out.println(UserName + " is successfully searched");
+		} catch (Exception e) {
+			System.out.println("In catch block " + e);
+			System.out.println("Step Failed : Search_for_User_in_User_Assignment");
+		}
+	}
+
+	@Then("^Verify \"([^\"]*)\" button exists \"([^\"]*)\"$")
+	public void verify_button_exists_WithTCID(String btnName, String TCID) throws Throwable {
+		try {
+			objCBF.VerifyButtonExistWithTCID(driver, test, extent, rowNoGbl, date1, btnName, TCID);
+		} catch (Exception e) {
+			System.out.println("In catch block " + e);
+			System.out.println("Step Failed : verify_button_exists_WithTCID");
+		}
+	}
+
+	@Then("^Verify \"([^\"]*)\" Tempering error$")
+	public void verify_URL_Tempering_Error(String URL) throws Throwable {
+		try {
+			String URL1 = objExcelUtils.getCellValueUsingColName(URL, Integer.parseInt(rowNoGbl));
+			objCBF.VerifyURLTempering(driver, test, extent, rowNoGbl, date1, URL1);
+		} catch (Exception e) {
+			System.out.println("In catch block " + e);
+			System.out.println("Step Failed : verify_URL_Tempering_Error");
+		}
+	}
+
+	@Then("^Add \"([^\"]*)\" and \"([^\"]*)\"$")
+	public void test_case_description(String TCDescription, String UserNme) {
+		try {
+			String User = objExcelUtils.getCellValueUsingColName(UserNme, Integer.parseInt(rowNoGbl));
+			String Description = objExcelUtils.getCellValueUsingColName(TCDescription, Integer.parseInt(rowNoGbl));
+			String strURL = objProRead.getData("URL");
+			String browserType = objProRead.getData("Browser");
+
+			objCBF.testcasedescription(driver, test, extent, rowNoGbl, date1, User, Description, strURL, browserType);
+
+		} catch (Exception e) {
+			System.out.println("In catch block " + e);
+		}
+
+	}
+
+	@Then("^Verify \"([^\"]*)\" action is disabled$")
+	public void verify_action_disabled(String actionName) throws Throwable {
+		try {
+			dateFormat = new SimpleDateFormat("dd-MM-yyyy_HH.mm.ss");
+			date = new Date();
+			date1 = dateFormat.format(date);
+
+			objCBF.verifyActionDisabled(driver, test, extent, rowNoGbl, date1, actionName);
+			;
+		} catch (Exception e) {
+			System.out.println("In catch block " + e);
+			System.out.println("Step Failed : verify_action_disabled");
+		}
+	}
+
+	@Then("^Search record with Cycle name filter$")
+	public void search_record_with_Cycle_name_filter() throws Throwable {
+		try {
+			dateFormat = new SimpleDateFormat("dd-MM-yyyy_HH.mm.ss");
+			date = new Date();
+			date1 = dateFormat.format(date);
+			String colName = "Cycle";
+			String Cycle = ExcelUtils.getCellValueUsingColName(colName, Integer.parseInt(rowNoGbl));
+			objCBF.searchRecordWithCycleNameFilter(driver, test, extent, rowNoGbl, date1, Cycle);
+			;
+		} catch (Exception e) {
+			System.out.println("In catch block " + e);
+			System.out.println("Step Failed : search_record_with_Cycle_name_filter");
+		}
+	}
+
+	@Then("^Verify Expand-Collapse link \"([^\"]*)\"$")
+	public void verify_Expand_Collapse_Link(String linkText) throws Throwable {
+		try {
+			objCBF.VerifyExpandCollapseLink(driver, test, extent, rowNoGbl, date1, linkText);
+			System.out.println(linkText + "tab verified");
+		} catch (Exception e) {
+			System.out.println("In catch block " + e);
+			System.out.println("Step Failed : verify_Expand_Collapse_Link " + linkText);
+		}
+	}
+
+	@Then("^Select Discussion Topic record$")
+	public void Select_Discussion_Topic_Record() throws Throwable {
+		try {
+			objCBF.selectRecordInTable(driver, test, extent, rowNoGbl, date1);
+			System.out.println("Record Selected");
+		} catch (Exception e) {
+			System.out.println("In catch block " + e);
+			System.out.println("Step Failed : Select_Discussion_Topic_Record ");
+		}
+	}
+
+	@Then("^Verify \"([^\"]*)\" Check box exist$")
+	public void verify_Check_Box_Existance(String checkBoxName) throws Throwable {
+		try {
+			objCBF.verifyCheckBoxExistance(driver, test, extent, rowNoGbl, date1, checkBoxName);
+			System.out.println("Check Box Exist");
+		} catch (Exception e) {
+			System.out.println("In catch block " + e);
+			System.out.println("Step Failed : verify_Check_Box_Existance ");
+		}
+	}
+
+	@Then("^Verify \"([^\"]*)\" Edit box exist$")
+	public void verify_Edit_Box_Existance(String editBoxName) throws Throwable {
+		try {
+			objCBF.verifyEditBoxExistance(driver, test, extent, rowNoGbl, date1, editBoxName);
+			System.out.println("Edit Box Exist");
+		} catch (Exception e) {
+			System.out.println("In catch block " + e);
+			System.out.println("Step Failed : verify_Edit_Box_Existance ");
+		}
+	}
+	@Then("^Scroll down \"([^\"]*)\"$")
+	public void scroll_Down(int numOfPixels) throws Throwable {
+		try {
+			objCBF.scrollDown(driver, test, extent, rowNoGbl, date1, numOfPixels);
+		} catch (Exception e) {
+			System.out.println("In catch block " + e);
+			System.out.println("Step Failed : scroll_Down ");
+		}
+	}
+	@Then("^Scroll Up \"([^\"]*)\"$")
+	public void scroll_Up(int numOfPixels) throws Throwable {
+		try {
+			objCBF.scrollUp(driver, test, extent, rowNoGbl, date1, numOfPixels);
+		} catch (Exception e) {
+			System.out.println("In catch block " + e);
+			System.out.println("Step Failed : scroll_Up ");
+		}
+	}
+	@Then("^Verify Comment section \"([^\"]*)\" Action$")
+	public void verify_Comment_Section_Action(String actionName) throws Throwable {
+		try {
+			dateFormat = new SimpleDateFormat("dd-MM-yyyy_HH.mm.ss");
+			date = new Date();
+			date1 = dateFormat.format(date);
+
+			objCBF.verifyCommentSectionAction(driver, test, extent, rowNoGbl, date1, actionName);
+		} catch (Exception e) {
+			System.out.println("In catch block " + e);
+			System.out.println("Step Failed : verify_Comment_Section_Action");
+		}
+	}
+	@Then("^Filter Module Record with Status \"([^\"]*)\"$")
+	public void Filter_Module_record_With_status(String value) throws Throwable {
+		try {
+			dateFormat = new SimpleDateFormat("dd-MM-yyyy_HH.mm.ss");
+			date = new Date();
+			date1 = dateFormat.format(date);
+			
+			objCBF.filterModuleRecordWithStatus(driver, test, extent, rowNoGbl, date1, value);
+		} catch (Exception e) {
+			System.out.println("In catch block " + e);
+			System.out.println("Step Failed : Filter_Module_record_With_status");
+		}
+	}
+	@Then("^Verify action \"([^\"]*)\" is disabled$")
+	public void verify_Action_is_Disabled(String value) throws Throwable {
+		try {
+			dateFormat = new SimpleDateFormat("dd-MM-yyyy_HH.mm.ss");
+			date = new Date();
+			date1 = dateFormat.format(date);
+			
+			objCBF.verifyActionItemIsDisabled(driver, test, extent, rowNoGbl, date1, value);
+		} catch (Exception e) {
+			System.out.println("In catch block " + e);
+			System.out.println("Step Failed : verify_Action_is_Disabled");
+		}
+	}
+	@Then("^Verify error message for Module Delete$")
+	public void verify_error_message_for_Module_Delete() throws Throwable {
+		try {
+			dateFormat = new SimpleDateFormat("dd-MM-yyyy_HH.mm.ss");
+			date = new Date();
+			date1 = dateFormat.format(date);
+
+			String strExpMsg = objExcelUtils.getCellValueUsingColName("ErrorMessage_EntryExist",
+					Integer.parseInt(rowNoGbl));
+			Thread.sleep(1000);
+			objCBF.verifyErrorMessage(driver, test, strFilePath, extent, rowNoGbl, date1, strExpMsg);
+		} catch (IOException e) {
+			System.out.println("In catch block " + e);
+			System.out.println("Step Failed : verify_error_message_for_Module_Delete");
+		}
+	}
+	@Then("^Verify Module Delete success message$")
+	public void verify_Module_Delete_success_message() throws Throwable {
+		try {
+			String strExpMsg = objExcelUtils.getCellValueUsingColName("Expected_Success_Message",
+					Integer.parseInt(rowNoGbl));
+			Thread.sleep(1000);
+			objCBF.verifySuccessMessageOnScreen(driver, test, strFilePath, extent, rowNoGbl, date1, strExpMsg);
+		} catch (Exception e) {
+			System.out.println("In catch block " + e);
+			System.out.println("Step Failed : verify_Module_Delete_success_message");
+		}
+	}
+	@Then("^Add validation rule with Severity \"([^\"]*)\"$")
+	public void add_validation_rule(String strSeverity) throws Throwable {
+		try {
+			dateFormat = new SimpleDateFormat("dd-MM-yyyy_HH.mm.ss");
+			date = new Date();
+			date1 = dateFormat.format(date);
+
+			objCBF.addValidationRule(driver, test, extent, rowNoGbl, date1, strSeverity);
+		} catch (IOException e) {
+			System.out.println("In catch block " + e);
+			System.out.println("Step Failed : add_validation_rule");
+		}
+	}
 }
+
