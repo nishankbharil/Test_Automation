@@ -1,3 +1,1 @@
-Hello
-This file is created by java
-by
+This is written by Nishank
