@@ -18,6 +18,7 @@ public class ChromeGridTest {
 		
 		cap.setBrowserName("chrome");
 		cap.setPlatform(Platform.WINDOWS);
+	
 		
 		//2. Chrome options definitions
 		ChromeOptions options = new ChromeOptions();
@@ -30,8 +31,7 @@ public class ChromeGridTest {
 		driver.get("https://opensource-demo.orangehrmlive.com/");
 		System.out.println(driver.getTitle());
 		
-		driver.quit();	
-
+		driver.quit();
 	}
 
 }

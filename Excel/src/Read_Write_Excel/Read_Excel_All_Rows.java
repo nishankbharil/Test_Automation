@@ -13,7 +13,8 @@ public class Read_Excel_All_Rows {
 
 	public static void main(String[] args) throws IOException {
 		
-		File file = new File("C:\\My Documents\\Selenium\\Git_Repository_Learn_Selenium\\Excel\\TestData.xlsx");
+//		System.out.println(System.getProperty("user.dir"));
+		File file = new File(System.getProperty("user.dir")+"\\TestData.xlsx");
 
 		FileInputStream fis = new FileInputStream(file);
 

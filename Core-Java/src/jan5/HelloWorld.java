@@ -39,5 +39,4 @@ public class HelloWorld
 		HelloWorld h = new HelloWorld();
 		return h;
 	}
-
 }

@@ -7,6 +7,7 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.List;
+import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
 import org.apache.poi.xssf.usermodel.XSSFCell;
@@ -26,7 +27,9 @@ import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.ie.InternetExplorerDriver;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.remote.DesiredCapabilities;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.aventstack.extentreports.ExtentReports;
 import com.aventstack.extentreports.ExtentTest;
@@ -92,7 +95,10 @@ public class Common_Business_Functions extends TestCase {
 			driver.get(strURL);
 			// Log the action performed in the extent report
 			// test.pass("Opened the browser and navigated to the URL");
-			driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
+			driver.manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS);
+
+			// Delete cookies
+			driver.manage().deleteAllCookies();
 			// Enter the Username
 			driver.findElement(objPageObjsProRead.getLocator("objUserID")).clear();
 			driver.findElement(objPageObjsProRead.getLocator("objUserID")).sendKeys(userName);
@@ -109,27 +115,7 @@ public class Common_Business_Functions extends TestCase {
 			driver.findElement(objPageObjsProRead.getLocator("objSubmit")).click();
 			Thread.sleep(2000);
 			extent.flush();
-			// Verify the Welcome to Casper text is displayed
-			// if
-			// (driver.findElements(objPageObjsProRead.getLocator("objWelcome")).size()
-			// != 0) {
-			/*
-			 * if
-			 * (driver.findElement(objPageObjsProRead.getLocator("objWelcome")).
-			 * isDisplayed()) { // Add a pass step to the Extent Report // Add
-			 * the screenshot to the Reporting steps with a hyperlink test.
-			 * pass("Verified Welcome to Casper is displayed on the Home page",
-			 * MediaEntityBuilder
-			 * .createScreenCaptureFromPath(objCreateScreenshot.createScreenshot
-			 * (driver, "VerifyLoginSuccessPass", test,rowNoGbl,
-			 * date1)).build()); } else { //
-			 * System.out.println("In the else block"); // Log with snapshot
-			 * test.fail("Welcome to Casper is not displayed on the Home page",
-			 * MediaEntityBuilder
-			 * .createScreenCaptureFromPath(objCreateScreenshot.createScreenshot
-			 * (driver, "VerifyLoginSuccessFail", test,rowNoGbl,
-			 * date1)).build()); }
-			 */
+
 		} catch (Exception e) {
 			System.out.println("In catch block" + e);
 			// Add the screenshot to the Reporting steps with a hyperlink
@@ -139,7 +125,36 @@ public class Common_Business_Functions extends TestCase {
 					objCreateScreenshot.createScreenshot(driver, "loginCasper_Fail", test, rowNoGbl, date1));
 
 			// Close the Browser
-			driver.quit();
+			System.out.println("Closing The Browser");
+
+			driver.manage().timeouts().implicitlyWait(3, TimeUnit.SECONDS);
+			try {
+				driver.findElement(By.xpath("//button[contains(text(),'Cancel')]")).click();
+				Thread.sleep(1000);
+				System.out.println("Clicked on Cancel button");
+			} catch (Exception Ex) {
+				System.out.println("Cancel button not displayed");
+			}
+			try {
+				driver.findElement(By.xpath("//button[contains(text(),'Close')]")).click();
+				Thread.sleep(1000);
+				System.out.println("Clicked on Close button");
+
+			} catch (Exception Ex) {
+				System.out.println("Close button not displayed");
+			} finally {
+				try {
+					RecentChanges_CommonFunctions.finallyBlock_TearDown(driver);
+				} catch (Exception Ex) {
+					System.out.println("Logout link not displayed closing the browser to end the test");
+					Ex.printStackTrace();
+
+					driver.quit();
+				}
+				driver.quit();
+				System.out.println("===========INDIVIDUAL TEST EXECUTION ENDED WITH EXCEPTION=========");
+			}
+
 			test.pass("Closed the Browser");
 
 			// Calling flush writes everything to the Extent Report
@@ -159,8 +174,30 @@ public class Common_Business_Functions extends TestCase {
 		return newValue;
 	}
 
+	public String generateSixDigitRandomNumber(String rowNoGbl, String workbookName, String colName) throws Exception {
+
+		// It will generate 6 digit random Number from 100000 to 999999.
+		Random rnd = new Random();
+		int number = rnd.nextInt(999999);
+
+		// this will convert any number sequence into 6 character.
+		String strNum = String.format("%06d", number);
+		if (strNum.length() == 5) {
+			strNum = "1" + strNum;
+		} else if (strNum.length() == 6) {
+			String strFirstDigit = strNum.substring(0, 1);
+			if (strFirstDigit.contains("0")) {
+				strNum = strNum.substring(1);
+				strNum = "1" + strNum;
+			}
+		}
+		String Path = "src/test/java/TestData/" + workbookName;
+		ExcelUtils.setCellValueUsingColName(Path, colName, rowNoGbl, strNum);
+		return strNum;
+	}
+
 	public void enterNumericValue(WebDriver driver, ExtentTest test, String date1, String rowNoGbl,
-			ExtentReports extent, By xpath, int value) throws IOException {
+			ExtentReports extent, By xpath, int value) throws IOException, InterruptedException {
 		try {
 			WebElement element = driver.findElement(xpath);
 			element.clear();
@@ -175,7 +212,36 @@ public class Common_Business_Functions extends TestCase {
 					objCreateScreenshot.createScreenshot(driver, "enterNumericValue_Fail", test, rowNoGbl, date1));
 
 			// Close the Browser
-			driver.quit();
+			System.out.println("Closing The Browser");
+
+			driver.manage().timeouts().implicitlyWait(3, TimeUnit.SECONDS);
+			try {
+				driver.findElement(By.xpath("//button[contains(text(),'Cancel')]")).click();
+				Thread.sleep(1000);
+				System.out.println("Clicked on Cancel button");
+			} catch (Exception Ex) {
+				System.out.println("Cancel button not displayed");
+			}
+			try {
+				driver.findElement(By.xpath("//button[contains(text(),'Close')]")).click();
+				Thread.sleep(1000);
+				System.out.println("Clicked on Close button");
+
+			} catch (Exception Ex) {
+				System.out.println("Close button not displayed");
+			} finally {
+				try {
+					RecentChanges_CommonFunctions.finallyBlock_TearDown(driver);
+				} catch (Exception Ex) {
+					System.out.println("Logout link not displayed closing the browser to end the test");
+					Ex.printStackTrace();
+
+					driver.quit();
+				}
+				driver.quit();
+				System.out.println("===========INDIVIDUAL TEST EXECUTION ENDED WITH EXCEPTION=========");
+			}
+
 			test.pass("Closed the Browser");
 
 			// Calling flush writes everything to the Extent Report
@@ -187,7 +253,7 @@ public class Common_Business_Functions extends TestCase {
 
 	public void enterData(WebDriver driver, ExtentTest test, String date1, String rowNoGbl, ExtentReports extent,
 			By xpath, String value) throws Exception {
-		driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
+		driver.manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS);
 		WebElement element = driver.findElement(xpath);
 		element.clear();
 		element.sendKeys(value);
@@ -197,10 +263,10 @@ public class Common_Business_Functions extends TestCase {
 
 	public void removeValue(WebDriver driver, ExtentTest test, String date1, String rowNoGbl, ExtentReports extent,
 			By xpath) throws Exception {
-		driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
+		driver.manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS);
 		WebElement element = driver.findElement(xpath);
-		// element.clear();
-		element.sendKeys(Keys.chord(Keys.CONTROL, "a", Keys.DELETE));
+		element.clear();
+		// element.sendKeys(Keys.chord(Keys.CONTROL, "a", Keys.DELETE));
 		;
 		extent.flush();
 	}
@@ -224,7 +290,7 @@ public class Common_Business_Functions extends TestCase {
 			String lnkText) throws Exception {
 		try {
 			Thread.sleep(2000);
-			driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
+			driver.manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS);
 			// Find the element to clicked
 			if (driver.findElement(By.xpath(".//a[contains(text(),'" + lnkText + "')]")).isDisplayed()) {
 				WebElement lnkToClick = driver.findElement(By.xpath(".//a[contains(text(),'" + lnkText + "')]"));
@@ -244,7 +310,36 @@ public class Common_Business_Functions extends TestCase {
 					objCreateScreenshot.createScreenshot(driver, "ClickOnLink_Fail", test, rowNoGbl, date1));
 
 			// Close the Browser
-			driver.quit();
+			System.out.println("Closing The Browser");
+
+			driver.manage().timeouts().implicitlyWait(3, TimeUnit.SECONDS);
+			try {
+				driver.findElement(By.xpath("//button[contains(text(),'Cancel')]")).click();
+				Thread.sleep(1000);
+				System.out.println("Clicked on Cancel button");
+			} catch (Exception Ex) {
+				System.out.println("Cancel button not displayed");
+			}
+			try {
+				driver.findElement(By.xpath("//button[contains(text(),'Close')]")).click();
+				Thread.sleep(1000);
+				System.out.println("Clicked on Close button");
+
+			} catch (Exception Ex) {
+				System.out.println("Close button not displayed");
+			} finally {
+				try {
+					RecentChanges_CommonFunctions.finallyBlock_TearDown(driver);
+				} catch (Exception Ex) {
+					System.out.println("Logout link not displayed closing the browser to end the test");
+					Ex.printStackTrace();
+
+					driver.quit();
+				}
+				driver.quit();
+				System.out.println("===========INDIVIDUAL TEST EXECUTION ENDED WITH EXCEPTION=========");
+			}
+
 			test.pass("Closed the Browser");
 
 			// Calling flush writes everything to the Extent Report
@@ -292,8 +387,37 @@ public class Common_Business_Functions extends TestCase {
 							.build());
 
 			// Close the Browser
-			driver.quit();
-			// test.pass("Closed the Browser");
+			System.out.println("Closing The Browser");
+
+			driver.manage().timeouts().implicitlyWait(3, TimeUnit.SECONDS);
+			try {
+				driver.findElement(By.xpath("//button[contains(text(),'Cancel')]")).click();
+				Thread.sleep(1000);
+				System.out.println("Clicked on Cancel button");
+			} catch (Exception Ex) {
+				System.out.println("Cancel button not displayed");
+			}
+			try {
+				driver.findElement(By.xpath("//button[contains(text(),'Close')]")).click();
+				Thread.sleep(1000);
+				System.out.println("Clicked on Close button");
+
+			} catch (Exception Ex) {
+				System.out.println("Close button not displayed");
+			} finally {
+				try {
+					RecentChanges_CommonFunctions.finallyBlock_TearDown(driver);
+				} catch (Exception Ex) {
+					System.out.println("Logout link not displayed closing the browser to end the test");
+					Ex.printStackTrace();
+
+					driver.quit();
+				}
+				driver.quit();
+				System.out.println("===========INDIVIDUAL TEST EXECUTION ENDED WITH EXCEPTION=========");
+			}
+
+			test.pass("Closed the Browser");
 
 			// Calling flush writes everything to the Extent Report
 			extent.flush();
@@ -305,7 +429,7 @@ public class Common_Business_Functions extends TestCase {
 	public void VerifyLinkExist(WebDriver driver, ExtentTest test, ExtentReports extent, String rowNoGbl, String date1,
 			String lnkText) throws Exception {
 		try {
-			driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
+			driver.manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS);
 			WebElement lnkToVerify = driver.findElement(By.xpath(".//a[contains(text(),'" + lnkText + "')]"));
 			if (lnkToVerify.isDisplayed()) {
 				test.pass("Verified link: " + lnkText + " Successfully" + "",
@@ -332,7 +456,7 @@ public class Common_Business_Functions extends TestCase {
 		try {
 			Thread.sleep(2000);
 			// Find the element to clicked
-			driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
+			driver.manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS);
 			WebElement btnToVerify = driver.findElement(By.xpath(".//div/button[contains(text(),'" + btnText + "')]"));
 			if (btnToVerify.isDisplayed()) {
 				System.out.println(btnText + " : Button verified");
@@ -341,12 +465,6 @@ public class Common_Business_Functions extends TestCase {
 						MediaEntityBuilder.createScreenCaptureFromPath(objCreateScreenshot.createScreenshot(driver,
 								"VerifyButtonExist_Pass", test, rowNoGbl, date1)).build());
 
-				//// } else {
-				//// test.fail("Button does not exist: " + btnText + "",
-				//// MediaEntityBuilder.createScreenCaptureFromPath(
-				// objCreateScreenshot.createScreenshot(driver,
-				//// "VerifyButtonExist", test, rowNoGbl, date1))
-				//// .build());
 			}
 			extent.flush();
 		}
@@ -361,7 +479,7 @@ public class Common_Business_Functions extends TestCase {
 
 			extent.flush();
 
-			// fail("NoSuchElementException");
+			fail("NoSuchElementException");
 		}
 	}
 
@@ -369,7 +487,7 @@ public class Common_Business_Functions extends TestCase {
 			String date1, String actionName) throws IOException {
 		try {
 			Thread.sleep(2000);
-			driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
+			driver.manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS);
 			List<WebElement> records;
 			int i = 0, size;
 			records = driver.findElements(By.xpath("//div[@role='gridcell']"));
@@ -415,10 +533,6 @@ public class Common_Business_Functions extends TestCase {
 			test.fail("Action does not exist: " + actionName);
 			test.addScreenCaptureFromPath(
 					objCreateScreenshot.createScreenshot(driver, "VerifyAvailableActions_Fail", test, rowNoGbl, date1));
-
-			// Close the Browser
-			// driver.quit();
-			// test.log(Status.INFO, "Closed the Browser");
 
 			// Calling flush writes everything to the Extent Report
 			extent.flush();
@@ -491,7 +605,36 @@ public class Common_Business_Functions extends TestCase {
 					objCreateScreenshot.createScreenshot(driver, "SelectToggleColumn_Fail", test, rowNoGbl, date1));
 
 			// Close the Browser
-			driver.quit();
+			System.out.println("Closing The Browser");
+
+			driver.manage().timeouts().implicitlyWait(3, TimeUnit.SECONDS);
+			try {
+				driver.findElement(By.xpath("//button[contains(text(),'Cancel')]")).click();
+				Thread.sleep(1000);
+				System.out.println("Clicked on Cancel button");
+			} catch (Exception Ex) {
+				System.out.println("Cancel button not displayed");
+			}
+			try {
+				driver.findElement(By.xpath("//button[contains(text(),'Close')]")).click();
+				Thread.sleep(1000);
+				System.out.println("Clicked on Close button");
+
+			} catch (Exception Ex) {
+				System.out.println("Close button not displayed");
+			} finally {
+				try {
+					RecentChanges_CommonFunctions.finallyBlock_TearDown(driver);
+				} catch (Exception Ex) {
+					System.out.println("Logout link not displayed closing the browser to end the test");
+					Ex.printStackTrace();
+
+					driver.quit();
+				}
+				driver.quit();
+				System.out.println("===========INDIVIDUAL TEST EXECUTION ENDED WITH EXCEPTION=========");
+			}
+
 			test.pass("Closed the Browser");
 
 			// Calling flush writes everything to the Extent Report
@@ -505,7 +648,7 @@ public class Common_Business_Functions extends TestCase {
 			String date1, String actionName) throws Exception {
 		try {
 			Thread.sleep(4000);
-			driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
+			driver.manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS);
 			List<WebElement> records;
 			int i = 0;
 			records = driver.findElements(By.xpath("//div[@role='gridcell']"));
@@ -546,7 +689,36 @@ public class Common_Business_Functions extends TestCase {
 					"VerifyAvailableActionsSubList_Fail", test, rowNoGbl, date1));
 
 			// Close the Browser
-			driver.quit();
+			System.out.println("Closing The Browser");
+
+			driver.manage().timeouts().implicitlyWait(3, TimeUnit.SECONDS);
+			try {
+				driver.findElement(By.xpath("//button[contains(text(),'Cancel')]")).click();
+				Thread.sleep(1000);
+				System.out.println("Clicked on Cancel button");
+			} catch (Exception Ex) {
+				System.out.println("Cancel button not displayed");
+			}
+			try {
+				driver.findElement(By.xpath("//button[contains(text(),'Close')]")).click();
+				Thread.sleep(1000);
+				System.out.println("Clicked on Close button");
+
+			} catch (Exception Ex) {
+				System.out.println("Close button not displayed");
+			} finally {
+				try {
+					RecentChanges_CommonFunctions.finallyBlock_TearDown(driver);
+				} catch (Exception Ex) {
+					System.out.println("Logout link not displayed closing the browser to end the test");
+					Ex.printStackTrace();
+
+					driver.quit();
+				}
+				driver.quit();
+				System.out.println("===========INDIVIDUAL TEST EXECUTION ENDED WITH EXCEPTION=========");
+			}
+
 			test.pass("Closed the Browser");
 
 			// Calling flush writes everything to the Extent Report
@@ -598,7 +770,7 @@ public class Common_Business_Functions extends TestCase {
 			String popUpName) throws IOException {
 		try {
 			// Find the element to clicked
-			driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
+			driver.manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS);
 			WebElement screenNameToCheck = driver.findElement(By.xpath(".//div[contains(text(),'" + popUpName + "')]"));
 			if (screenNameToCheck.isDisplayed()) {
 				System.out.println("Pop up name is displayed");
@@ -635,7 +807,7 @@ public class Common_Business_Functions extends TestCase {
 			String date1, String columName) throws IOException {
 		try {
 			Thread.sleep(4000);
-			driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
+			driver.manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS);
 			try {
 				if (driver.findElement(By.xpath("//i[@class='fa fa-exclamation-circle']")).isDisplayed()) {
 					System.out.println("No search result found.");
@@ -695,7 +867,7 @@ public class Common_Business_Functions extends TestCase {
 		try {
 			String columnValue = null;
 			Thread.sleep(2000);
-			driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
+			driver.manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS);
 			// Find out the records get loaded in table
 			List<WebElement> recordsLoaded = driver.findElements(By.xpath(".//div[@col-id='" + columName + "']"));
 			int sizeOfRecordsLoaded = recordsLoaded.size() - 1;
@@ -752,7 +924,7 @@ public class Common_Business_Functions extends TestCase {
 			String actionName) throws IOException, InterruptedException {
 		try {
 			// Thread.sleep(2000);
-			driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
+			driver.manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS);
 			List<WebElement> records;
 			int i = 0, size;
 			records = driver.findElements(By.xpath("//div[@role='gridcell']"));
@@ -772,8 +944,9 @@ public class Common_Business_Functions extends TestCase {
 				}
 				WebElement CurrentRow = driver.switchTo().activeElement();
 				Actions action = new Actions(driver);
+				Thread.sleep(1000);
 				action.contextClick(CurrentRow).sendKeys(Keys.ARROW_LEFT).sendKeys(Keys.ENTER).build().perform();
-				Thread.sleep(2000);
+				// Thread.sleep(2000);
 				WebElement viewOpen = driver.findElement(By.xpath(".//span[contains(text(),'" + actionName
 						+ "')]")); /* This will select menu after right click */
 				viewOpen.click();
@@ -794,7 +967,36 @@ public class Common_Business_Functions extends TestCase {
 					objCreateScreenshot.createScreenshot(driver, "clickOnAction_Fail", test, rowNoGbl, date1));
 
 			// Close the Browser
-			driver.quit();
+			System.out.println("Closing The Browser");
+
+			driver.manage().timeouts().implicitlyWait(3, TimeUnit.SECONDS);
+			try {
+				driver.findElement(By.xpath("//button[contains(text(),'Cancel')]")).click();
+				Thread.sleep(1000);
+				System.out.println("Clicked on Cancel button");
+			} catch (Exception Ex) {
+				System.out.println("Cancel button not displayed");
+			}
+			try {
+				driver.findElement(By.xpath("//button[contains(text(),'Close')]")).click();
+				Thread.sleep(1000);
+				System.out.println("Clicked on Close button");
+
+			} catch (Exception Ex) {
+				System.out.println("Close button not displayed");
+			} finally {
+				try {
+					RecentChanges_CommonFunctions.finallyBlock_TearDown(driver);
+				} catch (Exception Ex) {
+					System.out.println("Logout link not displayed closing the browser to end the test");
+					Ex.printStackTrace();
+
+					driver.quit();
+				}
+				driver.quit();
+				System.out.println("===========INDIVIDUAL TEST EXECUTION ENDED WITH EXCEPTION=========");
+			}
+
 			test.pass("Closed the Browser");
 
 			// Calling flush writes everything to the Extent Report
@@ -807,7 +1009,7 @@ public class Common_Business_Functions extends TestCase {
 	public void verifyLeftMenu(WebDriver driver, ExtentTest test, ExtentReports extent, String rowNoGbl, String date1,
 			String leftMenuName) throws IOException, InterruptedException {
 		try {
-			driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
+			driver.manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS);
 			WebElement menuToCheck = driver.findElement(By.xpath("//a[contains(text(),'" + leftMenuName + "')]"));
 			if (menuToCheck.isDisplayed()) {
 				System.out.println("Successfully verified left menu " + leftMenuName + "");
@@ -837,7 +1039,7 @@ public class Common_Business_Functions extends TestCase {
 	public void checkCalculations(WebDriver driver, ExtentTest test, ExtentReports extent, String rowNoGbl,
 			String date1, String fieldName) throws IOException, InterruptedException {
 		try {
-			driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
+			driver.manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS);
 			WebElement fieldToCheck;
 			boolean flag = false;
 			String valueOfField = null;
@@ -894,7 +1096,7 @@ public class Common_Business_Functions extends TestCase {
 			String rowNoGbl, String date1) throws IOException, InterruptedException {
 		try {
 			Thread.sleep(2000);
-			driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
+			driver.manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS);
 			WebElement versionrecord;
 			String value = null;
 			List<WebElement> recordsLoaded = driver.findElements(By.xpath(".//div[@role='gridcell']"));
@@ -946,7 +1148,7 @@ public class Common_Business_Functions extends TestCase {
 			String date1, String actionToCheck, String columnName) throws IOException, InterruptedException {
 		try {
 			Thread.sleep(2000);
-			driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
+			driver.manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS);
 			WebElement versionrecord, CurrentRow, actionItem;
 			Actions action;
 			// Find out action for record in table
@@ -1026,7 +1228,7 @@ public class Common_Business_Functions extends TestCase {
 			String permissionName) throws IOException, InterruptedException {
 		try {
 			Thread.sleep(2000);
-			driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
+			driver.manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS);
 			// Find the element to clicked
 			WebElement element = driver
 					.findElement(By.xpath("//label[text()='" + permissionName + "']/preceding-sibling::input"));
@@ -1049,7 +1251,36 @@ public class Common_Business_Functions extends TestCase {
 					objCreateScreenshot.createScreenshot(driver, "checkCheckbox_Fail", test, rowNoGbl, date1));
 
 			// Close the Browser
-			driver.quit();
+			System.out.println("Closing The Browser");
+
+			driver.manage().timeouts().implicitlyWait(3, TimeUnit.SECONDS);
+			try {
+				driver.findElement(By.xpath("//button[contains(text(),'Cancel')]")).click();
+				Thread.sleep(1000);
+				System.out.println("Clicked on Cancel button");
+			} catch (Exception Ex) {
+				System.out.println("Cancel button not displayed");
+			}
+			try {
+				driver.findElement(By.xpath("//button[contains(text(),'Close')]")).click();
+				Thread.sleep(1000);
+				System.out.println("Clicked on Close button");
+
+			} catch (Exception Ex) {
+				System.out.println("Close button not displayed");
+			} finally {
+				try {
+					RecentChanges_CommonFunctions.finallyBlock_TearDown(driver);
+				} catch (Exception Ex) {
+					System.out.println("Logout link not displayed closing the browser to end the test");
+					Ex.printStackTrace();
+
+					driver.quit();
+				}
+				driver.quit();
+				System.out.println("===========INDIVIDUAL TEST EXECUTION ENDED WITH EXCEPTION=========");
+			}
+
 			test.pass("Closed the Browser");
 
 			// Calling flush writes everything to the Extent Report
@@ -1062,7 +1293,7 @@ public class Common_Business_Functions extends TestCase {
 	public void checkPermission(WebDriver driver, ExtentTest test, ExtentReports extent, String rowNoGbl, String date1,
 			String permissionName, boolean flag) throws IOException, InterruptedException {
 		try {
-			driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
+			driver.manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS);
 			// Find the element to clicked
 
 			WebElement element = driver
@@ -1113,7 +1344,36 @@ public class Common_Business_Functions extends TestCase {
 					objCreateScreenshot.createScreenshot(driver, "checkPermission_Fail", test, rowNoGbl, date1));
 
 			// Close the Browser
-			driver.quit();
+			System.out.println("Closing The Browser");
+
+			driver.manage().timeouts().implicitlyWait(3, TimeUnit.SECONDS);
+			try {
+				driver.findElement(By.xpath("//button[contains(text(),'Cancel')]")).click();
+				Thread.sleep(1000);
+				System.out.println("Clicked on Cancel button");
+			} catch (Exception Ex) {
+				System.out.println("Cancel button not displayed");
+			}
+			try {
+				driver.findElement(By.xpath("//button[contains(text(),'Close')]")).click();
+				Thread.sleep(1000);
+				System.out.println("Clicked on Close button");
+
+			} catch (Exception Ex) {
+				System.out.println("Close button not displayed");
+			} finally {
+				try {
+					RecentChanges_CommonFunctions.finallyBlock_TearDown(driver);
+				} catch (Exception Ex) {
+					System.out.println("Logout link not displayed closing the browser to end the test");
+					Ex.printStackTrace();
+
+					driver.quit();
+				}
+				driver.quit();
+				System.out.println("===========INDIVIDUAL TEST EXECUTION ENDED WITH EXCEPTION=========");
+			}
+
 			test.pass("Closed the Browser");
 
 			// Calling flush writes everything to the Extent Report
@@ -1127,12 +1387,15 @@ public class Common_Business_Functions extends TestCase {
 			String rowNoGbl, String date1, String permissionName, boolean flag)
 			throws IOException, InterruptedException {
 		try {
-			driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
+			driver.manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS);
 			// Find the element to clicked
 
-			WebElement element = driver.findElement(By
-					.xpath("//*[@id='0']//tree-root/tree-viewport/div/div/tree-node-collection/div/tree-node/div/tree-node-children/div/tree-node-collection/div/tree-node[1]//label[text()='"
-							+ permissionName + "']/preceding-sibling::input"));
+			// WebElement element = driver.findElement(By
+			// .xpath("//*[@id='0']//tree-root/tree-viewport/div/div/tree-node-collection/div/tree-node/div/tree-node-children/div/tree-node-collection/div/tree-node[1]//label[text()='"
+			// + permissionName + "']/preceding-sibling::input"));
+
+			WebElement element = driver
+					.findElement(By.xpath("//label[text()='" + permissionName + "']/preceding-sibling::input"));
 			if (flag == true) {
 				if (element.isSelected()) {
 					System.out.println("Permission: " + permissionName + "  is assigned to user as per matrix ");
@@ -1171,7 +1434,36 @@ public class Common_Business_Functions extends TestCase {
 					objCreateScreenshot.createScreenshot(driver, "NoSuchElementException", test, rowNoGbl, date1));
 
 			// Close the Browser
-			driver.quit();
+			System.out.println("Closing The Browser");
+
+			driver.manage().timeouts().implicitlyWait(3, TimeUnit.SECONDS);
+			try {
+				driver.findElement(By.xpath("//button[contains(text(),'Cancel')]")).click();
+				Thread.sleep(1000);
+				System.out.println("Clicked on Cancel button");
+			} catch (Exception Ex) {
+				System.out.println("Cancel button not displayed");
+			}
+			try {
+				driver.findElement(By.xpath("//button[contains(text(),'Close')]")).click();
+				Thread.sleep(1000);
+				System.out.println("Clicked on Close button");
+
+			} catch (Exception Ex) {
+				System.out.println("Close button not displayed");
+			} finally {
+				try {
+					RecentChanges_CommonFunctions.finallyBlock_TearDown(driver);
+				} catch (Exception Ex) {
+					System.out.println("Logout link not displayed closing the browser to end the test");
+					Ex.printStackTrace();
+
+					driver.quit();
+				}
+				driver.quit();
+				System.out.println("===========INDIVIDUAL TEST EXECUTION ENDED WITH EXCEPTION=========");
+			}
+
 			test.pass("Closed the Browser");
 
 			// Calling flush writes everything to the Extent Report
@@ -1184,11 +1476,14 @@ public class Common_Business_Functions extends TestCase {
 	public void checkPermissionForFileVault(WebDriver driver, ExtentTest test, ExtentReports extent, String rowNoGbl,
 			String date1, String permissionName, boolean flag) throws IOException, InterruptedException {
 		try {
-			driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
+			driver.manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS);
 			// Find the element to clicked
-			WebElement element = driver.findElement(By
-					.xpath("//*[@id='0']//tree-viewport/div/div/tree-node-collection/div/tree-node/div/tree-node-children/div/tree-node-collection/div/tree-node[2]//label[text()='"
-							+ permissionName + "']/preceding-sibling::input"));
+			// WebElement element = driver.findElement(By
+			// .xpath("//*[@id='0']//tree-viewport/div/div/tree-node-collection/div/tree-node/div/tree-node-children/div/tree-node-collection/div/tree-node[2]//label[text()='"
+			// + permissionName + "']/preceding-sibling::input"));
+			WebElement element = driver
+					.findElement(By.xpath("//label[text()='" + permissionName + "']/preceding-sibling::input"));
+
 			if (flag == true) {
 				if (element.isSelected()) {
 					System.out.println("Permission: " + permissionName + "  is assigned to user as per matrix ");
@@ -1226,7 +1521,36 @@ public class Common_Business_Functions extends TestCase {
 					objCreateScreenshot.createScreenshot(driver, "NoSuchElementException", test, rowNoGbl, date1));
 
 			// Close the Browser
-			driver.quit();
+			System.out.println("Closing The Browser");
+
+			driver.manage().timeouts().implicitlyWait(3, TimeUnit.SECONDS);
+			try {
+				driver.findElement(By.xpath("//button[contains(text(),'Cancel')]")).click();
+				Thread.sleep(1000);
+				System.out.println("Clicked on Cancel button");
+			} catch (Exception Ex) {
+				System.out.println("Cancel button not displayed");
+			}
+			try {
+				driver.findElement(By.xpath("//button[contains(text(),'Close')]")).click();
+				Thread.sleep(1000);
+				System.out.println("Clicked on Close button");
+
+			} catch (Exception Ex) {
+				System.out.println("Close button not displayed");
+			} finally {
+				try {
+					RecentChanges_CommonFunctions.finallyBlock_TearDown(driver);
+				} catch (Exception Ex) {
+					System.out.println("Logout link not displayed closing the browser to end the test");
+					Ex.printStackTrace();
+
+					driver.quit();
+				}
+				driver.quit();
+				System.out.println("===========INDIVIDUAL TEST EXECUTION ENDED WITH EXCEPTION=========");
+			}
+
 			test.pass("Closed the Browser");
 
 			// Calling flush writes everything to the Extent Report
@@ -1239,11 +1563,13 @@ public class Common_Business_Functions extends TestCase {
 	public void checkPermissionForModules(WebDriver driver, ExtentTest test, ExtentReports extent, String rowNoGbl,
 			String date1, String permissionName, boolean flag) throws IOException, InterruptedException {
 		try {
-			driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
+			driver.manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS);
 			// Find the element to clicked
-			WebElement element = driver.findElement(By
-					.xpath("//*[@id='1']//tree-root/tree-viewport/div/div/tree-node-collection/div/tree-node/div/tree-node-children/div/tree-node-collection/div/tree-node[4]//label[text()='"
-							+ permissionName + "']/preceding-sibling::input"));
+			// WebElement element = driver.findElement(By
+			// .xpath("//*[@id='1']//tree-root/tree-viewport/div/div/tree-node-collection/div/tree-node/div/tree-node-children/div/tree-node-collection/div/tree-node[4]//label[text()='"
+			// + permissionName + "']/preceding-sibling::input"));
+			WebElement element = driver
+					.findElement(By.xpath("//label[text()='" + permissionName + "']/preceding-sibling::input"));
 			if (flag == true) {
 				if (element.isSelected()) {
 					System.out.println("Permission: " + permissionName + "  is assigned to user as per matrix ");
@@ -1281,7 +1607,36 @@ public class Common_Business_Functions extends TestCase {
 					objCreateScreenshot.createScreenshot(driver, "NoSuchElementException", test, rowNoGbl, date1));
 
 			// Close the Browser
-			driver.quit();
+			System.out.println("Closing The Browser");
+
+			driver.manage().timeouts().implicitlyWait(3, TimeUnit.SECONDS);
+			try {
+				driver.findElement(By.xpath("//button[contains(text(),'Cancel')]")).click();
+				Thread.sleep(1000);
+				System.out.println("Clicked on Cancel button");
+			} catch (Exception Ex) {
+				System.out.println("Cancel button not displayed");
+			}
+			try {
+				driver.findElement(By.xpath("//button[contains(text(),'Close')]")).click();
+				Thread.sleep(1000);
+				System.out.println("Clicked on Close button");
+
+			} catch (Exception Ex) {
+				System.out.println("Close button not displayed");
+			} finally {
+				try {
+					RecentChanges_CommonFunctions.finallyBlock_TearDown(driver);
+				} catch (Exception Ex) {
+					System.out.println("Logout link not displayed closing the browser to end the test");
+					Ex.printStackTrace();
+
+					driver.quit();
+				}
+				driver.quit();
+				System.out.println("===========INDIVIDUAL TEST EXECUTION ENDED WITH EXCEPTION=========");
+			}
+
 			test.pass("Closed the Browser");
 
 			// Calling flush writes everything to the Extent Report
@@ -1294,11 +1649,13 @@ public class Common_Business_Functions extends TestCase {
 	public void checkPermissionForDataPoints(WebDriver driver, ExtentTest test, ExtentReports extent, String rowNoGbl,
 			String date1, String permissionName, boolean flag) throws IOException, InterruptedException {
 		try {
-			driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
+			driver.manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS);
 			// Find the element to clicked
-			WebElement element = driver.findElement(By
-					.xpath("//*[@id='1']//tree-root/tree-viewport/div/div/tree-node-collection/div/tree-node/div/tree-node-children/div/tree-node-collection/div/tree-node[5]//label[text()='"
-							+ permissionName + "']/preceding-sibling::input"));
+			// WebElement element = driver.findElement(By
+			// .xpath("//*[@id='1']//tree-root/tree-viewport/div/div/tree-node-collection/div/tree-node/div/tree-node-children/div/tree-node-collection/div/tree-node[5]//label[text()='"
+			// + permissionName + "']/preceding-sibling::input"));
+			WebElement element = driver
+					.findElement(By.xpath("//label[text()='" + permissionName + "']/preceding-sibling::input"));
 			if (flag == true) {
 				if (element.isSelected()) {
 					System.out.println("Permission: " + permissionName + "  is assigned to user as per matrix ");
@@ -1336,7 +1693,36 @@ public class Common_Business_Functions extends TestCase {
 					objCreateScreenshot.createScreenshot(driver, "NoSuchElementException", test, rowNoGbl, date1));
 
 			// Close the Browser
-			driver.quit();
+			System.out.println("Closing The Browser");
+
+			driver.manage().timeouts().implicitlyWait(3, TimeUnit.SECONDS);
+			try {
+				driver.findElement(By.xpath("//button[contains(text(),'Cancel')]")).click();
+				Thread.sleep(1000);
+				System.out.println("Clicked on Cancel button");
+			} catch (Exception Ex) {
+				System.out.println("Cancel button not displayed");
+			}
+			try {
+				driver.findElement(By.xpath("//button[contains(text(),'Close')]")).click();
+				Thread.sleep(1000);
+				System.out.println("Clicked on Close button");
+
+			} catch (Exception Ex) {
+				System.out.println("Close button not displayed");
+			} finally {
+				try {
+					RecentChanges_CommonFunctions.finallyBlock_TearDown(driver);
+				} catch (Exception Ex) {
+					System.out.println("Logout link not displayed closing the browser to end the test");
+					Ex.printStackTrace();
+
+					driver.quit();
+				}
+				driver.quit();
+				System.out.println("===========INDIVIDUAL TEST EXECUTION ENDED WITH EXCEPTION=========");
+			}
+
 			test.pass("Closed the Browser");
 
 			// Calling flush writes everything to the Extent Report
@@ -1349,11 +1735,14 @@ public class Common_Business_Functions extends TestCase {
 	public void checkPermissionForEntity(WebDriver driver, ExtentTest test, ExtentReports extent, String rowNoGbl,
 			String date1, String permissionName, boolean flag) throws IOException, InterruptedException {
 		try {
-			driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
+			driver.manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS);
 			// Find the element to clicked
-			WebElement element = driver.findElement(By
-					.xpath("//*[@id='1']//tree-root/tree-viewport/div/div/tree-node-collection/div/tree-node/div/tree-node-children/div/tree-node-collection/div/tree-node[6]//label[text()='"
-							+ permissionName + "']/preceding-sibling::input"));
+			// WebElement element = driver.findElement(By
+			// .xpath("//*[@id='1']//tree-root/tree-viewport/div/div/tree-node-collection/div/tree-node/div/tree-node-children/div/tree-node-collection/div/tree-node[6]//label[text()='"
+			// + permissionName + "']/preceding-sibling::input"));
+
+			WebElement element = driver
+					.findElement(By.xpath("//label[text()='" + permissionName + "']/preceding-sibling::input"));
 			if (flag == true) {
 				if (element.isSelected()) {
 					System.out.println("Permission: " + permissionName + "  is assigned to user as per matrix ");
@@ -1391,7 +1780,36 @@ public class Common_Business_Functions extends TestCase {
 					objCreateScreenshot.createScreenshot(driver, "NoSuchElementException", test, rowNoGbl, date1));
 
 			// Close the Browser
-			driver.quit();
+			System.out.println("Closing The Browser");
+
+			driver.manage().timeouts().implicitlyWait(3, TimeUnit.SECONDS);
+			try {
+				driver.findElement(By.xpath("//button[contains(text(),'Cancel')]")).click();
+				Thread.sleep(1000);
+				System.out.println("Clicked on Cancel button");
+			} catch (Exception Ex) {
+				System.out.println("Cancel button not displayed");
+			}
+			try {
+				driver.findElement(By.xpath("//button[contains(text(),'Close')]")).click();
+				Thread.sleep(1000);
+				System.out.println("Clicked on Close button");
+
+			} catch (Exception Ex) {
+				System.out.println("Close button not displayed");
+			} finally {
+				try {
+					RecentChanges_CommonFunctions.finallyBlock_TearDown(driver);
+				} catch (Exception Ex) {
+					System.out.println("Logout link not displayed closing the browser to end the test");
+					Ex.printStackTrace();
+
+					driver.quit();
+				}
+				driver.quit();
+				System.out.println("===========INDIVIDUAL TEST EXECUTION ENDED WITH EXCEPTION=========");
+			}
+
 			test.pass("Closed the Browser");
 
 			// Calling flush writes everything to the Extent Report
@@ -1404,11 +1822,12 @@ public class Common_Business_Functions extends TestCase {
 	public void checkPermissionForEntityGroup(WebDriver driver, ExtentTest test, ExtentReports extent, String rowNoGbl,
 			String date1, String permissionName, boolean flag) throws IOException, InterruptedException {
 		try {
-			driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
+			driver.manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS);
 			// Find the element to clicked
 			WebElement element = driver.findElement(By
-					.xpath("//*[@id='1']//tree-root/tree-viewport/div/div/tree-node-collection/div/tree-node/div/tree-node-children/div/tree-node-collection/div/tree-node[8]//label[text()='"
-							+ permissionName + "']/preceding-sibling::input"));
+//					.xpath("//*[@id='1']//tree-root/tree-viewport/div/div/tree-node-collection/div/tree-node/div/tree-node-children/div/tree-node-collection/div/tree-node[8]//label[text()='"
+//							+ permissionName + "']/preceding-sibling::input"));
+					.xpath("//label[contains(text(),'" + permissionName + "')]/preceding-sibling::input"));
 			if (flag == true) {
 				if (element.isSelected()) {
 					System.out.println("Permission: " + permissionName + "  is assigned to user as per matrix ");
@@ -1446,7 +1865,36 @@ public class Common_Business_Functions extends TestCase {
 					objCreateScreenshot.createScreenshot(driver, "NoSuchElementException", test, rowNoGbl, date1));
 
 			// Close the Browser
-			driver.quit();
+			System.out.println("Closing The Browser");
+
+			driver.manage().timeouts().implicitlyWait(3, TimeUnit.SECONDS);
+			try {
+				driver.findElement(By.xpath("//button[contains(text(),'Cancel')]")).click();
+				Thread.sleep(1000);
+				System.out.println("Clicked on Cancel button");
+			} catch (Exception Ex) {
+				System.out.println("Cancel button not displayed");
+			}
+			try {
+				driver.findElement(By.xpath("//button[contains(text(),'Close')]")).click();
+				Thread.sleep(1000);
+				System.out.println("Clicked on Close button");
+
+			} catch (Exception Ex) {
+				System.out.println("Close button not displayed");
+			} finally {
+				try {
+					RecentChanges_CommonFunctions.finallyBlock_TearDown(driver);
+				} catch (Exception Ex) {
+					System.out.println("Logout link not displayed closing the browser to end the test");
+					Ex.printStackTrace();
+
+					driver.quit();
+				}
+				driver.quit();
+				System.out.println("===========INDIVIDUAL TEST EXECUTION ENDED WITH EXCEPTION=========");
+			}
+
 			test.pass("Closed the Browser");
 
 			// Calling flush writes everything to the Extent Report
@@ -1460,11 +1908,12 @@ public class Common_Business_Functions extends TestCase {
 			String rowNoGbl, String date1, String permissionName, boolean flag)
 			throws IOException, InterruptedException {
 		try {
-			driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
+			driver.manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS);
 			// Find the element to clicked
 			WebElement element = driver.findElement(By
-					.xpath("//*[@id='2']//tree-root/tree-viewport/div/div/tree-node-collection/div/tree-node//label[text()='"
-							+ permissionName + "']/preceding-sibling::input"));
+//					.xpath("//*[@id='2']//tree-root/tree-viewport/div/div/tree-node-collection/div/tree-node//label[text()='"
+//							+ permissionName + "']/preceding-sibling::input"));
+					.xpath("//label[contains(text(),'"+ permissionName + "')]/preceding-sibling::input"));
 			if (flag == true) {
 				if (element.isSelected()) {
 					System.out.println("Permission: " + permissionName + "  is assigned to user as per matrix ");
@@ -1502,7 +1951,36 @@ public class Common_Business_Functions extends TestCase {
 					objCreateScreenshot.createScreenshot(driver, "NoSuchElementException", test, rowNoGbl, date1));
 
 			// Close the Browser
-			driver.quit();
+			System.out.println("Closing The Browser");
+
+			driver.manage().timeouts().implicitlyWait(3, TimeUnit.SECONDS);
+			try {
+				driver.findElement(By.xpath("//button[contains(text(),'Cancel')]")).click();
+				Thread.sleep(1000);
+				System.out.println("Clicked on Cancel button");
+			} catch (Exception Ex) {
+				System.out.println("Cancel button not displayed");
+			}
+			try {
+				driver.findElement(By.xpath("//button[contains(text(),'Close')]")).click();
+				Thread.sleep(1000);
+				System.out.println("Clicked on Close button");
+
+			} catch (Exception Ex) {
+				System.out.println("Close button not displayed");
+			} finally {
+				try {
+					RecentChanges_CommonFunctions.finallyBlock_TearDown(driver);
+				} catch (Exception Ex) {
+					System.out.println("Logout link not displayed closing the browser to end the test");
+					Ex.printStackTrace();
+
+					driver.quit();
+				}
+				driver.quit();
+				System.out.println("===========INDIVIDUAL TEST EXECUTION ENDED WITH EXCEPTION=========");
+			}
+
 			test.pass("Closed the Browser");
 
 			// Calling flush writes everything to the Extent Report
@@ -1516,11 +1994,12 @@ public class Common_Business_Functions extends TestCase {
 			String rowNoGbl, String date1, String permissionName, boolean flag)
 			throws IOException, InterruptedException {
 		try {
-			driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
+			driver.manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS);
 			// Find the element to clicked
 			WebElement element = driver.findElement(By
-					.xpath("//*[@id='1']//tree-root/tree-viewport/div/div/tree-node-collection/div/tree-node/div/tree-node-children/div/tree-node-collection/div/tree-node[9]//label[text()='"
-							+ permissionName + "']/preceding-sibling::input"));
+//					.xpath("//*[@id='1']//tree-root/tree-viewport/div/div/tree-node-collection/div/tree-node/div/tree-node-children/div/tree-node-collection/div/tree-node[9]//label[text()='"
+//							+ permissionName + "']/preceding-sibling::input"));
+			.xpath("//label[contains(text(),'"+ permissionName + "')]/preceding-sibling::input"));
 			if (flag == true) {
 				if (element.isSelected()) {
 					System.out.println("Permission: " + permissionName + "  is assigned to user as per matrix ");
@@ -1558,7 +2037,36 @@ public class Common_Business_Functions extends TestCase {
 					objCreateScreenshot.createScreenshot(driver, "NoSuchElementException", test, rowNoGbl, date1));
 
 			// Close the Browser
-			driver.quit();
+			System.out.println("Closing The Browser");
+
+			driver.manage().timeouts().implicitlyWait(3, TimeUnit.SECONDS);
+			try {
+				driver.findElement(By.xpath("//button[contains(text(),'Cancel')]")).click();
+				Thread.sleep(1000);
+				System.out.println("Clicked on Cancel button");
+			} catch (Exception Ex) {
+				System.out.println("Cancel button not displayed");
+			}
+			try {
+				driver.findElement(By.xpath("//button[contains(text(),'Close')]")).click();
+				Thread.sleep(1000);
+				System.out.println("Clicked on Close button");
+
+			} catch (Exception Ex) {
+				System.out.println("Close button not displayed");
+			} finally {
+				try {
+					RecentChanges_CommonFunctions.finallyBlock_TearDown(driver);
+				} catch (Exception Ex) {
+					System.out.println("Logout link not displayed closing the browser to end the test");
+					Ex.printStackTrace();
+
+					driver.quit();
+				}
+				driver.quit();
+				System.out.println("===========INDIVIDUAL TEST EXECUTION ENDED WITH EXCEPTION=========");
+			}
+
 			test.pass("Closed the Browser");
 
 			// Calling flush writes everything to the Extent Report
@@ -1572,11 +2080,12 @@ public class Common_Business_Functions extends TestCase {
 			String rowNoGbl, String date1, String permissionName, boolean flag)
 			throws IOException, InterruptedException {
 		try {
-			driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
+			driver.manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS);
 			// Find the element to clicked
 			WebElement element = driver.findElement(By
-					.xpath("//*[@id='1']//tree-root/tree-viewport/div/div/tree-node-collection/div/tree-node/div/tree-node-children/div/tree-node-collection/div/tree-node[10]//label[text()='"
-							+ permissionName + "']/preceding-sibling::input"));
+//					.xpath("//*[@id='1']//tree-root/tree-viewport/div/div/tree-node-collection/div/tree-node/div/tree-node-children/div/tree-node-collection/div/tree-node[10]//label[text()='"
+//							+ permissionName + "']/preceding-sibling::input"));
+					.xpath("//label[contains(text(),'"+ permissionName + "')]/preceding-sibling::input"));
 			if (flag == true) {
 				if (element.isSelected()) {
 					System.out.println("Permission: " + permissionName + "  is assigned to user as per matrix ");
@@ -1614,7 +2123,36 @@ public class Common_Business_Functions extends TestCase {
 					objCreateScreenshot.createScreenshot(driver, "NoSuchElementException", test, rowNoGbl, date1));
 
 			// Close the Browser
-			driver.quit();
+			System.out.println("Closing The Browser");
+
+			driver.manage().timeouts().implicitlyWait(3, TimeUnit.SECONDS);
+			try {
+				driver.findElement(By.xpath("//button[contains(text(),'Cancel')]")).click();
+				Thread.sleep(1000);
+				System.out.println("Clicked on Cancel button");
+			} catch (Exception Ex) {
+				System.out.println("Cancel button not displayed");
+			}
+			try {
+				driver.findElement(By.xpath("//button[contains(text(),'Close')]")).click();
+				Thread.sleep(1000);
+				System.out.println("Clicked on Close button");
+
+			} catch (Exception Ex) {
+				System.out.println("Close button not displayed");
+			} finally {
+				try {
+					RecentChanges_CommonFunctions.finallyBlock_TearDown(driver);
+				} catch (Exception Ex) {
+					System.out.println("Logout link not displayed closing the browser to end the test");
+					Ex.printStackTrace();
+
+					driver.quit();
+				}
+				driver.quit();
+				System.out.println("===========INDIVIDUAL TEST EXECUTION ENDED WITH EXCEPTION=========");
+			}
+
 			test.pass("Closed the Browser");
 
 			// Calling flush writes everything to the Extent Report
@@ -1628,11 +2166,12 @@ public class Common_Business_Functions extends TestCase {
 			String rowNoGbl, String date1, String permissionName, boolean flag)
 			throws IOException, InterruptedException {
 		try {
-			driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
+			driver.manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS);
 			// Find the element to clicked
 			WebElement element = driver.findElement(By
-					.xpath("//*[@id='1']//tree-root/tree-viewport/div/div/tree-node-collection/div/tree-node/div/tree-node-children/div/tree-node-collection/div/tree-node[11]//label[text()='"
-							+ permissionName + "']/preceding-sibling::input"));
+//					.xpath("//*[@id='1']//tree-root/tree-viewport/div/div/tree-node-collection/div/tree-node/div/tree-node-children/div/tree-node-collection/div/tree-node[11]//label[text()='"
+//							+ permissionName + "']/preceding-sibling::input"));
+			.xpath("//label[contains(text(),'"+ permissionName + "')]/preceding-sibling::input"));
 			if (flag == true) {
 				if (element.isSelected()) {
 					System.out.println("Permission: " + permissionName + "  is assigned to user as per matrix ");
@@ -1670,7 +2209,36 @@ public class Common_Business_Functions extends TestCase {
 					objCreateScreenshot.createScreenshot(driver, "NoSuchElementException", test, rowNoGbl, date1));
 
 			// Close the Browser
-			driver.quit();
+			System.out.println("Closing The Browser");
+
+			driver.manage().timeouts().implicitlyWait(3, TimeUnit.SECONDS);
+			try {
+				driver.findElement(By.xpath("//button[contains(text(),'Cancel')]")).click();
+				Thread.sleep(1000);
+				System.out.println("Clicked on Cancel button");
+			} catch (Exception Ex) {
+				System.out.println("Cancel button not displayed");
+			}
+			try {
+				driver.findElement(By.xpath("//button[contains(text(),'Close')]")).click();
+				Thread.sleep(1000);
+				System.out.println("Clicked on Close button");
+
+			} catch (Exception Ex) {
+				System.out.println("Close button not displayed");
+			} finally {
+				try {
+					RecentChanges_CommonFunctions.finallyBlock_TearDown(driver);
+				} catch (Exception Ex) {
+					System.out.println("Logout link not displayed closing the browser to end the test");
+					Ex.printStackTrace();
+
+					driver.quit();
+				}
+				driver.quit();
+				System.out.println("===========INDIVIDUAL TEST EXECUTION ENDED WITH EXCEPTION=========");
+			}
+
 			test.pass("Closed the Browser");
 
 			// Calling flush writes everything to the Extent Report
@@ -1683,11 +2251,12 @@ public class Common_Business_Functions extends TestCase {
 	public void checkPermissionForValidations(WebDriver driver, ExtentTest test, ExtentReports extent, String rowNoGbl,
 			String date1, String permissionName, boolean flag) throws IOException, InterruptedException {
 		try {
-			driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
+			driver.manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS);
 			// Find the element to clicked
 			WebElement element = driver.findElement(By
-					.xpath("//*[@id='1']//tree-root/tree-viewport/div/div/tree-node-collection/div/tree-node/div/tree-node-children/div/tree-node-collection/div/tree-node[12]//label[text()='"
-							+ permissionName + "']/preceding-sibling::input"));
+//					.xpath("//*[@id='1']//tree-root/tree-viewport/div/div/tree-node-collection/div/tree-node/div/tree-node-children/div/tree-node-collection/div/tree-node[12]//label[text()='"
+//							+ permissionName + "']/preceding-sibling::input"));
+					.xpath("//label[contains(text(),'"+ permissionName + "')]/preceding-sibling::input"));
 			if (flag == true) {
 				if (element.isSelected()) {
 					System.out.println("Permission: " + permissionName + "  is assigned to user as per matrix ");
@@ -1725,7 +2294,36 @@ public class Common_Business_Functions extends TestCase {
 					objCreateScreenshot.createScreenshot(driver, "NoSuchElementException", test, rowNoGbl, date1));
 
 			// Close the Browser
-			driver.quit();
+			System.out.println("Closing The Browser");
+
+			driver.manage().timeouts().implicitlyWait(3, TimeUnit.SECONDS);
+			try {
+				driver.findElement(By.xpath("//button[contains(text(),'Cancel')]")).click();
+				Thread.sleep(1000);
+				System.out.println("Clicked on Cancel button");
+			} catch (Exception Ex) {
+				System.out.println("Cancel button not displayed");
+			}
+			try {
+				driver.findElement(By.xpath("//button[contains(text(),'Close')]")).click();
+				Thread.sleep(1000);
+				System.out.println("Clicked on Close button");
+
+			} catch (Exception Ex) {
+				System.out.println("Close button not displayed");
+			} finally {
+				try {
+					RecentChanges_CommonFunctions.finallyBlock_TearDown(driver);
+				} catch (Exception Ex) {
+					System.out.println("Logout link not displayed closing the browser to end the test");
+					Ex.printStackTrace();
+
+					driver.quit();
+				}
+				driver.quit();
+				System.out.println("===========INDIVIDUAL TEST EXECUTION ENDED WITH EXCEPTION=========");
+			}
+
 			test.pass("Closed the Browser");
 
 			// Calling flush writes everything to the Extent Report
@@ -1738,11 +2336,12 @@ public class Common_Business_Functions extends TestCase {
 	public void checkPermissionForDiscExport(WebDriver driver, ExtentTest test, ExtentReports extent, String rowNoGbl,
 			String date1, String permissionName, boolean flag) throws IOException, InterruptedException {
 		try {
-			driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
+			driver.manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS);
 			// Find the element to clicked
 			WebElement element = driver.findElement(By
-					.xpath("//*[@id='1']//tree-root/tree-viewport/div/div/tree-node-collection/div/tree-node/div/tree-node-children/div/tree-node-collection/div/tree-node[13]//label[text()='"
-							+ permissionName + "']/preceding-sibling::input"));
+//					.xpath("//*[@id='1']//tree-root/tree-viewport/div/div/tree-node-collection/div/tree-node/div/tree-node-children/div/tree-node-collection/div/tree-node[13]//label[text()='"
+//							+ permissionName + "']/preceding-sibling::input"));
+			.xpath("//label[contains(text(),'"+ permissionName + "')]/preceding-sibling::input"));
 			if (flag == true) {
 				if (element.isSelected()) {
 					System.out.println("Permission: " + permissionName + "  is assigned to user as per matrix ");
@@ -1780,7 +2379,36 @@ public class Common_Business_Functions extends TestCase {
 					objCreateScreenshot.createScreenshot(driver, "NoSuchElementException", test, rowNoGbl, date1));
 
 			// Close the Browser
-			driver.quit();
+			System.out.println("Closing The Browser");
+
+			driver.manage().timeouts().implicitlyWait(3, TimeUnit.SECONDS);
+			try {
+				driver.findElement(By.xpath("//button[contains(text(),'Cancel')]")).click();
+				Thread.sleep(1000);
+				System.out.println("Clicked on Cancel button");
+			} catch (Exception Ex) {
+				System.out.println("Cancel button not displayed");
+			}
+			try {
+				driver.findElement(By.xpath("//button[contains(text(),'Close')]")).click();
+				Thread.sleep(1000);
+				System.out.println("Clicked on Close button");
+
+			} catch (Exception Ex) {
+				System.out.println("Close button not displayed");
+			} finally {
+				try {
+					RecentChanges_CommonFunctions.finallyBlock_TearDown(driver);
+				} catch (Exception Ex) {
+					System.out.println("Logout link not displayed closing the browser to end the test");
+					Ex.printStackTrace();
+
+					driver.quit();
+				}
+				driver.quit();
+				System.out.println("===========INDIVIDUAL TEST EXECUTION ENDED WITH EXCEPTION=========");
+			}
+
 			test.pass("Closed the Browser");
 
 			// Calling flush writes everything to the Extent Report
@@ -1793,11 +2421,12 @@ public class Common_Business_Functions extends TestCase {
 	public void checkPermissionForManageUser(WebDriver driver, ExtentTest test, ExtentReports extent, String rowNoGbl,
 			String date1, String permissionName, boolean flag) throws IOException, InterruptedException {
 		try {
-			driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
+			driver.manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS);
 			// Find the element to clicked
 			WebElement element = driver.findElement(By
-					.xpath("//*[@id='3']//tree-root/tree-viewport/div/div/tree-node-collection/div/tree-node/div/tree-node-children/div/tree-node-collection/div/tree-node[1]//label[text()='"
-							+ permissionName + "']/preceding-sibling::input"));
+//					.xpath("//*[@id='3']//tree-root/tree-viewport/div/div/tree-node-collection/div/tree-node/div/tree-node-children/div/tree-node-collection/div/tree-node[1]//label[text()='"
+//							+ permissionName + "']/preceding-sibling::input"));
+					.xpath("//label[contains(text(),'"+ permissionName + "')]/preceding-sibling::input"));
 			if (flag == true) {
 				if (element.isSelected()) {
 					System.out.println("Permission: " + permissionName + "  is assigned to user as per matrix ");
@@ -1835,7 +2464,36 @@ public class Common_Business_Functions extends TestCase {
 					objCreateScreenshot.createScreenshot(driver, "NoSuchElementException", test, rowNoGbl, date1));
 
 			// Close the Browser
-			driver.quit();
+			System.out.println("Closing The Browser");
+
+			driver.manage().timeouts().implicitlyWait(3, TimeUnit.SECONDS);
+			try {
+				driver.findElement(By.xpath("//button[contains(text(),'Cancel')]")).click();
+				Thread.sleep(1000);
+				System.out.println("Clicked on Cancel button");
+			} catch (Exception Ex) {
+				System.out.println("Cancel button not displayed");
+			}
+			try {
+				driver.findElement(By.xpath("//button[contains(text(),'Close')]")).click();
+				Thread.sleep(1000);
+				System.out.println("Clicked on Close button");
+
+			} catch (Exception Ex) {
+				System.out.println("Close button not displayed");
+			} finally {
+				try {
+					RecentChanges_CommonFunctions.finallyBlock_TearDown(driver);
+				} catch (Exception Ex) {
+					System.out.println("Logout link not displayed closing the browser to end the test");
+					Ex.printStackTrace();
+
+					driver.quit();
+				}
+				driver.quit();
+				System.out.println("===========INDIVIDUAL TEST EXECUTION ENDED WITH EXCEPTION=========");
+			}
+
 			test.pass("Closed the Browser");
 
 			// Calling flush writes everything to the Extent Report
@@ -1848,11 +2506,12 @@ public class Common_Business_Functions extends TestCase {
 	public void checkPermissionForRoles(WebDriver driver, ExtentTest test, ExtentReports extent, String rowNoGbl,
 			String date1, String permissionName, boolean flag) throws IOException, InterruptedException {
 		try {
-			driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
+			driver.manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS);
 			// Find the element to clicked
 			WebElement element = driver.findElement(By
-					.xpath("//*[@id='3']//tree-root/tree-viewport/div/div/tree-node-collection/div/tree-node/div/tree-node-children/div/tree-node-collection/div/tree-node[2]//label[text()='"
-							+ permissionName + "']/preceding-sibling::input"));
+//					.xpath("//*[@id='3']//tree-root/tree-viewport/div/div/tree-node-collection/div/tree-node/div/tree-node-children/div/tree-node-collection/div/tree-node[2]//label[text()='"
+//							+ permissionName + "']/preceding-sibling::input"));
+					.xpath("//label[contains(text(),'"+ permissionName + "')]/preceding-sibling::input"));
 			if (flag == true) {
 				if (element.isSelected()) {
 					System.out.println("Permission: " + permissionName + "  is assigned to user as per matrix ");
@@ -1890,7 +2549,36 @@ public class Common_Business_Functions extends TestCase {
 					objCreateScreenshot.createScreenshot(driver, "NoSuchElementException", test, rowNoGbl, date1));
 
 			// Close the Browser
-			driver.quit();
+			System.out.println("Closing The Browser");
+
+			driver.manage().timeouts().implicitlyWait(3, TimeUnit.SECONDS);
+			try {
+				driver.findElement(By.xpath("//button[contains(text(),'Cancel')]")).click();
+				Thread.sleep(1000);
+				System.out.println("Clicked on Cancel button");
+			} catch (Exception Ex) {
+				System.out.println("Cancel button not displayed");
+			}
+			try {
+				driver.findElement(By.xpath("//button[contains(text(),'Close')]")).click();
+				Thread.sleep(1000);
+				System.out.println("Clicked on Close button");
+
+			} catch (Exception Ex) {
+				System.out.println("Close button not displayed");
+			} finally {
+				try {
+					RecentChanges_CommonFunctions.finallyBlock_TearDown(driver);
+				} catch (Exception Ex) {
+					System.out.println("Logout link not displayed closing the browser to end the test");
+					Ex.printStackTrace();
+
+					driver.quit();
+				}
+				driver.quit();
+				System.out.println("===========INDIVIDUAL TEST EXECUTION ENDED WITH EXCEPTION=========");
+			}
+
 			test.pass("Closed the Browser");
 
 			// Calling flush writes everything to the Extent Report
@@ -1904,11 +2592,12 @@ public class Common_Business_Functions extends TestCase {
 			String rowNoGbl, String date1, String permissionName, boolean flag)
 			throws IOException, InterruptedException {
 		try {
-			driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
+			driver.manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS);
 			// Find the element to clicked
 			WebElement element = driver.findElement(By
-					.xpath("//*[@id='1']//tree-root/tree-viewport/div/div/tree-node-collection/div/tree-node/div/tree-node-children/div/tree-node-collection/div/tree-node[7]//label[text()='"
-							+ permissionName + "']/preceding-sibling::input"));
+//					.xpath("//*[@id='1']//tree-root/tree-viewport/div/div/tree-node-collection/div/tree-node/div/tree-node-children/div/tree-node-collection/div/tree-node[7]//label[text()='"
+//							+ permissionName + "']/preceding-sibling::input"));
+					.xpath("//label[contains(text(),'" + permissionName + "')]/preceding-sibling::input"));
 			if (flag == true) {
 				if (element.isSelected()) {
 					System.out.println("Permission: " + permissionName + "  is assigned to user as per matrix ");
@@ -1946,7 +2635,36 @@ public class Common_Business_Functions extends TestCase {
 					objCreateScreenshot.createScreenshot(driver, "NoSuchElementException", test, rowNoGbl, date1));
 
 			// Close the Browser
-			driver.quit();
+			System.out.println("Closing The Browser");
+
+			driver.manage().timeouts().implicitlyWait(3, TimeUnit.SECONDS);
+			try {
+				driver.findElement(By.xpath("//button[contains(text(),'Cancel')]")).click();
+				Thread.sleep(1000);
+				System.out.println("Clicked on Cancel button");
+			} catch (Exception Ex) {
+				System.out.println("Cancel button not displayed");
+			}
+			try {
+				driver.findElement(By.xpath("//button[contains(text(),'Close')]")).click();
+				Thread.sleep(1000);
+				System.out.println("Clicked on Close button");
+
+			} catch (Exception Ex) {
+				System.out.println("Close button not displayed");
+			} finally {
+				try {
+					RecentChanges_CommonFunctions.finallyBlock_TearDown(driver);
+				} catch (Exception Ex) {
+					System.out.println("Logout link not displayed closing the browser to end the test");
+					Ex.printStackTrace();
+
+					driver.quit();
+				}
+				driver.quit();
+				System.out.println("===========INDIVIDUAL TEST EXECUTION ENDED WITH EXCEPTION=========");
+			}
+
 			test.pass("Closed the Browser");
 
 			// Calling flush writes everything to the Extent Report
@@ -1959,11 +2677,13 @@ public class Common_Business_Functions extends TestCase {
 	public void checkPermissionForMetadata(WebDriver driver, ExtentTest test, ExtentReports extent, String rowNoGbl,
 			String date1, String permissionName, boolean flag) throws IOException, InterruptedException {
 		try {
-			driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
+			driver.manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS);
 			// Find the element to clicked
-			WebElement element = driver.findElement(By
-					.xpath("//*[@id='1']//tree-viewport/div/div/tree-node-collection/div/tree-node/div/tree-node-children/div/tree-node-collection/div/tree-node[3]//label[text()='"
-							+ permissionName + "']/preceding-sibling::input"));
+			// WebElement element = driver.findElement(By
+			// .xpath("//*[@id='1']//tree-viewport/div/div/tree-node-collection/div/tree-node/div/tree-node-children/div/tree-node-collection/div/tree-node[3]//label[text()='"
+			// + permissionName + "']/preceding-sibling::input"));
+			WebElement element = driver
+					.findElement(By.xpath("//label[text()='" + permissionName + "']/preceding-sibling::input"));
 
 			if (flag == true) {
 				if (element.isSelected()) {
@@ -2004,7 +2724,36 @@ public class Common_Business_Functions extends TestCase {
 					objCreateScreenshot.createScreenshot(driver, "NoSuchElementException", test, rowNoGbl, date1));
 
 			// Close the Browser
-			driver.quit();
+			System.out.println("Closing The Browser");
+
+			driver.manage().timeouts().implicitlyWait(3, TimeUnit.SECONDS);
+			try {
+				driver.findElement(By.xpath("//button[contains(text(),'Cancel')]")).click();
+				Thread.sleep(1000);
+				System.out.println("Clicked on Cancel button");
+			} catch (Exception Ex) {
+				System.out.println("Cancel button not displayed");
+			}
+			try {
+				driver.findElement(By.xpath("//button[contains(text(),'Close')]")).click();
+				Thread.sleep(1000);
+				System.out.println("Clicked on Close button");
+
+			} catch (Exception Ex) {
+				System.out.println("Close button not displayed");
+			} finally {
+				try {
+					RecentChanges_CommonFunctions.finallyBlock_TearDown(driver);
+				} catch (Exception Ex) {
+					System.out.println("Logout link not displayed closing the browser to end the test");
+					Ex.printStackTrace();
+
+					driver.quit();
+				}
+				driver.quit();
+				System.out.println("===========INDIVIDUAL TEST EXECUTION ENDED WITH EXCEPTION=========");
+			}
+
 			test.pass("Closed the Browser");
 
 			// Calling flush writes everything to the Extent Report
@@ -2019,7 +2768,7 @@ public class Common_Business_Functions extends TestCase {
 		try {
 			Thread.sleep(2000);
 			// Find the element to clicked
-			driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
+			driver.manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS);
 			WebElement element = driver
 					.findElement(By.xpath("//*[@id='permissionlist']//h2[contains(text(),'" + elemenyToClick + "')]"));
 			if (element.isDisplayed()) {
@@ -2029,14 +2778,6 @@ public class Common_Business_Functions extends TestCase {
 						MediaEntityBuilder.createScreenCaptureFromPath(
 								objCreateScreenshot.createScreenshot(driver, "VerifyElement", test, rowNoGbl, date1))
 								.build());
-				// } else {
-				// test.fail("Element " + elemenyToClick + " not available",
-				// MediaEntityBuilder.createScreenCaptureFromPath(
-				// objCreateScreenshot.createScreenshot(driver,
-				// "VerifyActionItem", test, rowNoGbl, date1))
-				// .build());
-				// test.log(Status.INFO, "Successfully Clicked on element:
-				// "+elemenyToClick);
 			}
 			extent.flush();
 		} catch (Exception e) {
@@ -2047,7 +2788,36 @@ public class Common_Business_Functions extends TestCase {
 					objCreateScreenshot.createScreenshot(driver, "NoSuchElementException", test, rowNoGbl, date1));
 
 			// Close the Browser
-			driver.quit();
+			System.out.println("Closing The Browser");
+
+			driver.manage().timeouts().implicitlyWait(3, TimeUnit.SECONDS);
+			try {
+				driver.findElement(By.xpath("//button[contains(text(),'Cancel')]")).click();
+				Thread.sleep(1000);
+				System.out.println("Clicked on Cancel button");
+			} catch (Exception Ex) {
+				System.out.println("Cancel button not displayed");
+			}
+			try {
+				driver.findElement(By.xpath("//button[contains(text(),'Close')]")).click();
+				Thread.sleep(1000);
+				System.out.println("Clicked on Close button");
+
+			} catch (Exception Ex) {
+				System.out.println("Close button not displayed");
+			} finally {
+				try {
+					RecentChanges_CommonFunctions.finallyBlock_TearDown(driver);
+				} catch (Exception Ex) {
+					System.out.println("Logout link not displayed closing the browser to end the test");
+					Ex.printStackTrace();
+
+					driver.quit();
+				}
+				driver.quit();
+				System.out.println("===========INDIVIDUAL TEST EXECUTION ENDED WITH EXCEPTION=========");
+			}
+
 			test.pass("Closed the Browser");
 
 			// Calling flush writes everything to the Extent Report
@@ -2060,8 +2830,8 @@ public class Common_Business_Functions extends TestCase {
 	public void VerifyNewRecordInTheList(WebDriver driver, ExtentTest test, ExtentReports extent, String rowNoGbl,
 			String date1, String columnName, String recordValue) throws Exception {
 		try {
-			Thread.sleep(3000);
-			driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
+			Thread.sleep(1000);
+			driver.manage().timeouts().implicitlyWait(20, TimeUnit.SECONDS);
 			List<WebElement> records;
 			int i = 0;
 			records = driver.findElements(By.xpath(".//div[@col-id='" + columnName + "'][@role='gridcell']"));
@@ -2073,13 +2843,15 @@ public class Common_Business_Functions extends TestCase {
 						String name = element.getText();
 						if (name.equalsIgnoreCase(recordValue)) {
 							System.out.println("New record added to the list");
-							test.pass("Verified New record added to the list: " + name + "",
+							test.pass(
+									"Verified New record added to the list with status : " + name + "| Expected : "
+											+ recordValue + ", Actual : " + name + "",
 									MediaEntityBuilder.createScreenCaptureFromPath(objCreateScreenshot
 											.createScreenshot(driver, "VerifyNewRecord", test, rowNoGbl, date1))
 											.build());
 						} else {
 							System.out.println("New record not added to the list");
-							test.fail("New record not added to the list " + name + "",
+							test.fail("Expected : " + recordValue + ", Actual : " + name + "",
 									MediaEntityBuilder.createScreenCaptureFromPath(objCreateScreenshot
 											.createScreenshot(driver, "VerifyNewRecord", test, rowNoGbl, date1))
 											.build());
@@ -2114,7 +2886,7 @@ public class Common_Business_Functions extends TestCase {
 			By xpath, String operation) throws Exception {
 		try {
 			Thread.sleep(2000);
-			driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
+			driver.manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS);
 			WebElement element = driver.findElement(xpath);
 			if (operation.equalsIgnoreCase("Y")) {
 				if (element.isDisplayed()) {
@@ -2147,7 +2919,7 @@ public class Common_Business_Functions extends TestCase {
 			String Value) throws Exception {
 		try {
 			Thread.sleep(2000);
-			driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
+			driver.manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS);
 			WebElement element = driver
 					.findElement(By.xpath("//label/input[@formcontrolname='" + Value + "']/following-sibling::span"));
 
@@ -2177,7 +2949,7 @@ public class Common_Business_Functions extends TestCase {
 			String date1, By xpath) throws Exception {
 		try {
 			Thread.sleep(2000);
-			driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
+			driver.manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS);
 			WebElement element = driver.findElement(xpath);
 			element.click();
 			test.log(Status.PASS, "Radio button selected");
@@ -2200,7 +2972,7 @@ public class Common_Business_Functions extends TestCase {
 			String rowNoGbl, String date1, By xpath, String operation) throws Exception {
 		try {
 			Thread.sleep(2000);
-			driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
+			driver.manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS);
 			WebElement element = driver.findElement(xpath);
 			if (operation.equalsIgnoreCase("Y")) {
 				if (element.isDisplayed()) {
@@ -2233,7 +3005,7 @@ public class Common_Business_Functions extends TestCase {
 			String date1, By xpath, String listItem) throws Exception {
 		try {
 			Thread.sleep(2000);
-			driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
+			driver.manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS);
 			Select element = new Select(driver.findElement((xpath)));
 			element.selectByIndex(1);
 
@@ -2259,7 +3031,7 @@ public class Common_Business_Functions extends TestCase {
 			String date1, By xpath) throws Exception {
 		try {
 			Thread.sleep(2000);
-			driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
+			driver.manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS);
 			Select element = new Select(driver.findElement((xpath)));
 			List<WebElement> items = element.getOptions();
 			int size = items.size();
@@ -2285,7 +3057,7 @@ public class Common_Business_Functions extends TestCase {
 			By xpath, String listItem) throws Exception {
 		try {
 			Thread.sleep(2000);
-			driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
+			driver.manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS);
 			driver.findElement(xpath);
 			WebElement element = driver.findElement(By.xpath("//option[contains(text(),'" + listItem + "')]"));
 			element.click();
@@ -2312,7 +3084,7 @@ public class Common_Business_Functions extends TestCase {
 		try {
 			Thread.sleep(2000);
 			WebElement fieldToCheck;
-			driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
+			driver.manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS);
 			fieldToCheck = driver.findElement(objPageReadDict.getLocator("objSearchByName"));
 			if (fieldToCheck.isDisplayed()) {
 				fieldToCheck.clear();
@@ -2342,10 +3114,20 @@ public class Common_Business_Functions extends TestCase {
 	public void SearchDataCollection(WebDriver driver, ExtentTest test, ExtentReports extent, String rowNoGbl,
 			String date1, String DCName) {
 		try {
-			driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
+			driver.manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS);
 			WebElement DataColl = driver.findElement(objPageObjsProRead.getLocator("objSearchDC"));
+			DataColl.clear();
 			DataColl.sendKeys(DCName);
-			Thread.sleep(4000);
+			Thread.sleep(2000);
+			String strCode = driver.findElement(By.xpath("//div[@tabindex='-1'][@col-id='code']")).getText();
+			// String strCode1 =
+			// driver.findElement(By.xpath("//div[@tabindex='-1'][@col-id='code']")).getAttribute("value");
+			if (strCode.equalsIgnoreCase(DCName)) {
+				test.log(Status.INFO, "Successfully searched Data collection : " + DCName);
+			} else {
+				test.log(Status.FAIL, "Unable to search data collection code : " + DCName);
+			}
+
 			extent.flush();
 		} catch (Exception e) {
 			System.out.println("Error while searching Data collection: " + e);
@@ -2355,9 +3137,9 @@ public class Common_Business_Functions extends TestCase {
 	public void clickOnMenu(WebDriver driver, ExtentTest test, ExtentReports extent, String rowNoGbl, String date1,
 			String lnkText) throws Exception {
 		try {
-			Thread.sleep(3000);
+			Thread.sleep(1500);
 			// Find the element to clicked
-			driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
+			driver.manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS);
 			if (driver.findElement(By.xpath(".//a[contains(text(),'" + lnkText + "')]")).isDisplayed()) {
 				WebElement lnkToClick = driver.findElement(By.xpath(".//a[contains(text(),'" + lnkText + "')]"));
 				lnkToClick.click();
@@ -2375,7 +3157,36 @@ public class Common_Business_Functions extends TestCase {
 					objCreateScreenshot.createScreenshot(driver, "NoSuchElementException", test, rowNoGbl, date1));
 
 			// Close the Browser
-			driver.quit();
+			System.out.println("Closing The Browser");
+
+			driver.manage().timeouts().implicitlyWait(3, TimeUnit.SECONDS);
+			try {
+				driver.findElement(By.xpath("//button[contains(text(),'Cancel')]")).click();
+				Thread.sleep(1000);
+				System.out.println("Clicked on Cancel button");
+			} catch (Exception Ex) {
+				System.out.println("Cancel button not displayed");
+			}
+			try {
+				driver.findElement(By.xpath("//button[contains(text(),'Close')]")).click();
+				Thread.sleep(1000);
+				System.out.println("Clicked on Close button");
+
+			} catch (Exception Ex) {
+				System.out.println("Close button not displayed");
+			} finally {
+				try {
+					RecentChanges_CommonFunctions.finallyBlock_TearDown(driver);
+				} catch (Exception Ex) {
+					System.out.println("Logout link not displayed closing the browser to end the test");
+					Ex.printStackTrace();
+
+					driver.quit();
+				}
+				driver.quit();
+				System.out.println("===========INDIVIDUAL TEST EXECUTION ENDED WITH EXCEPTION=========");
+			}
+
 			test.pass("Closed the Browser");
 
 			// Calling flush writes everything to the Extent Report
@@ -2389,7 +3200,7 @@ public class Common_Business_Functions extends TestCase {
 			String date1, By xpath, String listItem) throws Exception {
 		try {
 			Thread.sleep(2000);
-			driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
+			driver.manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS);
 			WebElement element = driver.findElement((xpath));
 			element.click();
 			String[] ArrSplit = listItem.split(",");
@@ -2426,7 +3237,7 @@ public class Common_Business_Functions extends TestCase {
 			String date1, String value) throws IOException, InterruptedException {
 		try {
 			Thread.sleep(2000);
-			driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
+			driver.manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS);
 			WebElement fieldToCheck;
 			fieldToCheck = driver.findElement(objPageReadModules.getLocator("objSearchCode"));
 			if (fieldToCheck.isDisplayed()) {
@@ -2458,7 +3269,7 @@ public class Common_Business_Functions extends TestCase {
 			String value) throws IOException, InterruptedException {
 		try {
 			Thread.sleep(2000);
-			driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
+			driver.manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS);
 			WebElement fieldToCheck;
 			fieldToCheck = driver.findElement(objPageReadDefinition.getLocator("objRuleIDSearch"));
 			if (fieldToCheck.isDisplayed()) {
@@ -2477,7 +3288,7 @@ public class Common_Business_Functions extends TestCase {
 			String rowNoGbl, String date1, String value) throws IOException, InterruptedException {
 		try {
 			Thread.sleep(2000);
-			driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
+			driver.manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS);
 			WebElement fieldToCheck;
 			fieldToCheck = driver.findElement(objPageReadFileSub.getLocator("objSearchModule"));
 			if (fieldToCheck.isDisplayed()) {
@@ -2507,7 +3318,7 @@ public class Common_Business_Functions extends TestCase {
 			String rowNoGbl, String date1, String value) throws IOException, InterruptedException {
 		try {
 			Thread.sleep(2000);
-			driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
+			driver.manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS);
 			WebElement fieldToCheck;
 			fieldToCheck = driver.findElement(objPageReadFileSub.getLocator("objSearchCycle"));
 			if (fieldToCheck.isDisplayed()) {
@@ -2537,7 +3348,7 @@ public class Common_Business_Functions extends TestCase {
 			String colName) throws IOException, InterruptedException {
 		try {
 			Thread.sleep(2000);
-			driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
+			driver.manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS);
 			scrollToRight(driver, test, extent, rowNoGbl, date1);
 			WebElement element = driver
 					.findElement(By.xpath("//div[@col-id='" + colName + "']//i[@class='fa fa-check-circle']"));
@@ -2546,14 +3357,6 @@ public class Common_Business_Functions extends TestCase {
 				test.pass(" Status is green for " + colName + "", MediaEntityBuilder.createScreenCaptureFromPath(
 						objCreateScreenshot.createScreenshot(driver, "VerifyCheckStatusPassed", test, rowNoGbl, date1))
 						.build());
-				// } else {
-				// System.out.println("Status is not green for " + colName +
-				// "");
-				// test.fail(" Status is not green for " + colName + "",
-				// MediaEntityBuilder.createScreenCaptureFromPath(
-				// objCreateScreenshot.createScreenshot(driver,
-				// "VerifyRecordsCountFailed", test, rowNoGbl, date1))
-				// .build());
 			}
 			extent.flush();
 		} catch (Exception e) {
@@ -2574,7 +3377,7 @@ public class Common_Business_Functions extends TestCase {
 			By xpath, String workbookName, String colName) throws IOException, InterruptedException {
 		try {
 			Thread.sleep(2000);
-			driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
+			driver.manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS);
 			String value = null;
 			String selectedCycleName = null;
 			WebElement element = driver.findElement(xpath);
@@ -2588,11 +3391,6 @@ public class Common_Business_Functions extends TestCase {
 				String Path = "src/test/java/TestData/" + workbookName;
 				ExcelUtils.setCellValueUsingColName(Path, colName, rowNoGbl, selectedCycleName);
 				System.out.println("Cycle name is " + selectedCycleName + "");
-				// test.pass("Successfully captured cycle name : " +
-				// selectedCycleName + "",
-				// MediaEntityBuilder.createScreenCaptureFromPath(objCreateScreenshot.createScreenshot(driver,
-				// "VerifyCaptureCycleNamePassed", test, rowNoGbl,
-				// date1)).build());
 				test.log(Status.INFO, "Successfully captured cycle name : " + selectedCycleName);
 			}
 			extent.flush();
@@ -2614,7 +3412,7 @@ public class Common_Business_Functions extends TestCase {
 			String date1) throws Exception {
 		try {
 			Thread.sleep(4000);
-			driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
+			driver.manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS);
 			List<WebElement> records;
 			records = driver.findElements(By.xpath(".//div[@role='gridcell']"));
 			int size = records.size();
@@ -2649,7 +3447,7 @@ public class Common_Business_Functions extends TestCase {
 			String columnName, String fileStatus) throws Exception {
 		try {
 			Thread.sleep(4000);
-			driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
+			driver.manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS);
 			List<WebElement> records;
 			int i = 0;
 			scrollToRightForFileVault(driver, test, extent, rowNoGbl, date1);
@@ -2757,7 +3555,7 @@ public class Common_Business_Functions extends TestCase {
 			String rowNoGbl, String date1, String strSuccessMsg) {
 		try {
 			Thread.sleep(2000);
-			driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
+			driver.manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS);
 			if (driver.findElement(objPageObjsProRead.getLocator("objFileUploadSuccessImage")).isDisplayed()) {
 
 				String strActMsg = driver.findElement(objPageObjsProRead.getLocator("objSuccessMsg")).getText();
@@ -2807,7 +3605,7 @@ public class Common_Business_Functions extends TestCase {
 			String date1, String linkText) {
 		try {
 			Thread.sleep(2000);
-			driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
+			driver.manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS);
 			WebElement linkToClick = driver.findElement(By.xpath("//div/label/a[contains(text(),'" + linkText + "')]"));
 			if (linkToClick.isDisplayed()) {
 				System.out.println("Link is present on pop up");
@@ -2815,14 +3613,23 @@ public class Common_Business_Functions extends TestCase {
 						MediaEntityBuilder.createScreenCaptureFromPath(objCreateScreenshot.createScreenshot(driver,
 								"VerifyLinkDisplayed", test, rowNoGbl, date1)).build());
 				linkToClick.click();
-				// test.pass("Click on link :" + linkText,
-				// MediaEntityBuilder.createScreenCaptureFromPath(
-				// objCreateScreenshot.createScreenshot(driver,
-				// "VerifyLinkClicked", test, rowNoGbl, date1))
-				// .build());
 				test.log(Status.INFO, "Successfully clicked on link: " + linkText);
-				Thread.sleep(120000);
 				// Thread.sleep(120000);
+				int Counter = 0;
+				int count1 = 240;
+				String status = driver.findElement(By.xpath("(//div[@role='gridcell' and @col-id='status'])[1]"))
+						.getText();
+				while ((!status.equalsIgnoreCase("Successful") && count1 != 0)
+						&& (!status.equalsIgnoreCase("Failed") && count1 != 0)) {
+					Thread.sleep(3000);
+					Counter = Counter + 3;
+					driver.navigate().refresh();
+					status = driver.findElement(By.xpath("(//div[@role='gridcell' and @col-id='status'])[1]"))
+							.getText();
+					count1 = count1 - 3;
+				}
+				test.log(Status.INFO, "Total time taken for Template upload is : " + Counter + " Seconds");
+
 			}
 			extent.flush();
 		} catch (Exception e) {
@@ -2848,7 +3655,7 @@ public class Common_Business_Functions extends TestCase {
 			String linkText) {
 		try {
 			Thread.sleep(2000);
-			driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
+			driver.manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS);
 			WebElement linkToClick = driver.findElement(By.xpath("//div//a[contains(text(),'" + linkText + "')]"));
 			if (linkToClick.isDisplayed()) {
 				System.out.println("Link is present on pop up");
@@ -2888,7 +3695,7 @@ public class Common_Business_Functions extends TestCase {
 			ExtentReports extent, String rowNoGbl, String date1, String strSuccessMsg) {
 		try {
 			Thread.sleep(2000);
-			driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
+			driver.manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS);
 			if (driver.findElement(objPageObjsProRead.getLocator("objFileUploadSuccessImage")).isDisplayed()) {
 
 				String strActMsg = driver.findElement(objPageObjsProRead.getLocator("objUpdateSuccessMsg")).getText();
@@ -2938,7 +3745,7 @@ public class Common_Business_Functions extends TestCase {
 			String rowNoGbl, String date1, String strExpTxt) {
 		try {
 			Thread.sleep(2000);
-			driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
+			driver.manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS);
 			if (driver.findElement(objPageObjsProRead.getLocator("objFailImage")).isDisplayed()) {
 
 				String strActMsg = driver.findElement(objPageObjsProRead.getLocator("objFailureMsg")).getText();
@@ -2977,10 +3784,11 @@ public class Common_Business_Functions extends TestCase {
 	}
 
 	public void verifyErrorText(WebDriver driver, ExtentTest test, String strFilePath, ExtentReports extent,
-			String rowNoGbl, String date1, String strErrorMsg) {
+			String rowNoGbl, String date1, String strErrorMsg) throws IOException {
 		try {
 			Thread.sleep(2000);
-			driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
+			driver.manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS);
+			// driver.findElement(By.xpath("//input[@formcontrolname='moduleName']")).click();
 			Actions action = new Actions(driver);
 			action.sendKeys(Keys.TAB).build().perform();
 			if (driver.findElement(objPageObjsProRead.getLocator("objFailImage")).isDisplayed()) {
@@ -3012,6 +3820,9 @@ public class Common_Business_Functions extends TestCase {
 			System.out.println("In catch block");
 			// Add the screenshot to the Reporting steps with a hyperlink
 			test.fail("NoSuchElementException : " + e.getMessage());
+			test.fail("Expected Error Message not displayed : " + strErrorMsg,
+					MediaEntityBuilder.createScreenCaptureFromPath(objCreateScreenshot.createScreenshot(driver,
+							"ErrorNotDisplayed_Fail", test, rowNoGbl, date1)).build());
 			// Calling flush writes everything to the Extent Report
 			extent.flush();
 
@@ -3023,7 +3834,7 @@ public class Common_Business_Functions extends TestCase {
 			String rowNoGbl, String date1, String strErrorMsg) {
 		try {
 			Thread.sleep(2000);
-			driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
+			driver.manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS);
 			if (driver.findElement(By.xpath("//div[@col-id='validationErrorCode'][@role='gridcell']")).isDisplayed()) {
 
 				String strActMsg = driver
@@ -3288,7 +4099,7 @@ public class Common_Business_Functions extends TestCase {
 	public void verifyCheckboxIsDisabled(WebDriver driver, ExtentTest test, ExtentReports extent, String rowNoGbl,
 			String date1, String value) {
 		try {
-			driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
+			driver.manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS);
 			WebElement element = driver
 					.findElement(By.xpath("//label[text()='" + value + "']/preceding-sibling::input"));
 			if (!element.isEnabled()) {
@@ -3316,7 +4127,7 @@ public class Common_Business_Functions extends TestCase {
 	public void verifyButtonIsDisabled(WebDriver driver, ExtentTest test, ExtentReports extent, String rowNoGbl,
 			String date1, String value) {
 		try {
-			driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
+			driver.manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS);
 			WebElement element = driver.findElement(By.xpath("//button[contains(text(),'" + value + "')]"));
 			if (!element.isEnabled()) {
 				System.out.println("Button is disabled");
@@ -3345,7 +4156,7 @@ public class Common_Business_Functions extends TestCase {
 	public void verifyCheckboxIsNotSelected(WebDriver driver, ExtentTest test, ExtentReports extent, String rowNoGbl,
 			String date1, String value) {
 		try {
-			driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
+			driver.manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS);
 			WebElement element = driver
 					.findElement(By.xpath("//label[text()='" + value + "']/preceding-sibling::input"));
 			if (!element.isSelected()) {
@@ -3374,7 +4185,7 @@ public class Common_Business_Functions extends TestCase {
 	public void verifyCheckboxIsEnabled(WebDriver driver, ExtentTest test, ExtentReports extent, String rowNoGbl,
 			String date1, String value) {
 		try {
-			driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
+			driver.manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS);
 			WebElement element = driver.findElement(By.xpath(
 					"//label[text()='" + value + "']/preceding-sibling::input[@formcontrolname='" + value + "']"));
 			if (element.isEnabled()) {
@@ -3401,7 +4212,7 @@ public class Common_Business_Functions extends TestCase {
 			String date1, String value, String element) {
 		try {
 			Thread.sleep(2000);
-			driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
+			driver.manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS);
 			WebElement fieldToCheck = driver
 					.findElement(By.xpath("//div/label[contains(text(),'" + element + "')]/following-sibling::input"));
 			String valueOfField = fieldToCheck.getAttribute("value");
@@ -3427,7 +4238,7 @@ public class Common_Business_Functions extends TestCase {
 	public void searchRecordForProcessStatusInStatus(WebDriver driver, ExtentTest test, ExtentReports extent,
 			String rowNoGbl, String date1, String value) throws IOException, InterruptedException {
 		try {
-			driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
+			driver.manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS);
 			WebElement fieldToCheck;
 			fieldToCheck = driver.findElement(objPageReadDefinition.getLocator("objDISCProcessStatusSrch"));
 			if (fieldToCheck.isDisplayed()) {
@@ -3457,7 +4268,7 @@ public class Common_Business_Functions extends TestCase {
 			By Xpa) throws Exception {
 		try {
 			Thread.sleep(2000);
-			driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
+			driver.manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS);
 			WebElement element = driver.findElement(Xpa);
 
 			if (element.isDisplayed()) {
@@ -3487,7 +4298,7 @@ public class Common_Business_Functions extends TestCase {
 			String date1, By xpath, String listItem) throws Exception {
 		try {
 			Thread.sleep(2000);
-			driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
+			driver.manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS);
 
 			WebElement element = driver.findElement(xpath);
 			Select sel = new Select(element);
@@ -3515,7 +4326,7 @@ public class Common_Business_Functions extends TestCase {
 			String date1, String screenName) throws IOException {
 		try {
 			Thread.sleep(2000);
-			driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
+			driver.manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS);
 			// Find the element to clicked
 			WebElement screenNameToCheck = driver
 					.findElement(By.xpath("//div/h1[contains(text(),'" + screenName + "')]"));
@@ -3554,20 +4365,17 @@ public class Common_Business_Functions extends TestCase {
 	public void searchRecordForProcessStatus(WebDriver driver, ExtentTest test, ExtentReports extent, String rowNoGbl,
 			String date1) throws IOException, InterruptedException {
 		try {
-			driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
-			// WebElement fieldToCheck;
-			// WebElement menuCancelled;
-			// WebElement objCloseFilter;
-			// fieldToCheck=driver.findElement(objPageReadDISC.getLocator("objStatusFilter"));
-			// menuCancelled
-			// =driver.findElement(objPageReadDISC.getLocator("objFilterMenuCancelled"));
-			// objCloseFilter
-			// =driver.findElement(objPageReadDISC.getLocator("objCloseFilter"));
+			driver.manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS);
 
 			driver.findElement(By.xpath("(//div/button[@ref='eButtonShowMainFilter']/i[@class='fa fa-filter'])[3]"))
 					.click();
-			driver.findElement(By.xpath("//label/span/div/input[@type='checkbox']")).click();
-			driver.findElement(By.xpath("//div/span[@class='ag-tab ag-tab-selected']")).click();
+			// driver.findElement(By.xpath("//label/span/div/input[@type='checkbox']")).click();
+			driver.findElement(By.xpath("//label/span[contains(text(),'(Select All)')]")).click();
+
+			// driver.findElement(By.xpath("//div/span[@class='ag-tab
+			// ag-tab-selected']")).click();
+
+			driver.findElement(By.xpath("//label/span[contains(text(),'Cancelled')]")).click();
 
 			extent.flush();
 		} catch (Exception e) {
@@ -3667,10 +4475,6 @@ public class Common_Business_Functions extends TestCase {
 				UserId.clear();
 				UserId.sendKeys(UName);
 				BtnSearch.click();
-				// test.pass("Search Criteria applied successfully",
-				// MediaEntityBuilder.createScreenCaptureFromPath(objCreateScreenshot.createScreenshot(driver,
-				// "SearchForUserInUserAssignment", test, rowNoGbl,
-				// date1)).build());
 				test.log(Status.INFO, "Successfully searched User: " + UName);
 			}
 			extent.flush();
@@ -3689,7 +4493,7 @@ public class Common_Business_Functions extends TestCase {
 		try {
 			Thread.sleep(2000);
 			// Find the element to clicked
-			driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
+			driver.manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS);
 			WebElement btnToVerify = driver.findElement(By.xpath(".//div/button[contains(text(),'" + btnText + "')]"));
 			if (btnToVerify.isDisplayed()) {
 				System.out.println(btnText + " : Button verified");
@@ -3712,11 +4516,6 @@ public class Common_Business_Functions extends TestCase {
 			test.addScreenCaptureFromPath(
 					objCreateScreenshot.createScreenshot(driver, "NoSuchElementException", test, rowNoGbl, date1));
 
-			// Close the Browser
-			// driver.quit();
-			// test.log(Status.INFO, "Closed the Browser");
-
-			// Calling flush writes everything to the Extent Report
 			extent.flush();
 
 			// fail("NoSuchElementException");
@@ -3732,7 +4531,7 @@ public class Common_Business_Functions extends TestCase {
 
 			// Log the action performed in the extent report
 			// test.pass("Opened the browser and navigated to the URL");
-			driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
+			driver.manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS);
 			WebElement Err1 = driver
 					.findElement(By.xpath("//div[contains(text(), 'You are not authorized to view this page.')]"));
 			if (Err1.isDisplayed()) {
@@ -3751,7 +4550,35 @@ public class Common_Business_Functions extends TestCase {
 							.build());
 
 			// Close the Browser
-			// driver.quit();
+			System.out.println("Closing The Browser");
+
+			driver.manage().timeouts().implicitlyWait(3, TimeUnit.SECONDS);
+			try {
+				driver.findElement(By.xpath("//button[contains(text(),'Cancel')]")).click();
+				Thread.sleep(1000);
+				System.out.println("Clicked on Cancel button");
+			} catch (Exception Ex) {
+				System.out.println("Cancel button not displayed");
+			}
+			try {
+				driver.findElement(By.xpath("//button[contains(text(),'Close')]")).click();
+				Thread.sleep(1000);
+				System.out.println("Clicked on Close button");
+
+			} catch (Exception Ex) {
+				System.out.println("Close button not displayed");
+			} finally {
+				try {
+					RecentChanges_CommonFunctions.finallyBlock_TearDown(driver);
+				} catch (Exception Ex) {
+					System.out.println("Logout link not displayed closing the browser to end the test");
+					Ex.printStackTrace();
+
+					driver.quit();
+				}
+				driver.quit();
+				System.out.println("===========INDIVIDUAL TEST EXECUTION ENDED WITH EXCEPTION=========");
+			}
 
 			// Calling flush writes everything to the Extent Report
 			extent.flush();
@@ -3784,7 +4611,7 @@ public class Common_Business_Functions extends TestCase {
 			String date1, String actionName) throws IOException {
 		try {
 			Thread.sleep(2000);
-			driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
+			driver.manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS);
 			List<WebElement> records;
 			int i = 0, size;
 			records = driver.findElements(By.xpath("//div[@role='gridcell']"));
@@ -3845,7 +4672,7 @@ public class Common_Business_Functions extends TestCase {
 			String rowNoGbl, String date1, String value) throws IOException, InterruptedException {
 		try {
 			Thread.sleep(2000);
-			driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
+			driver.manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS);
 			WebElement module = driver.findElement(objPageReadFileSub.getLocator("objSearchModule"));
 			if (module.isDisplayed()) {
 				int len = value.length();
@@ -3879,7 +4706,7 @@ public class Common_Business_Functions extends TestCase {
 	public void VerifyExpandCollapseLink(WebDriver driver, ExtentTest test, ExtentReports extent, String rowNoGbl,
 			String date1, String lnkText) throws Exception {
 		try {
-			driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
+			driver.manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS);
 			WebElement lnkToVerify = driver.findElement(By.xpath("//div[contains(text(),'" + lnkText + "')]"));
 			if (lnkToVerify.isDisplayed()) {
 				test.pass("Verified Expand/Collapse link: " + lnkText + " Successfully" + "",
@@ -3905,7 +4732,7 @@ public class Common_Business_Functions extends TestCase {
 			String date1) throws IOException {
 		try {
 			Thread.sleep(2000);
-			driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
+			driver.manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS);
 			List<WebElement> records;
 			int i = 0, size;
 			records = driver.findElements(By.xpath("//div[@role='gridcell']"));
@@ -3945,7 +4772,7 @@ public class Common_Business_Functions extends TestCase {
 	public void verifyCheckBoxExistance(WebDriver driver, ExtentTest test, ExtentReports extent, String rowNoGbl,
 			String date1, String value) throws IOException {
 		try {
-			driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
+			driver.manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS);
 			WebElement element = driver
 					.findElement(By.xpath("//label/label[contains(text(), '" + value + "')]/following-sibling::span"));
 			if (element.isDisplayed()) {
@@ -3980,7 +4807,7 @@ public class Common_Business_Functions extends TestCase {
 	public void verifyEditBoxExistance(WebDriver driver, ExtentTest test, ExtentReports extent, String rowNoGbl,
 			String date1, String value) throws IOException {
 		try {
-			driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
+			driver.manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS);
 			WebElement element = driver.findElement(By.xpath("//textarea[@formcontrolname='" + value + "']"));
 			if (element.isDisplayed()) {
 				if (element.isEnabled()) {
@@ -4013,7 +4840,7 @@ public class Common_Business_Functions extends TestCase {
 
 	public void scrollDown(WebDriver driver, ExtentTest test, ExtentReports extent, String rowNoGbl, String date1,
 			int numOfPixels) {
-		driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
+		driver.manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS);
 		JavascriptExecutor js = (JavascriptExecutor) driver;
 		// This will scroll down the page by numOfSteps pixel vertical
 		js.executeScript("window.scrollBy(0," + numOfPixels + ")");
@@ -4023,7 +4850,7 @@ public class Common_Business_Functions extends TestCase {
 			String date1, String actionName) throws IOException {
 		try {
 			Thread.sleep(2000);
-			driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
+			driver.manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS);
 			List<WebElement> records;
 			int i = 0, size;
 			records = driver.findElements(By.xpath("(//div[@col-id='comment'][@tabindex='-1'])[1]"));
@@ -4078,7 +4905,7 @@ public class Common_Business_Functions extends TestCase {
 
 	public void scrollUp(WebDriver driver, ExtentTest test, ExtentReports extent, String rowNoGbl, String date1,
 			int numOfPixels) {
-		driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
+		driver.manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS);
 		JavascriptExecutor js = (JavascriptExecutor) driver;
 		// This will scroll down the page by numOfSteps pixel vertical
 		js.executeScript("window.scrollBy(0,-" + numOfPixels + ")");
@@ -4087,26 +4914,30 @@ public class Common_Business_Functions extends TestCase {
 	public void filterModuleRecordWithStatus(WebDriver driver, ExtentTest test, ExtentReports extent, String rowNoGbl,
 			String date1, String value) throws IOException, InterruptedException {
 		try {
-			driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
+			driver.manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS);
 			WebElement fieldToCheck;
 			fieldToCheck = driver.findElement(By.xpath(
 					"/html/body/app-root/app-view-modules/div/div/div[2]/ag-grid-angular/div/div[2]/div[1]/div[1]/div[2]/div/div[2]/div[8]/div[2]/button"));
 			if (fieldToCheck.isDisplayed()) {
 				fieldToCheck.click();
-				String status = (driver.findElement(By
-						.xpath("//ag-grid-angular/div/div[2]/div[1]/div[1]/div[2]/div/div[2]/div[8]/div[1]/div/input")))
-								.getText();
+				// String status = (driver.findElement(By
+				// .xpath("//ag-grid-angular/div/div[2]/div[1]/div[1]/div[2]/div/div[2]/div[8]/div[1]/div/input")))
+				// .getText();
+
+				driver.findElement(By
+						.xpath("/html/body/app-root/app-view-modules/div/div/div[2]/ag-grid-angular/div/div[6]/div/div/div[2]/div/div/div[1]/div[2]/div[1]/label/span"))
+						.click();
 
 				if (value.equalsIgnoreCase("Data Points not defined")) {
-					if (status.isEmpty()) {
-						driver.findElement(By
-								.xpath("/html/body/app-root/app-view-modules/div/div/div[2]/ag-grid-angular/div/div[5]/div/div/div[2]/div/div/span[1]/label/span/div/img"))
-								.click();
-					} else {
-						driver.findElement(By
-								.xpath("/html/body/app-root/app-view-modules/div/div/div[2]/ag-grid-angular/div/div[5]/div/div/div[2]/div/div/span[2]/label/span/div/i"))
-								.click();
-					}
+					// if (status.isEmpty()) {
+					driver.findElement(By
+							.xpath("/html/body/app-root/app-view-modules/div/div/div[2]/ag-grid-angular/div/div[6]/div/div/div[2]/div/div/div[1]/div[2]/div[2]/div/div/div[3]/label/span/span/i/.."))
+							.click();
+					// } else {
+					// driver.findElement(By
+					// .xpath("/html/body/app-root/app-view-modules/div/div/div[2]/ag-grid-angular/div/div[5]/div/div/div[2]/div/div/span[2]/label/span/div/i"))
+					// .click();
+					// }
 
 					if (driver.findElement(By.xpath("//div/div[@role='gridcell']")).isDisplayed()) {
 						test.log(Status.INFO, "Module is filtered with Status Red");
@@ -4116,15 +4947,15 @@ public class Common_Business_Functions extends TestCase {
 										.build());
 					}
 				} else if (value.equalsIgnoreCase("Data Points defined")) {
-					if (status.isEmpty()) {
-						driver.findElement(By
-								.xpath("/html/body/app-root/app-view-modules/div/div/div[2]/ag-grid-angular/div/div[5]/div/div/div[2]/div/div/span[2]/label/span/div/i"))
-								.click();
-					} else {
-						driver.findElement(By
-								.xpath("/html/body/app-root/app-view-modules/div/div/div[2]/ag-grid-angular/div/div[5]/div/div/div[2]/div/div/span[1]/label/span/div/img"))
-								.click();
-					}
+					// if (status.isEmpty()) {
+					driver.findElement(By
+							.xpath("/html/body/app-root/app-view-modules/div/div/div[2]/ag-grid-angular/div/div[6]/div/div/div[2]/div/div/div[1]/div[2]/div[2]/div/div/div[1]/label/span/span/i/.."))
+							.click();
+					// } else {
+					// driver.findElement(By
+					// .xpath("/html/body/app-root/app-view-modules/div/div/div[2]/ag-grid-angular/div/div[5]/div/div/div[2]/div/div/span[1]/label/span/div/img"))
+					// .click();
+					// }
 					if (driver.findElement(By.xpath("//div/div[@role='gridcell']")).isDisplayed()) {
 						test.log(Status.INFO, "Module is filtered with Status Green");
 						test.pass("Filter Applied for status Green" + "",
@@ -4158,7 +4989,7 @@ public class Common_Business_Functions extends TestCase {
 	public void verifyActionItemIsDisabled(WebDriver driver, ExtentTest test, ExtentReports extent, String rowNoGbl,
 			String date1, String value) throws IOException {
 		try {
-			driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
+			driver.manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS);
 			List<WebElement> records;
 			int i = 0, size;
 			records = driver.findElements(By.xpath("//div[@role='gridcell']"));
@@ -4215,67 +5046,78 @@ public class Common_Business_Functions extends TestCase {
 	public void addValidationRule(WebDriver driver, ExtentTest test, ExtentReports extent, String rowNoGbl,
 			String date1, String strSeverity) throws IOException {
 		try {
-			driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
-//			ExcelUtils objExcelUtils = new ExcelUtils(strSeverity, strSeverity);
-			String ruleId = ExcelUtils.getCellValueUsingColName("Rule_Id",Integer.parseInt(rowNoGbl));
+			driver.manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS);
+			
+			Common_Business_Functions CBF1 = new Common_Business_Functions();
+			CBF1.generateRandomFourDigitNumber(rowNoGbl, "SanityTestData.xlsx", "Rule_Id");
+			String ruleId = ExcelUtils.getCellValueUsingColName("Rule_Id", Integer.parseInt(rowNoGbl));
 			Thread.sleep(1000);
 			// rule id
-			driver.findElement(By.xpath("//input[@ng-reflect-name='ruleId']")).sendKeys(ruleId);
+			driver.findElement(By.xpath("//input[@formcontrolname='ruleId']")).sendKeys(ruleId);
 
 			// Enabled
-//			driver.findElement(By.xpath("//label/span[@class='checkmark']")).click();
+			// driver.findElement(By.xpath("//label/span[@class='checkmark']")).click();
 
 			// Module code
-			Select sle = new Select(driver.findElement(By.xpath("//select[@ng-reflect-name='moduleCode']")));
+			Select sle = new Select(driver.findElement(By.xpath("//select[@formcontrolname='moduleCode']")));
 			sle.selectByIndex(1);
 
 			// module version
-			Select sle2 = new Select(driver.findElement(By.xpath("//select[@ng-reflect-name='moduleVersion']")));
+			Select sle2 = new Select(driver.findElement(By.xpath("//select[@formcontrolname='moduleVersion']")));
 			sle2.selectByIndex(1);
 
 			// interval
-//			driver.findElement(By.xpath("//input[@ng-reflect-name='interval']")).sendKeys("");
+			// driver.findElement(By.xpath("//input[@ng-reflect-name='interval']")).sendKeys("");
 
 			// Severity
-			Select sle3 = new Select(driver.findElement(By.xpath("//select[@ng-reflect-name='severity']")));
+			Select sle3 = new Select(driver.findElement(By.xpath("//select[@formcontrolname='severity']")));
 			sle3.selectByVisibleText(strSeverity);
 
 			// Apply to entity group
 			driver.findElement(By.xpath("//div[@class='c-btn']")).click();
-//			Common_Business_Functions CBF1 = new Common_Business_Functions();
-			String listItem = "Select All";
-//			CBF1.selectItemInMultiselectList(driver, test, extent, rowNoGbl, date1, objPageReadModules.getLocator("objApplyToEntityGroups"), listItem);
-			driver.findElement(By.xpath("//span[contains(text(),'"+listItem+"')]")).click();
+			Thread.sleep(2000);
+			// Common_Business_Functions CBF1 = new Common_Business_Functions();
+			// String listItem = "Select All";
+			// CBF1.selectItemInMultiselectList(driver, test, extent, rowNoGbl,
+			// date1, objPageReadModules.getLocator("objApplyToEntityGroups"),
+			// listItem);
+			driver.findElement(By.xpath("//label/span[contains(text(),'Select All')]")).click();
+			Thread.sleep(1000);
 
-			String formulaLeftSide = ExcelUtils.getCellValueUsingColName("Formula_Left_Side",Integer.parseInt(rowNoGbl));
+			String formulaLeftSide = ExcelUtils.getCellValueUsingColName("Formula_Left_Side",
+					Integer.parseInt(rowNoGbl));
 			// Formula left side
-			driver.findElement(By.xpath("//textarea[@ng-reflect-name='formulaLeftSide']")).sendKeys(formulaLeftSide);
+			driver.findElement(By.xpath("//textarea[@formcontrolname='formulaLeftSide']")).sendKeys(formulaLeftSide);
+			Thread.sleep(1000);
 
 			// Formula Operator
-//			Select sle4 = new Select(driver.findElement(By.xpath("//select[@ng-reflect-name='formulaOperator']")));
-//			sle4.selectByVisibleText("equals");
+			// Select sle4 = new
+			// Select(driver.findElement(By.xpath("//select[@ng-reflect-name='formulaOperator']")));
+			// sle4.selectByVisibleText("equals");
 
-			String formulaRightSide = ExcelUtils.getCellValueUsingColName("Formula_Right_Side",Integer.parseInt(rowNoGbl));
+			String formulaRightSide = ExcelUtils.getCellValueUsingColName("Formula_Right_Side",
+					Integer.parseInt(rowNoGbl));
 			// Formula Right Side
-			driver.findElement(By.xpath("//textarea[@ng-reflect-name='formulaRightSide']")).sendKeys(formulaRightSide);
+			driver.findElement(By.xpath("//textarea[@formcontrolname='formulaRightSide']")).sendKeys(formulaRightSide);
+			Thread.sleep(1000);
 
-			
-			String errorMessageDefinition = ExcelUtils.getCellValueUsingColName("Error_Message_Definition",Integer.parseInt(rowNoGbl));
+			String errorMessageDefinition = ExcelUtils.getCellValueUsingColName("Error_Message_Definition",
+					Integer.parseInt(rowNoGbl));
 			// Error Message defination
-			driver.findElement(By.xpath("//textarea[@ng-reflect-name='errorMessageDefinition']")).sendKeys(errorMessageDefinition);
+			driver.findElement(By.xpath("//textarea[@formcontrolname='errorMessageDefinition']"))
+					.sendKeys(errorMessageDefinition);
+			Thread.sleep(1000);
 
-			// Save
-			driver.findElement(By.xpath("//div/button[contains(text(),'Save')]")).click();
-			
 			// Validate
 			driver.findElement(By.xpath("//div/button[contains(text(),'Validate')]")).click();
-
-			// Cancel
-			// div/button[contains(text(),'Cancel')]
-
 			test.pass("Verified [Add Validation Rule] screen", MediaEntityBuilder.createScreenCaptureFromPath(
 					objCreateScreenshot.createScreenshot(driver, "AddValidationRule_Pass", test, rowNoGbl, date1))
 					.build());
+			// Save
+			driver.findElement(By.xpath("//div/button[contains(text(),'Save')]")).click();
+
+			// Cancel
+			// div/button[contains(text(),'Cancel')]
 
 			extent.flush();
 
@@ -4291,4 +5133,332 @@ public class Common_Business_Functions extends TestCase {
 			fail("NoSuchElementException");
 		}
 	}
+
+	public void verifyMessageOnScreen(WebDriver driver, ExtentTest test, ExtentReports extent, String rowNoGbl,
+			String date1, String strMessage) throws Exception {
+		try {
+			driver.manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS);
+			WebElement lnkToVerify = driver.findElement(By.xpath("//div[contains(text(),'" + strMessage + "')]"));
+			if (lnkToVerify.isDisplayed()) {
+				Thread.sleep(2000);
+				test.pass("Verified Message on screen [" + strMessage + "] Successfully" + "",
+						MediaEntityBuilder.createScreenCaptureFromPath(objCreateScreenshot.createScreenshot(driver,
+								"VerifyMessage_Pass", test, rowNoGbl, date1)).build());
+			}
+			extent.flush();
+		} catch (Exception e) {
+			System.out.println("In catch block");
+			System.out.println("Error in Method : VerifyLinkExist");
+			// Add the screenshot to the Reporting steps with a hyperlink
+			test.fail("Message : " + strMessage + " not displayed",
+					MediaEntityBuilder.createScreenCaptureFromPath(
+							objCreateScreenshot.createScreenshot(driver, "VerifyMessage_Fail", test, rowNoGbl, date1))
+							.build());
+			extent.flush();
+
+			// fail("NoSuchElementException");
+		}
+	}
+
+	public void generateRandomFourDigitNumber(String rowNoGbl, String workbookName, String colName) throws Exception {
+		String number = ExcelUtils.getCellValueUsingColName(colName, Integer.parseInt(rowNoGbl));
+		int newNumber = Integer.parseInt(number) + 1;
+		String Path = "src/test/java/TestData/" + workbookName;
+		String value = String.valueOf(newNumber);
+		ExcelUtils.setCellValueUsingColName(Path, colName, rowNoGbl, value);
+	}
+
+	public void FilterUserDCAssignmentByAssignmentValue(WebDriver driver, ExtentTest test, ExtentReports extent,
+			String rowNoGbl, String date1, String Assignment) throws Exception {
+		try {
+			driver.manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS);
+			// Find the element to clicked
+			WebElement AssignmentValue = driver.findElement(By.xpath("//div[6]//div[1]//div[1]//input[1]"));
+			if (AssignmentValue.isDisplayed()) {
+				AssignmentValue.clear();
+				AssignmentValue.sendKeys(Assignment);
+
+				test.log(Status.INFO, "Successfully filtered Assignment with value : " + Assignment);
+			}
+			extent.flush();
+		} catch (Exception e) {
+			test.fail("Unable to filter Assignment with value : " + Assignment + "",
+					MediaEntityBuilder.createScreenCaptureFromPath(objCreateScreenshot.createScreenshot(driver,
+							"NoSuchElementException", test, rowNoGbl, date1)).build());
+			extent.flush();
+
+			fail("NoSuchElementException");
+		}
+	}
+
+	public void deleteCreatedValidationRule(WebDriver driver, ExtentTest test, ExtentReports extent, String rowNoGbl,
+			String date1, String strRuleId) throws Exception {
+		try {
+			// driver.manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS);
+			// Find the element to clicked
+			driver.findElement(By.xpath("//div/input[@ref='eFloatingFilterText']")).clear();
+			driver.findElement(By.xpath("//div/input[@ref='eFloatingFilterText']")).sendKeys(strRuleId);
+			Thread.sleep(1700);
+			List<WebElement> records;
+			int i = 0, size;
+			records = driver.findElements(By.xpath("//div[@role='gridcell']"));
+			size = records.size();
+			if (size <= 0)
+				test.fail("No record to select with rule : " + strRuleId,
+						MediaEntityBuilder.createScreenCaptureFromPath(objCreateScreenshot.createScreenshot(driver,
+								"DeleteCreatedValidationRule_Fail", test, rowNoGbl, date1)).build());
+			else {
+				while (i < size) {
+					WebElement element = records.get(i);
+					if (element.isDisplayed()) {
+						element.click();
+						break;
+					} else
+						i++;
+				}
+				System.out.println("record clicked");
+				WebElement CurrentRow = driver.switchTo().activeElement();
+
+				// Actions action = new Actions(driver);
+				// action.contextClick(CurrentRow).sendKeys(Keys.ARROW_LEFT).sendKeys(Keys.ENTER).build().perform();
+				driver.findElement(By.xpath("//button[contains(text(),'Delete')]")).click();
+				Thread.sleep(1000);
+				driver.findElement(By.xpath("//button[@class='btn btn-primary']")).click();
+				driver.findElement(By.xpath("//div/input[@ref='eFloatingFilterText']")).clear();
+				driver.findElement(By.xpath("//div/input[@ref='eFloatingFilterText']")).sendKeys(Keys.ENTER);
+				Thread.sleep(1000);
+				extent.flush();
+			}
+		} catch (Exception e) {
+			test.fail("Unable to Delete Validation Rule : " + strRuleId + "",
+					MediaEntityBuilder.createScreenCaptureFromPath(objCreateScreenshot.createScreenshot(driver,
+							"NoSuchElementException", test, rowNoGbl, date1)).build());
+			extent.flush();
+
+			fail("NoSuchElementException");
+		}
+	}
+
+	public void selectAllModuleStatus(WebDriver driver, ExtentTest test, ExtentReports extent, String rowNoGbl,
+			String date1) throws IOException, InterruptedException {
+		try {
+			driver.manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS);
+			WebElement fieldToCheck;
+			fieldToCheck = driver.findElement(By.xpath(
+					"/html/body/app-root/app-view-modules/div/div/div[2]/ag-grid-angular/div/div[2]/div[1]/div[1]/div[2]/div/div[2]/div[8]/div[2]/button"));
+			if (fieldToCheck.isDisplayed()) {
+				fieldToCheck.click();
+
+				driver.findElement(By
+						.xpath("/html/body/app-root/app-view-modules/div/div/div[2]/ag-grid-angular/div/div[6]/div/div/div[2]/div/div/div[1]/div[2]/div[1]/label/span"))
+						.click();
+
+			} else {
+				test.log(Status.INFO, "Module filter is not applied for: SelectAll");
+				test.fail("Filter not Applied for status : SelectAll" + "",
+						MediaEntityBuilder.createScreenCaptureFromPath(objCreateScreenshot.createScreenshot(driver,
+								"FilterNotApplied_Fail", test, rowNoGbl, date1)).build());
+			}
+
+			extent.flush();
+		} catch (
+
+		Exception e) {
+			System.out.println("In catch block");
+			test.fail("NoSuchElementException : " + e.getMessage());
+			test.addScreenCaptureFromPath(
+					objCreateScreenshot.createScreenshot(driver, "NoSuchElementException", test, rowNoGbl, date1));
+
+			extent.flush();
+
+			fail("NoSuchElementException");
+		}
+	}
+
+	public void VerifyNewRecordAddedInTheTable(WebDriver driver, ExtentTest test, ExtentReports extent, String rowNoGbl,
+			String date1) throws Exception {
+		try {
+			driver.manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS);
+
+			List<WebElement> lie = driver.findElements(By.xpath("(//div[@role='gridcell']/..)"));
+			int rowCount = lie.size();
+			int Count2 = 240;
+			while (rowCount <= 0) {
+				Thread.sleep(3000);
+				driver.navigate().refresh();
+				if (Count2 == 0) {
+					test.fail("Record not added in 4 minutes");
+					test.addScreenCaptureFromPath(objCreateScreenshot.createScreenshot(driver, "NoSuchElementException",
+							test, rowNoGbl, date1));
+					extent.flush();
+					fail("NoSuchElementException");
+					break;
+				}
+				Count2 = Count2 - 3;
+				lie = driver.findElements(By.xpath("(//div[@role='gridcell']/..)"));
+				rowCount = lie.size();
+			}
+
+			extent.flush();
+		} catch (Exception e) {
+			System.out.println("In catch block");
+			// Add the screenshot to the Reporting steps with a hyperlink
+			test.fail("Record not added " + e.getMessage());
+			test.addScreenCaptureFromPath(
+					objCreateScreenshot.createScreenshot(driver, "NoSuchElementException", test, rowNoGbl, date1));
+
+			// Calling flush writes everything to the Extent Report
+			extent.flush();
+
+			fail("NoSuchElementException");
+		}
+	}
+
+	public void clickOnPopupLink(WebDriver driver, ExtentTest test, ExtentReports extent, String rowNoGbl, String date1,
+			String linkText) {
+		try {
+			Thread.sleep(2000);
+			driver.manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS);
+			WebElement linkToClick = driver.findElement(By.xpath("//div/label/a[contains(text(),'" + linkText + "')]"));
+			if (linkToClick.isDisplayed()) {
+				System.out.println("Link is present on pop up");
+				test.pass("Verified Link is present on pop up : " + linkText,
+						MediaEntityBuilder.createScreenCaptureFromPath(objCreateScreenshot.createScreenshot(driver,
+								"VerifyLinkDisplayed", test, rowNoGbl, date1)).build());
+				linkToClick.click();
+				test.log(Status.INFO, "Successfully clicked on link: " + linkText);
+				// Thread.sleep(120000);
+				int Counter = 0;
+				int count1 = 240;
+				String status = driver.findElement(By.xpath("(//div[@role='gridcell' and @col-id='status'])[1]"))
+						.getText();
+				while (!status.equalsIgnoreCase("Successful") && count1 != 0) {
+					Thread.sleep(3000);
+					Counter = Counter + 3;
+					driver.navigate().refresh();
+					status = driver.findElement(By.xpath("(//div[@role='gridcell' and @col-id='status'])[1]"))
+							.getText();
+					if (status.equalsIgnoreCase("Failed")) {
+						test.fail("Template Upload Failed");
+						test.addScreenCaptureFromPath(objCreateScreenshot.createScreenshot(driver,
+								"NoSuchElementException", test, rowNoGbl, date1));
+						extent.flush();
+						fail("NoSuchElementException");
+						break;
+					}
+					count1 = count1 - 3;
+				}
+				test.log(Status.INFO, "Total time taken for Template upload is : " + Counter + " Seconds");
+
+			}
+			extent.flush();
+		} catch (Exception e) {
+			System.out.println("In catch block");
+			// Add the screenshot to the Reporting steps with a hyperlink
+			test.fail("NoSuchElementException : " + e.getMessage());
+			try {
+				test.addScreenCaptureFromPath(
+						objCreateScreenshot.createScreenshot(driver, "NoSuchElementException", test, rowNoGbl, date1));
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+
+			// Calling flush writes everything to the Extent Report
+			extent.flush();
+
+			fail("NoSuchElementException");
+		}
+	}
+	public void addValidationRuleE2ETest(WebDriver driver, ExtentTest test, ExtentReports extent, String rowNoGbl,
+			String date1, String strSeverity) throws IOException {
+		try {
+			driver.manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS);
+//			Common_Business_Functions CBF1 = new Common_Business_Functions();
+//			CBF1.generateRandomFourDigitNumber(rowNoGbl, "SanityTestData.xlsx", "Rule_Id");
+//			String ruleId = ExcelUtils.getCellValueUsingColName("Rule_Id", Integer.parseInt(rowNoGbl));
+			Thread.sleep(1000);
+			// rule id
+			driver.findElement(By.xpath("//input[@formcontrolname='ruleId']")).sendKeys("1234");
+
+			// Enabled
+			// driver.findElement(By.xpath("//label/span[@class='checkmark']")).click();
+
+			// Module code
+			Select sle = new Select(driver.findElement(By.xpath("//select[@formcontrolname='moduleCode']")));
+			sle.selectByIndex(1);
+
+			// module version
+			Select sle2 = new Select(driver.findElement(By.xpath("//select[@formcontrolname='moduleVersion']")));
+			sle2.selectByIndex(1);
+
+			// interval
+			// driver.findElement(By.xpath("//input[@ng-reflect-name='interval']")).sendKeys("");
+
+			// Severity
+			Select sle3 = new Select(driver.findElement(By.xpath("//select[@formcontrolname='severity']")));
+			sle3.selectByVisibleText(strSeverity);
+
+			// Apply to entity group
+			driver.findElement(By.xpath("//div[@class='c-btn']")).click();
+			Thread.sleep(2000);
+			// Common_Business_Functions CBF1 = new Common_Business_Functions();
+			// String listItem = "Select All";
+			// CBF1.selectItemInMultiselectList(driver, test, extent, rowNoGbl,
+			// date1, objPageReadModules.getLocator("objApplyToEntityGroups"),
+			// listItem);
+			driver.findElement(By.xpath("//label/span[contains(text(),'Select All')]")).click();
+			Thread.sleep(1000);
+
+			String formulaLeftSide = ExcelUtils.getCellValueUsingColName("Formula_Left_Side",
+					Integer.parseInt(rowNoGbl));
+			// Formula left side
+			driver.findElement(By.xpath("//textarea[@formcontrolname='formulaLeftSide']")).sendKeys(formulaLeftSide);
+			Thread.sleep(1000);
+
+			// Formula Operator
+			// Select sle4 = new
+			// Select(driver.findElement(By.xpath("//select[@ng-reflect-name='formulaOperator']")));
+			// sle4.selectByVisibleText("equals");
+
+			String formulaRightSide = ExcelUtils.getCellValueUsingColName("Formula_Right_Side",
+					Integer.parseInt(rowNoGbl));
+			// Formula Right Side
+			driver.findElement(By.xpath("//textarea[@formcontrolname='formulaRightSide']")).sendKeys(formulaRightSide);
+			Thread.sleep(1000);
+
+			String errorMessageDefinition = ExcelUtils.getCellValueUsingColName("Error_Message_Definition",
+					Integer.parseInt(rowNoGbl));
+			// Error Message defination
+			driver.findElement(By.xpath("//textarea[@formcontrolname='errorMessageDefinition']"))
+					.sendKeys(errorMessageDefinition);
+			Thread.sleep(1000);
+
+			// Validate
+			driver.findElement(By.xpath("//div/button[contains(text(),'Validate')]")).click();
+			test.pass("Verified [Add Validation Rule] screen", MediaEntityBuilder.createScreenCaptureFromPath(
+					objCreateScreenshot.createScreenshot(driver, "AddValidationRuleE2E_Pass", test, rowNoGbl, date1))
+					.build());
+			// Save
+			driver.findElement(By.xpath("//div/button[contains(text(),'Save')]")).click();
+
+			// Cancel
+			// div/button[contains(text(),'Cancel')]
+
+			extent.flush();
+
+		} catch (Exception e) {
+			System.out.println("In catch block");
+			// Add the screenshot to the Reporting steps with a hyperlink
+			test.fail("NoSuchElementException : " + e.getMessage());
+			// Calling flush writes everything to the Extent Report
+			test.addScreenCaptureFromPath(
+					objCreateScreenshot.createScreenshot(driver, "NoSuchElementException", test, rowNoGbl, date1));
+			extent.flush();
+
+			fail("NoSuchElementException");
+		}
+	}
+
+
 }

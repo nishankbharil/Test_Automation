@@ -1,17 +1,58 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testng-results skipped="0" failed="0" ignored="0" total="1" passed="1">
+<testng-results skipped="0" failed="1" ignored="0" total="1" passed="0">
   <reporter-output>
   </reporter-output>
-  <suite name="Default suite" duration-ms="44067" started-at="2019-08-27T15:05:21Z" finished-at="2019-08-27T15:06:05Z">
+  <suite name="Default suite" duration-ms="64" started-at="2019-12-19T09:41:28Z" finished-at="2019-12-19T09:41:28Z">
     <groups>
     </groups>
-    <test name="Default test" duration-ms="44067" started-at="2019-08-27T15:05:21Z" finished-at="2019-08-27T15:06:05Z">
-      <class name="feb16.SelectClassMethods">
-        <test-method status="PASS" signature="SelectMethods()[pri:0, instance:feb16.SelectClassMethods@1d29cf23]" name="SelectMethods" duration-ms="44040" started-at="2019-08-27T15:05:21Z" finished-at="2019-08-27T15:06:05Z">
+    <test name="Default test" duration-ms="64" started-at="2019-12-19T09:41:28Z" finished-at="2019-12-19T09:41:28Z">
+      <class name="database.ConnectMySQL">
+        <test-method status="FAIL" signature="testDB()[pri:0, instance:database.ConnectMySQL@5a1c0542]" name="testDB" duration-ms="16" started-at="2019-12-19T09:41:28Z" finished-at="2019-12-19T09:41:28Z">
+          <exception class="java.lang.ClassNotFoundException">
+            <message>
+              <![CDATA[com.mysql.jdbc.Driver]]>
+            </message>
+            <full-stacktrace>
+              <![CDATA[java.lang.ClassNotFoundException: com.mysql.jdbc.Driver
+at java.net.URLClassLoader.findClass(Unknown Source)
+at java.lang.ClassLoader.loadClass(Unknown Source)
+at sun.misc.Launcher$AppClassLoader.loadClass(Unknown Source)
+at java.lang.ClassLoader.loadClass(Unknown Source)
+at java.lang.Class.forName0(Native Method)
+at java.lang.Class.forName(Unknown Source)
+at database.ConnectMySQL.testDB(ConnectMySQL.java:16)
+at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+at sun.reflect.NativeMethodAccessorImpl.invoke(Unknown Source)
+at sun.reflect.DelegatingMethodAccessorImpl.invoke(Unknown Source)
+at java.lang.reflect.Method.invoke(Unknown Source)
+at org.testng.internal.MethodInvocationHelper.invokeMethod(MethodInvocationHelper.java:124)
+at org.testng.internal.Invoker.invokeMethod(Invoker.java:583)
+at org.testng.internal.Invoker.invokeTestMethod(Invoker.java:719)
+at org.testng.internal.Invoker.invokeTestMethods(Invoker.java:989)
+at org.testng.internal.TestMethodWorker.invokeTestMethods(TestMethodWorker.java:125)
+at org.testng.internal.TestMethodWorker.run(TestMethodWorker.java:109)
+at org.testng.TestRunner.privateRun(TestRunner.java:648)
+at org.testng.TestRunner.run(TestRunner.java:505)
+at org.testng.SuiteRunner.runTest(SuiteRunner.java:455)
+at org.testng.SuiteRunner.runSequentially(SuiteRunner.java:450)
+at org.testng.SuiteRunner.privateRun(SuiteRunner.java:415)
+at org.testng.SuiteRunner.run(SuiteRunner.java:364)
+at org.testng.SuiteRunnerWorker.runSuite(SuiteRunnerWorker.java:52)
+at org.testng.SuiteRunnerWorker.run(SuiteRunnerWorker.java:84)
+at org.testng.TestNG.runSuitesSequentially(TestNG.java:1208)
+at org.testng.TestNG.runSuitesLocally(TestNG.java:1137)
+at org.testng.TestNG.runSuites(TestNG.java:1049)
+at org.testng.TestNG.run(TestNG.java:1017)
+at org.testng.remote.AbstractRemoteTestNG.run(AbstractRemoteTestNG.java:115)
+at org.testng.remote.RemoteTestNG.initAndRun(RemoteTestNG.java:251)
+at org.testng.remote.RemoteTestNG.main(RemoteTestNG.java:77)
+]]>
+            </full-stacktrace>
+          </exception> <!-- java.lang.ClassNotFoundException -->
           <reporter-output>
           </reporter-output>
-        </test-method> <!-- SelectMethods -->
-      </class> <!-- feb16.SelectClassMethods -->
+        </test-method> <!-- testDB -->
+      </class> <!-- database.ConnectMySQL -->
     </test> <!-- Default test -->
   </suite> <!-- Default suite -->
 </testng-results>

@@ -89,6 +89,7 @@ public class Fluent_Wait {
 		// If element is found then it will display the status
 
 		System.out.println("Final visible status is >>>>> " + element.isDisplayed());
+		
 
 	}
 

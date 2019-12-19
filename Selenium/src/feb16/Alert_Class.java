@@ -18,8 +18,9 @@ public class Alert_Class {
 
 		driver.manage().window().maximize();
 		driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
-
+		driver.manage().deleteAllCookies();
 		driver.findElement(By.xpath("//button[.='Click for JS Alert']")).click();
+//		driver.findElement(By.xpath("//button[.='Click for JS Alert']")).getText();
 		Common.sleep(2000);
 		Alert alert = driver.switchTo().alert();
 		alert.accept();
@@ -27,6 +28,8 @@ public class Alert_Class {
 		Common.sleep(2000);
 
 		driver.findElement(By.xpath("//button[.='Click for JS Confirm']")).click();
+		
+		
 		alert.dismiss();
 
 		Common.sleep(2000);

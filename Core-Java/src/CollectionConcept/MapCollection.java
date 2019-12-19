@@ -13,7 +13,6 @@ public class MapCollection
 		m.put(1, "abc");
 		m.put(2, "def");
 		m.put(3, "hij");
-		
 		m.replace(1, "okm");
 		System.out.println(m.get(1));
 	}

@@ -5,7 +5,7 @@ public class StringSpacesReplace {
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		
-		String s = "abc def ghi jkl";
+		String s = "abc       def   ghi jkl";
 		String k = s.replaceAll("\\s","");
 		System.out.println(k);
 		

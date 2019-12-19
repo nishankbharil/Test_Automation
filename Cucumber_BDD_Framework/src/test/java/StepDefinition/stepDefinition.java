@@ -1,3 +1,4 @@
+
 package StepDefinition;
 
 import java.io.File;
@@ -16,8 +17,12 @@ import java.util.zip.ZipOutputStream;
 
 import org.apache.bcel.generic.Select;
 import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.aventstack.extentreports.ExtentReports;
 import com.aventstack.extentreports.ExtentTest;
@@ -28,6 +33,7 @@ import Business_Functions.Common_Business_Functions;
 import Business_Functions.DataDictionary;
 import Business_Functions.Data_Definition;
 import Business_Functions.File_Submission;
+import Business_Functions.RecentChanges_CommonFunctions;
 import Utility.DBUtil;
 import Utility.ExcelUtils;
 import Utility.PropertyReader;
@@ -893,9 +899,36 @@ public class stepDefinition extends TestCase {
 	}
 
 	@After
-	public void tearDown() {
+	public void tearDown() throws InterruptedException {
 		System.out.println("Closing The Browser");
-		driver.quit();
+
+		driver.manage().timeouts().implicitlyWait(3, TimeUnit.SECONDS);
+		try {
+			driver.findElement(By.xpath("//button[contains(text(),'Cancel')]")).click();
+			Thread.sleep(1000);
+			System.out.println("Clicked on Cancel button");
+		} catch (Exception Ex) {
+			System.out.println("Cancel button not displayed");
+		}
+		try {
+			driver.findElement(By.xpath("//button[contains(text(),'Close')]")).click();
+			Thread.sleep(1000);
+			System.out.println("Clicked on Close button");
+
+		} catch (Exception Ex) {
+			System.out.println("Close button not displayed");
+		} finally {
+			try {
+				RecentChanges_CommonFunctions.finallyBlock_TearDown(driver);
+			} catch (Exception Ex) {
+				System.out.println("Logout link not displayed closing the browser to end the test");
+				Ex.printStackTrace();
+
+				driver.quit();
+			}
+			driver.quit();
+			System.out.println("===========INDIVIDUAL TEST EXECUTION ENDED=========");
+		}
 	}
 
 	@Then("^Verify Max length$")
@@ -1104,7 +1137,9 @@ public class stepDefinition extends TestCase {
 	public void enter_Data_Dictionary_details(String workbookName) throws Throwable {
 		try {
 			String colName = "DD_Name";
-			String DDName = objCBF.generateRandomString(rowNoGbl, workbookName, colName);
+			// String DDName = objCBF.generateRandomString(rowNoGbl,
+			// workbookName, colName);
+			String DDName = objCBF.generateSixDigitRandomNumber(rowNoGbl, workbookName, colName);
 			String DDOwner = ExcelUtils.getCellValueUsingColName("DD_Owner", Integer.parseInt(rowNoGbl));
 			String DDDescription = ExcelUtils.getCellValueUsingColName("DD_Description", Integer.parseInt(rowNoGbl));
 
@@ -1194,7 +1229,9 @@ public class stepDefinition extends TestCase {
 		try {
 
 			String colName = "DC_Code";
-			String RandomString = objCBF.generateRandomString(rowNoGbl, workbookName, colName);
+			// String RandomString = objCBF.generateRandomString(rowNoGbl,
+			// workbookName, colName);
+			String RandomString = objCBF.generateSixDigitRandomNumber(rowNoGbl, workbookName, colName);
 			objCBF.enterData(driver, test, date1, rowNoGbl, extent, objPageReadDefiniton.getLocator("objAddDCCode"),
 					RandomString);
 			// String RandomName= objCBF.generateRandomString(rowNoGbl,
@@ -1236,7 +1273,9 @@ public class stepDefinition extends TestCase {
 		try {
 
 			String colName = "DC_Code";
-			String RandomString = objCBF.generateRandomString(rowNoGbl, workbookName, colName);
+			// String RandomString = objCBF.generateRandomString(rowNoGbl,
+			// workbookName, colName);
+			String RandomString = objCBF.generateSixDigitRandomNumber(rowNoGbl, workbookName, colName);
 			objCBF.enterData(driver, test, date1, rowNoGbl, extent, objPageReadDefiniton.getLocator("objAddDCCode"),
 					RandomString);
 			// String RandomName= objCBF.generateRandomString(rowNoGbl,
@@ -1638,8 +1677,10 @@ public class stepDefinition extends TestCase {
 					objPageReadDefiniton.getLocator("objCstmEntityAttrEntries"), Entries);
 			String MultiValues = objExcelUtils.getCellValueUsingColName("ListBox_MultiValues",
 					Integer.parseInt(rowNoGbl));
-			objCBF.selectSupportMultiValueCheckbox(driver, test, extent, rowNoGbl, date1,
-					objPageReadDefiniton.getLocator("objCstmEntityAttrSuuportMultiVal"), MultiValues);
+			// objCBF.selectSupportMultiValueCheckbox(driver, test, extent,
+			// rowNoGbl, date1,
+			// objPageReadDefiniton.getLocator("objCstmEntityAttrSuuportMultiVal"),
+			// MultiValues);
 		}
 	}
 
@@ -2695,10 +2736,16 @@ public class stepDefinition extends TestCase {
 			String MDValidFrom = objExcelUtils.getDateCellValueUsingColName("MD_ValidFrom_Negative",
 					Integer.parseInt(rowNoGbl));
 			objCBF.removeValue(driver, test, date1, rowNoGbl, extent, objPageReadModules.getLocator("objValidFrom"));
+
 			// driver.findElement(objPageReadModules.getLocator("objValidFrom")).sendKeys(Keys.ENTER);
 			String MDValidTo = objExcelUtils.getDateCellValueUsingColName("MD_ValidTo", Integer.parseInt(rowNoGbl));
 			objCBF.enterData(driver, test, date1, rowNoGbl, extent, objPageReadModules.getLocator("objValidTo"),
 					MDValidTo);
+			Actions action = new Actions(driver);
+			driver.findElement(By.xpath("//input[@formcontrolname='moduleName']")).click();
+			action.sendKeys(Keys.TAB).build().perform();
+			Thread.sleep(500);
+			action.sendKeys(Keys.TAB).build().perform();
 		} catch (IOException e) {
 			System.out.println("In catch block " + e);
 			System.out.println("Step Failed : enter_empty_date_in_Modules");
@@ -2791,8 +2838,13 @@ public class stepDefinition extends TestCase {
 			String DataType = objExcelUtils.getCellValueUsingColName("ATTR_DataType_Negative",
 					Integer.parseInt(rowNoGbl));
 			if (DataType.equalsIgnoreCase("List Box")) {
-				objCBF.removeValue(driver, test, date1, rowNoGbl, extent,
-						objPageReadDefiniton.getLocator("objCstmEntityAttrEntries"));
+				// objCBF.removeValue(driver, test, date1, rowNoGbl, extent,
+				// objPageReadDefiniton.getLocator("objCstmEditEntityAttrEntries"));
+				for (int i = 0; i < 6; i++) {
+					driver.findElement(By.xpath("//div/textarea[@formcontrolname='editCustomAttributeList']"))
+							.sendKeys(Keys.BACK_SPACE);
+					Thread.sleep(200);
+				}
 			}
 		} catch (IOException e) {
 			System.out.println("In catch block " + e);
@@ -3142,29 +3194,6 @@ public class stepDefinition extends TestCase {
 	@When("^Enter Edit DISC export settings details$")
 	public void enter_Edit_DISC_export_settings_details() throws Throwable {
 		try {
-			// objCBF.ClickOnCheckbox(driver, test, extent, rowNoGbl, date1,
-			// "active");
-			// String discTarget =
-			// objExcelUtils.getCellValueUsingColName("DISC_Target",
-			// Integer.parseInt(rowNoGbl));
-			// objCBF.enterData(driver, test, date1, rowNoGbl, extent,
-			// objPageReadDefiniton.getLocator("objDISCLabName"),
-			// labName);
-			// objCBF.selectListItem(driver, test, extent, rowNoGbl, date1,
-			// objPageReadDefiniton.getLocator("objDISCInterval"), discTarget);
-			//
-			// String targetPath =
-			// objExcelUtils.getCellValueUsingColName("Target_Path",
-			// Integer.parseInt(rowNoGbl));
-			// objCBF.enterData(driver, test, date1, rowNoGbl, extent,
-			// objPageReadDefiniton.getLocator("objDISCLabName"),
-			// targetPath);
-			// String interval =
-			// objExcelUtils.getCellValueUsingColName("DISC_Interval",
-			// Integer.parseInt(rowNoGbl));
-			// objCBF.selectListItem(driver, test, extent, rowNoGbl, date1,
-			// objPageReadDefiniton.getLocator("objDISCInterval"), interval);
-
 			String DISC_Target = objExcelUtils.getCellValueUsingColName("DISC_Target", Integer.parseInt(rowNoGbl));
 			String Target_Path = objExcelUtils.getCellValueUsingColName("Target_Path", Integer.parseInt(rowNoGbl));
 			String Interval = objExcelUtils.getCellValueUsingColName("Interval", Integer.parseInt(rowNoGbl));
@@ -4177,6 +4206,7 @@ public class stepDefinition extends TestCase {
 			System.out.println("Step Failed : verify_Edit_Box_Existance ");
 		}
 	}
+
 	@Then("^Scroll down \"([^\"]*)\"$")
 	public void scroll_Down(int numOfPixels) throws Throwable {
 		try {
@@ -4186,6 +4216,7 @@ public class stepDefinition extends TestCase {
 			System.out.println("Step Failed : scroll_Down ");
 		}
 	}
+
 	@Then("^Scroll Up \"([^\"]*)\"$")
 	public void scroll_Up(int numOfPixels) throws Throwable {
 		try {
@@ -4195,6 +4226,7 @@ public class stepDefinition extends TestCase {
 			System.out.println("Step Failed : scroll_Up ");
 		}
 	}
+
 	@Then("^Verify Comment section \"([^\"]*)\" Action$")
 	public void verify_Comment_Section_Action(String actionName) throws Throwable {
 		try {
@@ -4208,32 +4240,35 @@ public class stepDefinition extends TestCase {
 			System.out.println("Step Failed : verify_Comment_Section_Action");
 		}
 	}
+
 	@Then("^Filter Module Record with Status \"([^\"]*)\"$")
 	public void Filter_Module_record_With_status(String value) throws Throwable {
 		try {
 			dateFormat = new SimpleDateFormat("dd-MM-yyyy_HH.mm.ss");
 			date = new Date();
 			date1 = dateFormat.format(date);
-			
+
 			objCBF.filterModuleRecordWithStatus(driver, test, extent, rowNoGbl, date1, value);
 		} catch (Exception e) {
 			System.out.println("In catch block " + e);
 			System.out.println("Step Failed : Filter_Module_record_With_status");
 		}
 	}
+
 	@Then("^Verify action \"([^\"]*)\" is disabled$")
 	public void verify_Action_is_Disabled(String value) throws Throwable {
 		try {
 			dateFormat = new SimpleDateFormat("dd-MM-yyyy_HH.mm.ss");
 			date = new Date();
 			date1 = dateFormat.format(date);
-			
+
 			objCBF.verifyActionItemIsDisabled(driver, test, extent, rowNoGbl, date1, value);
 		} catch (Exception e) {
 			System.out.println("In catch block " + e);
 			System.out.println("Step Failed : verify_Action_is_Disabled");
 		}
 	}
+
 	@Then("^Verify error message for Module Delete$")
 	public void verify_error_message_for_Module_Delete() throws Throwable {
 		try {
@@ -4250,6 +4285,7 @@ public class stepDefinition extends TestCase {
 			System.out.println("Step Failed : verify_error_message_for_Module_Delete");
 		}
 	}
+
 	@Then("^Verify Module Delete success message$")
 	public void verify_Module_Delete_success_message() throws Throwable {
 		try {
@@ -4262,6 +4298,7 @@ public class stepDefinition extends TestCase {
 			System.out.println("Step Failed : verify_Module_Delete_success_message");
 		}
 	}
+
 	@Then("^Add validation rule with Severity \"([^\"]*)\"$")
 	public void add_validation_rule(String strSeverity) throws Throwable {
 		try {
@@ -4275,5 +4312,105 @@ public class stepDefinition extends TestCase {
 			System.out.println("Step Failed : add_validation_rule");
 		}
 	}
-}
 
+	@Then("^Verify \"([^\"]*)\" Message on screen$")
+	public void verify_Message_On_Screen(String strMessage) throws Throwable {
+		try {
+			dateFormat = new SimpleDateFormat("dd-MM-yyyy_HH.mm.ss");
+			date = new Date();
+			date1 = dateFormat.format(date);
+
+			objCBF.verifyMessageOnScreen(driver, test, extent, rowNoGbl, date1, strMessage);
+		} catch (IOException e) {
+			System.out.println("In catch block " + e);
+			System.out.println("Step Failed : verify_Message_On_Screen");
+		}
+	}
+
+	@Then("^Filter User DC Assignment by Assignment value \"([^\"]*)\"$")
+	public void Filter_User_Assignment_By(String Assignment) throws Throwable {
+		try {
+			System.out.println("Filter applied for Assignment value : " + Assignment);
+			objCBF.FilterUserDCAssignmentByAssignmentValue(driver, test, extent, rowNoGbl, date1, Assignment);
+		} catch (Exception e) {
+			System.out.println("In catch block " + e);
+			System.out.println("Step Failed : Filter_User_Assignment_By");
+		}
+	}
+
+	@Then("^Delete created Validation Rule$")
+	public void Delete_created_Validation_Rule() throws Throwable {
+		try {
+			dateFormat = new SimpleDateFormat("dd-MM-yyyy_HH.mm.ss");
+			date = new Date();
+			date1 = dateFormat.format(date);
+
+			String strRuleId = objExcelUtils.getCellValueUsingColName("Rule_Id", Integer.parseInt(rowNoGbl));
+			objCBF.deleteCreatedValidationRule(driver, test, extent, rowNoGbl, date1, strRuleId);
+		} catch (IOException e) {
+			System.out.println("In catch block " + e);
+			System.out.println("Step Failed : Delete_created_Validation_Rule");
+		}
+	}
+
+	@Then("^Select all module status in status column$")
+	public void Select_all_module_status_in_status_column() throws Throwable {
+		try {
+			dateFormat = new SimpleDateFormat("dd-MM-yyyy_HH.mm.ss");
+			date = new Date();
+			date1 = dateFormat.format(date);
+
+			objCBF.selectAllModuleStatus(driver, test, extent, rowNoGbl, date1);
+		} catch (Exception e) {
+			System.out.println("In catch block " + e);
+			System.out.println("Step Failed : Select_all_module_status_in_status_column");
+		}
+	}
+
+	@Then("^Wait for \"([^\"]*)\" Seconds$")
+	public void Wait_For_Seconds(int seconds) throws Throwable {
+		try {
+			Thread.sleep(seconds);
+
+		} catch (Exception e) {
+			System.out.println("In catch block " + e);
+			System.out.println("Step Failed : WaitForSeconds");
+		}
+	}
+	
+	@Then("^Verify new record added in the table$")
+	public void Verify_new_record_added_in_the_table() throws Throwable {
+		try {
+			dateFormat = new SimpleDateFormat("dd-MM-yyyy_HH.mm.ss");
+			date = new Date();
+			date1 = dateFormat.format(date);
+
+			objCBF.VerifyNewRecordAddedInTheTable(driver, test, extent, rowNoGbl, date1);
+		} catch (Exception e) {
+			System.out.println("In catch block " + e);
+			System.out.println("Step Failed : Verify_new_record_added_in_the_table");
+		}
+	}
+	@Then("^Verify and click on \"([^\"]*)\" pop up link$")
+	public void verify_and_click_on_pop_up_link(String linkText) throws Throwable {
+		try {
+			objCBF.clickOnPopupLink(driver, test, extent, rowNoGbl, date1, linkText);
+		} catch (Exception e) {
+			System.out.println("In catch block " + e);
+			System.out.println("Step Failed : verify_and_click_on_pop_up_link");
+		}
+	}
+	@Then("^Add validation rule with Severity in E2E test \"([^\"]*)\"$")
+	public void add_validation_rule_with_severity_in_E2E_test(String strSeverity) throws Throwable {
+		try {
+			dateFormat = new SimpleDateFormat("dd-MM-yyyy_HH.mm.ss");
+			date = new Date();
+			date1 = dateFormat.format(date);
+
+			objCBF.addValidationRuleE2ETest(driver, test, extent, rowNoGbl, date1, strSeverity);
+		} catch (IOException e) {
+			System.out.println("In catch block " + e);
+			System.out.println("Step Failed : add_validation_rule_with_severity_in_E2E_test");
+		}
+	}
+}

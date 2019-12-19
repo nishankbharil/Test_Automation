@@ -24,6 +24,12 @@ public class Generate_Random_Number_String {
 		// Generate Random String
 		String rnd = (RandomStringUtils.randomAlphabetic(20)).toUpperCase();
 		System.out.println(rnd);
+		
+//		System.out.println('a'+'b');
+//		
+//		int x= 10;
+//		int y=(++x)++;
+//		System.out.println(y++);
 
 	}
 

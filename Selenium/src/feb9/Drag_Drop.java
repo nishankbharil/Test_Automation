@@ -3,6 +3,7 @@ package feb9;
 import java.util.concurrent.TimeUnit;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -26,8 +27,10 @@ public class Drag_Drop {
 		Actions action = new Actions(driver);
 		WebElement sou = driver.findElement(By.id("//li[.='Item #3']"));
 		WebElement dest = driver.findElement(By.id("drop"));
+		action.contextClick().sendKeys(Keys.RIGHT).perform();
 		action.dragAndDrop(sou, dest).perform();
 		action.moveToElement(sou);
+		
 	}
 
 }

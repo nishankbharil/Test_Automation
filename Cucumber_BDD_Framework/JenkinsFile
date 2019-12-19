@@ -1,0 +1,66 @@
+def globalMavenSettingsConfig = 'mvn-global-settings'
+def mavenSettingsConfig = 'mvn-user-settings'
+def jdk = 'jdk-ecb-webservices-tomcat-2.0.3'
+def maven = 'Maven_3.5.0'
+def sonar = 'STC SonarQube'
+//def tolist ='sandipkumar.katre@ecb.europa.eu, Shrikant.Gadale@ecb.europa.eu, Ahmad.Alvi@ecb.europa.eu,Vishal_Nagnathrao.Jaldawar@ecb.europa.eu, Atanu.Pal@ecb.europa.eu, Vijay_Raosaheb.Chavan@ecb.europa.eu,Ravinder.Paul@ecb.europa.eu, Abhishek.Bhatia@ecb.europa.eu'
+def tolist ='sandipkumar.katre@ecb.europa.eu, Rekha_Sundar.Lnu@ecb.europa.eu, Lakshmi.Ayyagari@ecb.europa.eu '
+def AUTHOR_NAME = 'Jenkins'
+properties([buildDiscarder(logRotator(artifactDaysToKeepStr: '', artifactNumToKeepStr: '', daysToKeepStr: '', numToKeepStr: '4'))])
+node('master'){
+try{
+
+  stage ('Clean workspace') {
+    deleteDir()
+  }
+
+  stage ('Clone sources') {
+    checkout scm
+      AUTHOR_NAME = bat (
+      script: "git show -s --format='%%an' HEAD",
+      returnStdout: true
+  ).split('\r\n')[2].trim()
+    
+  }
+  
+  withMaven(
+    jdk: jdk,
+    maven: maven,
+    mavenSettingsConfig:       mavenSettingsConfig,
+    globalMavenSettingsConfig: globalMavenSettingsConfig
+  ) {
+	    
+    stage ('Maven build') {
+        bat 'mvn test'
+          // archiveArtifacts  'target/site/surefire-report.html' 
+     archiveArtifacts 'Reports/Summary/SummaryReport.html'
+     //junit testDataPublishers: [[$class: 'AttachmentPublisher']], testResults: 'Reports'
+     //zip archive: true, dir: 'Reports', glob: '', zipFile: 'Reports'
+    //publishHTML([allowMissing: false, alwaysLinkToLastBuild: false, keepAll: false, reportDir: 'Reports/Summary/', reportFiles: 'SummaryReport.html', reportName: 'AutomationTestReport', reportTitles: ''])
+    
+	     }
+    
+     }
+ emailext (
+      subject: "SUCCESS :: Job'${env.JOB_NAME} [${env.BUILD_NUMBER}]' The last commit was written by ${AUTHOR_NAME}",
+          	body: "SUCCESS: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]': Check console output at :: ${env.BUILD_URL}",
+		    to: tolist,
+    		replyTo: '$DEFAULT_REPLYTO',
+          	recipientProviders: [[$class: 'DevelopersRecipientProvider']],
+          	attachLog: true
+    ) 
+   
+}catch (e) {
+  
+    emailext (
+     	  	subject: "FAILED :: Job'${env.JOB_NAME} [${env.BUILD_NUMBER}]' The last commit was written by ${AUTHOR_NAME}",
+          	body: "FAILED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]': Check console output at :: ${env.BUILD_URL}",
+		    to: tolist,
+    		replyTo: '$DEFAULT_REPLYTO',
+          	recipientProviders: [[$class: 'DevelopersRecipientProvider']]
+                 	
+          	
+    )
+       throw e
+  }
+}

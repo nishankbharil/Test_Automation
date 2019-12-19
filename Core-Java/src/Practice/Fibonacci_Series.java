@@ -24,4 +24,12 @@ public class Fibonacci_Series {
 			y = sum;
 		}
 	}
+	
+//	int f = "I love you";
+	
+	int a[], b;
+	int []c, d;
+	
+	
+	
 }

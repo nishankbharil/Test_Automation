@@ -21,5 +21,6 @@ public class Assert {
 		SoftAssertion.assertTrue(false);
 		System.out.println("softassert method was failed");
 		SoftAssertion.assertAll();// It throw the exception
+		SoftAssertion.fail();
 	}
 }
