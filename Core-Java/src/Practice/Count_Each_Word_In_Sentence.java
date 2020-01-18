@@ -25,6 +25,7 @@ public class Count_Each_Word_In_Sentence {
 		for (Map.Entry entry : hmap.entrySet()) {
 			System.out.println(entry.getKey() + " " + entry.getValue());
 		}
+		System.out.println(hmap);
 
 	}
 	

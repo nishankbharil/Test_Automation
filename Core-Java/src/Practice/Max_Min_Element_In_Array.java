@@ -9,7 +9,7 @@ public class Max_Min_Element_In_Array {
 		int minNum = a[0];
 		int len = a.length;
 
-		for (int i = 0; i <= len - 1; i++) {
+		for (int i = 0; i < len; i++) {
 			if (maxNum < a[i]) {
 				maxNum = a[i];
 			}

@@ -15,7 +15,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
-import org.apache.bcel.generic.Select;
+//import org.apache.bcel.generic.Select;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
@@ -30,10 +30,10 @@ import com.aventstack.extentreports.Status;
 import com.aventstack.extentreports.reporter.ExtentHtmlReporter;
 
 import Business_Functions.Common_Business_Functions;
-import Business_Functions.DataDictionary;
 import Business_Functions.Data_Definition;
+import Business_Functions.Data_Dictionary;
 import Business_Functions.File_Submission;
-import Business_Functions.RecentChanges_CommonFunctions;
+//import Business_Functions.RecentChanges_CommonFunctions;
 import Utility.DBUtil;
 import Utility.ExcelUtils;
 import Utility.PropertyReader;
@@ -68,7 +68,7 @@ public class stepDefinition extends TestCase {
 	Data_Definition objEntityGroup = new Data_Definition();
 	Data_Definition objDataDef = new Data_Definition();
 	Data_Definition objBusinessValRule = new Data_Definition();
-	DataDictionary objDataDict = new DataDictionary();
+	Data_Dictionary objDataDict = new Data_Dictionary();
 	static String sheet = null;
 	static String currentDir = System.getProperty("user.dir");
 
@@ -919,7 +919,7 @@ public class stepDefinition extends TestCase {
 			System.out.println("Close button not displayed");
 		} finally {
 			try {
-				RecentChanges_CommonFunctions.finallyBlock_TearDown(driver);
+//				RecentChanges_CommonFunctions.finallyBlock_TearDown(driver);
 			} catch (Exception Ex) {
 				System.out.println("Logout link not displayed closing the browser to end the test");
 				Ex.printStackTrace();

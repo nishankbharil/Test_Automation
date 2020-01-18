@@ -14,7 +14,7 @@ import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-import org.eclipse.jetty.util.log.Log;
+//import org.eclipse.jetty.util.log.Log;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Keys;
@@ -144,7 +144,7 @@ public class Common_Business_Functions extends TestCase {
 				System.out.println("Close button not displayed");
 			} finally {
 				try {
-					RecentChanges_CommonFunctions.finallyBlock_TearDown(driver);
+//					
 				} catch (Exception Ex) {
 					System.out.println("Logout link not displayed closing the browser to end the test");
 					Ex.printStackTrace();
@@ -231,7 +231,7 @@ public class Common_Business_Functions extends TestCase {
 				System.out.println("Close button not displayed");
 			} finally {
 				try {
-					RecentChanges_CommonFunctions.finallyBlock_TearDown(driver);
+//					
 				} catch (Exception Ex) {
 					System.out.println("Logout link not displayed closing the browser to end the test");
 					Ex.printStackTrace();
@@ -329,7 +329,7 @@ public class Common_Business_Functions extends TestCase {
 				System.out.println("Close button not displayed");
 			} finally {
 				try {
-					RecentChanges_CommonFunctions.finallyBlock_TearDown(driver);
+//					
 				} catch (Exception Ex) {
 					System.out.println("Logout link not displayed closing the browser to end the test");
 					Ex.printStackTrace();
@@ -406,7 +406,7 @@ public class Common_Business_Functions extends TestCase {
 				System.out.println("Close button not displayed");
 			} finally {
 				try {
-					RecentChanges_CommonFunctions.finallyBlock_TearDown(driver);
+//					
 				} catch (Exception Ex) {
 					System.out.println("Logout link not displayed closing the browser to end the test");
 					Ex.printStackTrace();
@@ -624,7 +624,7 @@ public class Common_Business_Functions extends TestCase {
 				System.out.println("Close button not displayed");
 			} finally {
 				try {
-					RecentChanges_CommonFunctions.finallyBlock_TearDown(driver);
+//					
 				} catch (Exception Ex) {
 					System.out.println("Logout link not displayed closing the browser to end the test");
 					Ex.printStackTrace();
@@ -708,7 +708,7 @@ public class Common_Business_Functions extends TestCase {
 				System.out.println("Close button not displayed");
 			} finally {
 				try {
-					RecentChanges_CommonFunctions.finallyBlock_TearDown(driver);
+//					
 				} catch (Exception Ex) {
 					System.out.println("Logout link not displayed closing the browser to end the test");
 					Ex.printStackTrace();
@@ -986,7 +986,7 @@ public class Common_Business_Functions extends TestCase {
 				System.out.println("Close button not displayed");
 			} finally {
 				try {
-					RecentChanges_CommonFunctions.finallyBlock_TearDown(driver);
+					
 				} catch (Exception Ex) {
 					System.out.println("Logout link not displayed closing the browser to end the test");
 					Ex.printStackTrace();
@@ -1270,7 +1270,7 @@ public class Common_Business_Functions extends TestCase {
 				System.out.println("Close button not displayed");
 			} finally {
 				try {
-					RecentChanges_CommonFunctions.finallyBlock_TearDown(driver);
+//					
 				} catch (Exception Ex) {
 					System.out.println("Logout link not displayed closing the browser to end the test");
 					Ex.printStackTrace();
@@ -1363,7 +1363,7 @@ public class Common_Business_Functions extends TestCase {
 				System.out.println("Close button not displayed");
 			} finally {
 				try {
-					RecentChanges_CommonFunctions.finallyBlock_TearDown(driver);
+//					
 				} catch (Exception Ex) {
 					System.out.println("Logout link not displayed closing the browser to end the test");
 					Ex.printStackTrace();
@@ -1453,7 +1453,7 @@ public class Common_Business_Functions extends TestCase {
 				System.out.println("Close button not displayed");
 			} finally {
 				try {
-					RecentChanges_CommonFunctions.finallyBlock_TearDown(driver);
+//					
 				} catch (Exception Ex) {
 					System.out.println("Logout link not displayed closing the browser to end the test");
 					Ex.printStackTrace();
@@ -1540,7 +1540,7 @@ public class Common_Business_Functions extends TestCase {
 				System.out.println("Close button not displayed");
 			} finally {
 				try {
-					RecentChanges_CommonFunctions.finallyBlock_TearDown(driver);
+//					
 				} catch (Exception Ex) {
 					System.out.println("Logout link not displayed closing the browser to end the test");
 					Ex.printStackTrace();
@@ -1626,7 +1626,7 @@ public class Common_Business_Functions extends TestCase {
 				System.out.println("Close button not displayed");
 			} finally {
 				try {
-					RecentChanges_CommonFunctions.finallyBlock_TearDown(driver);
+					
 				} catch (Exception Ex) {
 					System.out.println("Logout link not displayed closing the browser to end the test");
 					Ex.printStackTrace();
@@ -1712,7 +1712,7 @@ public class Common_Business_Functions extends TestCase {
 				System.out.println("Close button not displayed");
 			} finally {
 				try {
-					RecentChanges_CommonFunctions.finallyBlock_TearDown(driver);
+					
 				} catch (Exception Ex) {
 					System.out.println("Logout link not displayed closing the browser to end the test");
 					Ex.printStackTrace();
@@ -1799,7 +1799,7 @@ public class Common_Business_Functions extends TestCase {
 				System.out.println("Close button not displayed");
 			} finally {
 				try {
-					RecentChanges_CommonFunctions.finallyBlock_TearDown(driver);
+					
 				} catch (Exception Ex) {
 					System.out.println("Logout link not displayed closing the browser to end the test");
 					Ex.printStackTrace();
@@ -1884,7 +1884,7 @@ public class Common_Business_Functions extends TestCase {
 				System.out.println("Close button not displayed");
 			} finally {
 				try {
-					RecentChanges_CommonFunctions.finallyBlock_TearDown(driver);
+					
 				} catch (Exception Ex) {
 					System.out.println("Logout link not displayed closing the browser to end the test");
 					Ex.printStackTrace();
@@ -1970,7 +1970,7 @@ public class Common_Business_Functions extends TestCase {
 				System.out.println("Close button not displayed");
 			} finally {
 				try {
-					RecentChanges_CommonFunctions.finallyBlock_TearDown(driver);
+					
 				} catch (Exception Ex) {
 					System.out.println("Logout link not displayed closing the browser to end the test");
 					Ex.printStackTrace();
@@ -2056,7 +2056,7 @@ public class Common_Business_Functions extends TestCase {
 				System.out.println("Close button not displayed");
 			} finally {
 				try {
-					RecentChanges_CommonFunctions.finallyBlock_TearDown(driver);
+					
 				} catch (Exception Ex) {
 					System.out.println("Logout link not displayed closing the browser to end the test");
 					Ex.printStackTrace();
@@ -2142,7 +2142,7 @@ public class Common_Business_Functions extends TestCase {
 				System.out.println("Close button not displayed");
 			} finally {
 				try {
-					RecentChanges_CommonFunctions.finallyBlock_TearDown(driver);
+					
 				} catch (Exception Ex) {
 					System.out.println("Logout link not displayed closing the browser to end the test");
 					Ex.printStackTrace();
@@ -2228,7 +2228,7 @@ public class Common_Business_Functions extends TestCase {
 				System.out.println("Close button not displayed");
 			} finally {
 				try {
-					RecentChanges_CommonFunctions.finallyBlock_TearDown(driver);
+					
 				} catch (Exception Ex) {
 					System.out.println("Logout link not displayed closing the browser to end the test");
 					Ex.printStackTrace();
@@ -2313,7 +2313,7 @@ public class Common_Business_Functions extends TestCase {
 				System.out.println("Close button not displayed");
 			} finally {
 				try {
-					RecentChanges_CommonFunctions.finallyBlock_TearDown(driver);
+					
 				} catch (Exception Ex) {
 					System.out.println("Logout link not displayed closing the browser to end the test");
 					Ex.printStackTrace();
@@ -2398,7 +2398,7 @@ public class Common_Business_Functions extends TestCase {
 				System.out.println("Close button not displayed");
 			} finally {
 				try {
-					RecentChanges_CommonFunctions.finallyBlock_TearDown(driver);
+					
 				} catch (Exception Ex) {
 					System.out.println("Logout link not displayed closing the browser to end the test");
 					Ex.printStackTrace();
@@ -2483,7 +2483,7 @@ public class Common_Business_Functions extends TestCase {
 				System.out.println("Close button not displayed");
 			} finally {
 				try {
-					RecentChanges_CommonFunctions.finallyBlock_TearDown(driver);
+					
 				} catch (Exception Ex) {
 					System.out.println("Logout link not displayed closing the browser to end the test");
 					Ex.printStackTrace();
@@ -2568,7 +2568,7 @@ public class Common_Business_Functions extends TestCase {
 				System.out.println("Close button not displayed");
 			} finally {
 				try {
-					RecentChanges_CommonFunctions.finallyBlock_TearDown(driver);
+					
 				} catch (Exception Ex) {
 					System.out.println("Logout link not displayed closing the browser to end the test");
 					Ex.printStackTrace();
@@ -2654,7 +2654,7 @@ public class Common_Business_Functions extends TestCase {
 				System.out.println("Close button not displayed");
 			} finally {
 				try {
-					RecentChanges_CommonFunctions.finallyBlock_TearDown(driver);
+					
 				} catch (Exception Ex) {
 					System.out.println("Logout link not displayed closing the browser to end the test");
 					Ex.printStackTrace();
@@ -2743,7 +2743,7 @@ public class Common_Business_Functions extends TestCase {
 				System.out.println("Close button not displayed");
 			} finally {
 				try {
-					RecentChanges_CommonFunctions.finallyBlock_TearDown(driver);
+					
 				} catch (Exception Ex) {
 					System.out.println("Logout link not displayed closing the browser to end the test");
 					Ex.printStackTrace();
@@ -2807,7 +2807,7 @@ public class Common_Business_Functions extends TestCase {
 				System.out.println("Close button not displayed");
 			} finally {
 				try {
-					RecentChanges_CommonFunctions.finallyBlock_TearDown(driver);
+					
 				} catch (Exception Ex) {
 					System.out.println("Logout link not displayed closing the browser to end the test");
 					Ex.printStackTrace();
@@ -3176,7 +3176,7 @@ public class Common_Business_Functions extends TestCase {
 				System.out.println("Close button not displayed");
 			} finally {
 				try {
-					RecentChanges_CommonFunctions.finallyBlock_TearDown(driver);
+					
 				} catch (Exception Ex) {
 					System.out.println("Logout link not displayed closing the browser to end the test");
 					Ex.printStackTrace();
@@ -4569,7 +4569,7 @@ public class Common_Business_Functions extends TestCase {
 				System.out.println("Close button not displayed");
 			} finally {
 				try {
-					RecentChanges_CommonFunctions.finallyBlock_TearDown(driver);
+					
 				} catch (Exception Ex) {
 					System.out.println("Logout link not displayed closing the browser to end the test");
 					Ex.printStackTrace();

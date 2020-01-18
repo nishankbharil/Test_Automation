@@ -7,7 +7,6 @@
 	<packaging>jar</packaging>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>Cucumber_BDD_Framework</name>
-	<!-- <url>http://maven.apache.org</url> -->
 
 	<url>https://mvnrepository.com/artifact/info.cukes/cucumber-java</url>
 
@@ -31,9 +30,9 @@
 		</dependency>
 		<!-- https://mvnrepository.com/artifact/org.seleniumhq.selenium/selenium-java -->
 		<dependency>
-		    <groupId>org.seleniumhq.selenium</groupId>
-		    <artifactId>selenium-java</artifactId>
-		    <version>3.141.59</version>
+			<groupId>org.seleniumhq.selenium</groupId>
+			<artifactId>selenium-java</artifactId>
+			<version>3.141.59</version>
 		</dependency>
 		<dependency>
 			<groupId>info.cukes</groupId>
@@ -97,34 +96,36 @@
 			<artifactId>opencsv</artifactId>
 			<version>4.2</version>
 		</dependency>
-
-		<!-- REPORTING -->
-
-		<!-- https://mvnrepository.com/artifact/com.aventstack/extentreports -->
 		<dependency>
-		    <groupId>com.aventstack</groupId>
-		    <artifactId>extentreports</artifactId>
-		    <version>4.0.9</version>
+			<groupId>com.aventstack</groupId>
+			<artifactId>extentreports</artifactId>
+			<version>4.0.9</version>
 		</dependency>
 
 		<dependency>
 			<groupId>com.vimalselvam</groupId>
 			<artifactId>cucumber-extentsreport</artifactId>
-			<version>1.1.1</version>
+			<version>3.1.1</version>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>net.masterthought</groupId>
 			<artifactId>cucumber-reporting</artifactId>
-			<version>4.4.0</version>
+			<version>5.0.1</version>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>com.relevantcodes</groupId>
 			<artifactId>extentreports</artifactId>
 			<version>2.41.2</version>
 		</dependency>
-
+<!-- 		<dependency> -->
+<!-- 			<groupId>com.sun</groupId> -->
+<!-- 			<artifactId>tools</artifactId> -->
+<!-- 			<version>1.5.0</version> -->
+<!-- 			<scope>system</scope> -->
+<!-- 			<systemPath>C:\Program Files\Java\jdk1.8.0_201\lib\tools.jar</systemPath> -->
+<!-- 		</dependency> -->
 	</dependencies>
 
 	<build>

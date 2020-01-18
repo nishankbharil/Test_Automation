@@ -6,7 +6,15 @@ public abstract class AbstractConcept
 //abstract class can not be created
 //
 
+
+
+
 {
+	
+	public AbstractConcept()
+	{
+		
+	}
 
 	public abstract int sum(int a, int b);
 

@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.CellType;
+//import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.util.NumberToTextConverter;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
@@ -64,15 +64,14 @@ public class ReadExcel_Udemy {
 
 						Iterator<Cell> cv = r.cellIterator();
 						while (cv.hasNext()) {
-							Cell c = cv.next();
-							if (c.getCellTypeEnum() == CellType.STRING) {
-
-								a.add(c.getStringCellValue());
-							} else {
-
-								a.add(NumberToTextConverter.toText(c.getNumericCellValue()));
-
-							}
+//							Cell c = cv.next();
+//							if (c.getCellTypeEnum() == CellType.STRING) {
+//								a.add(c.getStringCellValue());
+//							} else {
+//
+//								a.add(NumberToTextConverter.toText(c.getNumericCellValue()));
+//
+//							}
 						}
 					}
 

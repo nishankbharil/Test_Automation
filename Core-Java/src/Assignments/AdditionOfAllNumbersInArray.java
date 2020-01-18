@@ -7,7 +7,7 @@ public class AdditionOfAllNumbersInArray {
 		int arr[] = {10,20,30,40,50};
 		int len = arr.length;
 		int sum = 0;
-		for (int i=0; i<=len-1; i++)
+		for (int i=0; i<len; i++)
 		{
 			sum = sum + arr[i];
 		}
