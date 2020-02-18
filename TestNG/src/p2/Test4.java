@@ -46,6 +46,7 @@ public class Test4
 		String s = "test";
 		Assert.assertNull(s, null);
 		Assert.assertNotNull(s, null);
+		Assert.assertEquals("ABC", "ABC", "test");
 	}
 	
 	@Test

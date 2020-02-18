@@ -7,7 +7,6 @@ import org.testng.annotations.Test;
 
 @Listeners(TestNG_Listener.TestNGListerner.class)
 public class MyFirstTestCase {
-
 	
 	@Test
 	public void GoogleTitleVerify() {

@@ -6,9 +6,6 @@ public abstract class AbstractConcept
 //abstract class can not be created
 //
 
-
-
-
 {
 	
 	public AbstractConcept()

@@ -5,7 +5,7 @@ public class PrimeNumberBetweenOneAndHundred {
 	public static void main(String[] args) {
 		int i = 0;
 		int num = 0;
-		int a = 50;
+		int a = 100;
 		// Empty String
 		String primeNumbers = "";
 

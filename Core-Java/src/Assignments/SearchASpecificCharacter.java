@@ -20,6 +20,25 @@ public class SearchASpecificCharacter
 		if (count > 3)
 			System.out.println(false);
 		else
-			System.out.println(true);	
+			System.out.println(true);
+		
+		System.out.println("--------------------");
+		int count1 = 0;
+		
+		char c1[] = s.toCharArray();
+		
+		for (char temp: c1)
+		{
+			if (temp=='e')
+			{
+				count1 = count1+1;
+			}
+		}
+		
+		System.out.println(count1);
+		
+		
 	}
+	
+
 }

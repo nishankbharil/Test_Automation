@@ -49,10 +49,6 @@ public class readData {
 				System.out.println(data);
 				row3.next();
 			}
-			
-			
 		}
-
 	}
-
 }

@@ -11,10 +11,12 @@ public class Assignment_Map {
 		MyMap.put(103, "nishank");
 		MyMap.put(101, "bharil");
 		MyMap.put(110, "aac");
+		MyMap.put(111, "aac");
 		
-		
+		MyMap.remove(111);
 		System.out.println(MyMap.get(110));
 		
+		System.out.println(MyMap);
 		
 		
 	}

@@ -1,90 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testng-results skipped="1" failed="4" ignored="0" total="10" passed="5">
+<testng-results skipped="0" failed="1" ignored="0" total="2" passed="1">
   <reporter-output>
   </reporter-output>
-  <suite name="Default suite" duration-ms="308" started-at="2019-12-23T15:27:05Z" finished-at="2019-12-23T15:27:05Z">
+  <suite name="Default suite" duration-ms="70" started-at="2020-02-15T06:29:01Z" finished-at="2020-02-15T06:29:01Z">
     <groups>
-      <group name="Sanity">
-        <method signature="Test3.m5(java.lang.String)[pri:0, instance:p1.Test3@20de05e5]" name="m5" class="p1.Test3"/>
-      </group> <!-- Sanity -->
-      <group name="Regression">
-        <method signature="Test3.m4()[pri:0, instance:p1.Test3@20de05e5]" name="m4" class="p1.Test3"/>
-        <method signature="Test3.m6()[pri:0, instance:p1.Test3@20de05e5]" name="m6" class="p1.Test3"/>
-      </group> <!-- Regression -->
     </groups>
-    <test name="Default test" duration-ms="308" started-at="2019-12-23T15:27:05Z" finished-at="2019-12-23T15:27:05Z">
-      <class name="p1.Test2">
-        <test-method status="PASS" signature="m8()[pri:1, instance:p1.Test2@2a2843ec]" name="m8" duration-ms="4" started-at="2019-12-23T15:27:05Z" description="This is M8 Test" finished-at="2019-12-23T15:27:05Z">
+    <test name="Default test" duration-ms="70" started-at="2020-02-15T06:29:01Z" finished-at="2020-02-15T06:29:01Z">
+      <class name="p2.Test4">
+        <test-method status="PASS" signature="Launch_URL()[pri:0, instance:p2.Test4@5034c75a]" name="Launch_URL" is-config="true" duration-ms="11" started-at="2020-02-15T06:29:01Z" finished-at="2020-02-15T06:29:01Z">
           <reporter-output>
           </reporter-output>
-        </test-method> <!-- m8 -->
-        <test-method status="PASS" signature="m7()[pri:2, instance:p1.Test2@2a2843ec]" name="m7" duration-ms="6" started-at="2019-12-23T15:27:05Z" description="This is M7 Test" finished-at="2019-12-23T15:27:05Z">
+        </test-method> <!-- Launch_URL -->
+        <test-method status="PASS" signature="login()[pri:0, instance:p2.Test4@5034c75a]" name="login" is-config="true" duration-ms="0" started-at="2020-02-15T06:29:01Z" finished-at="2020-02-15T06:29:01Z">
           <reporter-output>
           </reporter-output>
-        </test-method> <!-- m7 -->
-        <test-method status="PASS" signature="m9()[pri:10, instance:p1.Test2@2a2843ec]" name="m9" duration-ms="4" started-at="2019-12-23T15:27:05Z" description="This is M9 Test" finished-at="2019-12-23T15:27:05Z">
-          <reporter-output>
-          </reporter-output>
-        </test-method> <!-- m9 -->
-      </class> <!-- p1.Test2 -->
-      <class name="p1.Test1">
-        <test-method status="PASS" signature="m2()[pri:0, instance:p1.Test1@2042ccce]" name="m2" duration-ms="30" started-at="2019-12-23T15:27:05Z" finished-at="2019-12-23T15:27:05Z">
-          <reporter-output>
-          </reporter-output>
-        </test-method> <!-- m2 -->
-        <test-method status="FAIL" signature="m3()[pri:0, instance:p1.Test1@2042ccce]" name="m3" duration-ms="5" started-at="2019-12-23T15:27:05Z" finished-at="2019-12-23T15:27:05Z">
-          <exception class="java.lang.ArithmeticException">
-            <message>
-              <![CDATA[/ by zero]]>
-            </message>
-            <full-stacktrace>
-              <![CDATA[java.lang.ArithmeticException: / by zero
-at p1.Test1.m3(Test1.java:27)
-at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
-at sun.reflect.NativeMethodAccessorImpl.invoke(Unknown Source)
-at sun.reflect.DelegatingMethodAccessorImpl.invoke(Unknown Source)
-at java.lang.reflect.Method.invoke(Unknown Source)
-at org.testng.internal.MethodInvocationHelper.invokeMethod(MethodInvocationHelper.java:124)
-at org.testng.internal.Invoker.invokeMethod(Invoker.java:583)
-at org.testng.internal.Invoker.invokeTestMethod(Invoker.java:719)
-at org.testng.internal.Invoker.invokeTestMethods(Invoker.java:989)
-at org.testng.internal.TestMethodWorker.invokeTestMethods(TestMethodWorker.java:125)
-at org.testng.internal.TestMethodWorker.run(TestMethodWorker.java:109)
-at org.testng.TestRunner.privateRun(TestRunner.java:648)
-at org.testng.TestRunner.run(TestRunner.java:505)
-at org.testng.SuiteRunner.runTest(SuiteRunner.java:455)
-at org.testng.SuiteRunner.runSequentially(SuiteRunner.java:450)
-at org.testng.SuiteRunner.privateRun(SuiteRunner.java:415)
-at org.testng.SuiteRunner.run(SuiteRunner.java:364)
-at org.testng.SuiteRunnerWorker.runSuite(SuiteRunnerWorker.java:52)
-at org.testng.SuiteRunnerWorker.run(SuiteRunnerWorker.java:84)
-at org.testng.TestNG.runSuitesSequentially(TestNG.java:1208)
-at org.testng.TestNG.runSuitesLocally(TestNG.java:1137)
-at org.testng.TestNG.runSuites(TestNG.java:1049)
-at org.testng.TestNG.run(TestNG.java:1017)
-at org.testng.remote.AbstractRemoteTestNG.run(AbstractRemoteTestNG.java:115)
-at org.testng.remote.RemoteTestNG.initAndRun(RemoteTestNG.java:251)
-at org.testng.remote.RemoteTestNG.main(RemoteTestNG.java:77)
-]]>
-            </full-stacktrace>
-          </exception> <!-- java.lang.ArithmeticException -->
-          <reporter-output>
-          </reporter-output>
-        </test-method> <!-- m3 -->
-        <test-method status="FAIL" signature="m1()[pri:0, instance:p1.Test1@2042ccce]" name="m1" duration-ms="16" started-at="2019-12-23T15:27:05Z" depends-on-methods="p1.Test1.m3" finished-at="2019-12-23T15:27:05Z">
+        </test-method> <!-- login -->
+        <test-method status="FAIL" signature="m10()[pri:0, instance:p2.Test4@5034c75a]" name="m10" duration-ms="12" started-at="2020-02-15T06:29:01Z" finished-at="2020-02-15T06:29:01Z">
           <exception class="java.lang.AssertionError">
             <message>
-              <![CDATA[expected [13] but found [12]]]>
+              <![CDATA[Age Criteria not satisfied expected [true] but found [false]]]>
             </message>
             <full-stacktrace>
-              <![CDATA[java.lang.AssertionError: expected [13] but found [12]
+              <![CDATA[java.lang.AssertionError: Age Criteria not satisfied expected [true] but found [false]
 at org.testng.Assert.fail(Assert.java:96)
 at org.testng.Assert.failNotEquals(Assert.java:776)
-at org.testng.Assert.assertEqualsImpl(Assert.java:137)
-at org.testng.Assert.assertEquals(Assert.java:118)
-at org.testng.Assert.assertEquals(Assert.java:652)
-at org.testng.Assert.assertEquals(Assert.java:662)
-at p1.Test1.m1(Test1.java:14)
+at org.testng.Assert.assertTrue(Assert.java:44)
+at p2.Test4.m10(Test4.java:41)
 at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
 at sun.reflect.NativeMethodAccessorImpl.invoke(Unknown Source)
 at sun.reflect.DelegatingMethodAccessorImpl.invoke(Unknown Source)
@@ -115,127 +56,28 @@ at org.testng.remote.RemoteTestNG.main(RemoteTestNG.java:77)
           </exception> <!-- java.lang.AssertionError -->
           <reporter-output>
           </reporter-output>
-        </test-method> <!-- m1 -->
-      </class> <!-- p1.Test1 -->
-      <class name="p1.Test3">
-        <test-method status="FAIL" signature="m5(java.lang.String)[pri:0, instance:p1.Test3@20de05e5]" name="m5" duration-ms="0" started-at="2019-12-23T15:27:05Z" finished-at="2019-12-23T15:27:05Z">
-          <exception class="org.testng.TestNGException">
-            <message>
-              <![CDATA[
-Parameter 'AppURL' is required by @Test on method m5 but has not been marked @Optional or defined
-in C:\Users\NishankBharil\AppData\Local\Temp\testng-eclipse-907542763\testng-customsuite.xml]]>
-            </message>
-            <full-stacktrace>
-              <![CDATA[org.testng.TestNGException: 
-Parameter 'AppURL' is required by @Test on method m5 but has not been marked @Optional or defined
-in C:\Users\NishankBharil\AppData\Local\Temp\testng-eclipse-907542763\testng-customsuite.xml
-at org.testng.internal.Parameters.createParams(Parameters.java:290)
-at org.testng.internal.Parameters.createParametersForMethod(Parameters.java:359)
-at org.testng.internal.Parameters.createParameters(Parameters.java:620)
-at org.testng.internal.Parameters.handleParameters(Parameters.java:769)
-at org.testng.internal.ParameterHandler.handleParameters(ParameterHandler.java:49)
-at org.testng.internal.ParameterHandler.createParameters(ParameterHandler.java:37)
-at org.testng.internal.Invoker.invokeTestMethods(Invoker.java:924)
-at org.testng.internal.TestMethodWorker.invokeTestMethods(TestMethodWorker.java:125)
-at org.testng.internal.TestMethodWorker.run(TestMethodWorker.java:109)
-at org.testng.TestRunner.privateRun(TestRunner.java:648)
-at org.testng.TestRunner.run(TestRunner.java:505)
-at org.testng.SuiteRunner.runTest(SuiteRunner.java:455)
-at org.testng.SuiteRunner.runSequentially(SuiteRunner.java:450)
-at org.testng.SuiteRunner.privateRun(SuiteRunner.java:415)
-at org.testng.SuiteRunner.run(SuiteRunner.java:364)
-at org.testng.SuiteRunnerWorker.runSuite(SuiteRunnerWorker.java:52)
-at org.testng.SuiteRunnerWorker.run(SuiteRunnerWorker.java:84)
-at org.testng.TestNG.runSuitesSequentially(TestNG.java:1208)
-at org.testng.TestNG.runSuitesLocally(TestNG.java:1137)
-at org.testng.TestNG.runSuites(TestNG.java:1049)
-at org.testng.TestNG.run(TestNG.java:1017)
-at org.testng.remote.AbstractRemoteTestNG.run(AbstractRemoteTestNG.java:115)
-at org.testng.remote.RemoteTestNG.initAndRun(RemoteTestNG.java:251)
-at org.testng.remote.RemoteTestNG.main(RemoteTestNG.java:77)
-]]>
-            </full-stacktrace>
-          </exception> <!-- org.testng.TestNGException -->
+        </test-method> <!-- m10 -->
+        <test-method status="PASS" signature="Logout()[pri:0, instance:p2.Test4@5034c75a]" name="Logout" is-config="true" duration-ms="1" started-at="2020-02-15T06:29:01Z" finished-at="2020-02-15T06:29:01Z">
           <reporter-output>
           </reporter-output>
-        </test-method> <!-- m5 -->
-        <test-method status="SKIP" signature="m4()[pri:0, instance:p1.Test3@20de05e5]" name="m4" duration-ms="0" depends-on-groups="Sanity" started-at="2019-12-23T15:27:05Z" finished-at="2019-12-23T15:27:05Z">
-          <exception class="java.lang.Throwable">
-            <message>
-              <![CDATA[Method Test3.m4()[pri:0, instance:p1.Test3@20de05e5] depends on not successfully finished methods in group "Sanity"]]>
-            </message>
-            <full-stacktrace>
-              <![CDATA[java.lang.Throwable: Method Test3.m4()[pri:0, instance:p1.Test3@20de05e5] depends on not successfully finished methods in group "Sanity"
-at org.testng.internal.Invoker.invokeTestMethods(Invoker.java:888)
-at org.testng.internal.TestMethodWorker.invokeTestMethods(TestMethodWorker.java:125)
-at org.testng.internal.TestMethodWorker.run(TestMethodWorker.java:109)
-at org.testng.TestRunner.privateRun(TestRunner.java:648)
-at org.testng.TestRunner.run(TestRunner.java:505)
-at org.testng.SuiteRunner.runTest(SuiteRunner.java:455)
-at org.testng.SuiteRunner.runSequentially(SuiteRunner.java:450)
-at org.testng.SuiteRunner.privateRun(SuiteRunner.java:415)
-at org.testng.SuiteRunner.run(SuiteRunner.java:364)
-at org.testng.SuiteRunnerWorker.runSuite(SuiteRunnerWorker.java:52)
-at org.testng.SuiteRunnerWorker.run(SuiteRunnerWorker.java:84)
-at org.testng.TestNG.runSuitesSequentially(TestNG.java:1208)
-at org.testng.TestNG.runSuitesLocally(TestNG.java:1137)
-at org.testng.TestNG.runSuites(TestNG.java:1049)
-at org.testng.TestNG.run(TestNG.java:1017)
-at org.testng.remote.AbstractRemoteTestNG.run(AbstractRemoteTestNG.java:115)
-at org.testng.remote.RemoteTestNG.initAndRun(RemoteTestNG.java:251)
-at org.testng.remote.RemoteTestNG.main(RemoteTestNG.java:77)
-]]>
-            </full-stacktrace>
-          </exception> <!-- java.lang.Throwable -->
+        </test-method> <!-- Logout -->
+        <test-method status="PASS" signature="m11()[pri:0, instance:p2.Test4@5034c75a]" name="m11" duration-ms="3" started-at="2020-02-15T06:29:01Z" finished-at="2020-02-15T06:29:01Z">
           <reporter-output>
           </reporter-output>
-        </test-method> <!-- m4 -->
-        <test-method status="PASS" signature="m6()[pri:0, instance:p1.Test3@20de05e5]" name="m6" duration-ms="4" depends-on-groups="Sanity" started-at="2019-12-23T15:27:05Z" finished-at="2019-12-23T15:27:05Z">
+        </test-method> <!-- m11 -->
+        <test-method status="PASS" signature="login()[pri:0, instance:p2.Test4@5034c75a]" name="login" is-config="true" duration-ms="0" started-at="2020-02-15T06:29:01Z" finished-at="2020-02-15T06:29:01Z">
           <reporter-output>
           </reporter-output>
-        </test-method> <!-- m6 -->
-      </class> <!-- p1.Test3 -->
-      <class name="p1.DataProviderTest">
-        <test-method status="FAIL" signature="TestDataProvider()[pri:0, instance:p1.DataProviderTest@36c0d0bd]" name="TestDataProvider" duration-ms="15" started-at="2019-12-23T15:27:05Z" data-provider="MyData" finished-at="2019-12-23T15:27:05Z">
-          <exception class="org.testng.internal.reflect.MethodMatcherException">
-            <message>
-              <![CDATA[
-Data provider mismatch
-Method: TestDataProvider([])
-Arguments: [(java.lang.String) ABC,(java.lang.String) DEF]]]>
-            </message>
-            <full-stacktrace>
-              <![CDATA[org.testng.internal.reflect.MethodMatcherException: 
-Data provider mismatch
-Method: TestDataProvider([])
-Arguments: [(java.lang.String) ABC,(java.lang.String) DEF]
-at org.testng.internal.reflect.DataProviderMethodMatcher.getConformingArguments(DataProviderMethodMatcher.java:45)
-at org.testng.internal.Parameters.injectParameters(Parameters.java:796)
-at org.testng.internal.Invoker.invokeTestMethods(Invoker.java:983)
-at org.testng.internal.TestMethodWorker.invokeTestMethods(TestMethodWorker.java:125)
-at org.testng.internal.TestMethodWorker.run(TestMethodWorker.java:109)
-at org.testng.TestRunner.privateRun(TestRunner.java:648)
-at org.testng.TestRunner.run(TestRunner.java:505)
-at org.testng.SuiteRunner.runTest(SuiteRunner.java:455)
-at org.testng.SuiteRunner.runSequentially(SuiteRunner.java:450)
-at org.testng.SuiteRunner.privateRun(SuiteRunner.java:415)
-at org.testng.SuiteRunner.run(SuiteRunner.java:364)
-at org.testng.SuiteRunnerWorker.runSuite(SuiteRunnerWorker.java:52)
-at org.testng.SuiteRunnerWorker.run(SuiteRunnerWorker.java:84)
-at org.testng.TestNG.runSuitesSequentially(TestNG.java:1208)
-at org.testng.TestNG.runSuitesLocally(TestNG.java:1137)
-at org.testng.TestNG.runSuites(TestNG.java:1049)
-at org.testng.TestNG.run(TestNG.java:1017)
-at org.testng.remote.AbstractRemoteTestNG.run(AbstractRemoteTestNG.java:115)
-at org.testng.remote.RemoteTestNG.initAndRun(RemoteTestNG.java:251)
-at org.testng.remote.RemoteTestNG.main(RemoteTestNG.java:77)
-]]>
-            </full-stacktrace>
-          </exception> <!-- org.testng.internal.reflect.MethodMatcherException -->
+        </test-method> <!-- login -->
+        <test-method status="PASS" signature="Logout()[pri:0, instance:p2.Test4@5034c75a]" name="Logout" is-config="true" duration-ms="1" started-at="2020-02-15T06:29:01Z" finished-at="2020-02-15T06:29:01Z">
           <reporter-output>
           </reporter-output>
-        </test-method> <!-- TestDataProvider -->
-      </class> <!-- p1.DataProviderTest -->
+        </test-method> <!-- Logout -->
+        <test-method status="PASS" signature="Close_Browser()[pri:0, instance:p2.Test4@5034c75a]" name="Close_Browser" is-config="true" duration-ms="1" started-at="2020-02-15T06:29:01Z" finished-at="2020-02-15T06:29:01Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- Close_Browser -->
+      </class> <!-- p2.Test4 -->
     </test> <!-- Default test -->
   </suite> <!-- Default suite -->
 </testng-results>

@@ -3,23 +3,15 @@
 <suite guice-stage="DEVELOPMENT" name="Failed suite [Default suite]">
   <test thread-count="5" name="Default test(failed)">
     <classes>
-      <class name="p1.DataProviderTest">
+      <class name="p2.Test4">
         <methods>
-          <include name="TestDataProvider"/>
+          <include name="m10"/>
+          <include name="Launch_URL"/>
+          <include name="Logout"/>
+          <include name="Close_Browser"/>
+          <include name="login"/>
         </methods>
-      </class> <!-- p1.DataProviderTest -->
-      <class name="p1.Test1">
-        <methods>
-          <include name="m1"/>
-          <include name="m3"/>
-        </methods>
-      </class> <!-- p1.Test1 -->
-      <class name="p1.Test3">
-        <methods>
-          <include name="m4"/>
-          <include name="m5"/>
-        </methods>
-      </class> <!-- p1.Test3 -->
+      </class> <!-- p2.Test4 -->
     </classes>
   </test> <!-- Default test(failed) -->
 </suite> <!-- Failed suite [Default suite] -->

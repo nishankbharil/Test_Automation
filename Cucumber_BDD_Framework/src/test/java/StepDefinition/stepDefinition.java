@@ -15,7 +15,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
-//import org.apache.bcel.generic.Select;
+import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
@@ -29,11 +29,12 @@ import com.aventstack.extentreports.ExtentTest;
 import com.aventstack.extentreports.Status;
 import com.aventstack.extentreports.reporter.ExtentHtmlReporter;
 
+
 import Business_Functions.Common_Business_Functions;
+import Business_Functions.DataDictionary;
 import Business_Functions.Data_Definition;
-import Business_Functions.Data_Dictionary;
 import Business_Functions.File_Submission;
-//import Business_Functions.RecentChanges_CommonFunctions;
+import Business_Functions.RecentChanges_CommonFunctions;
 import Utility.DBUtil;
 import Utility.ExcelUtils;
 import Utility.PropertyReader;
@@ -68,7 +69,7 @@ public class stepDefinition extends TestCase {
 	Data_Definition objEntityGroup = new Data_Definition();
 	Data_Definition objDataDef = new Data_Definition();
 	Data_Definition objBusinessValRule = new Data_Definition();
-	Data_Dictionary objDataDict = new Data_Dictionary();
+	DataDictionary objDataDict = new DataDictionary();
 	static String sheet = null;
 	static String currentDir = System.getProperty("user.dir");
 
@@ -919,7 +920,7 @@ public class stepDefinition extends TestCase {
 			System.out.println("Close button not displayed");
 		} finally {
 			try {
-//				RecentChanges_CommonFunctions.finallyBlock_TearDown(driver);
+				RecentChanges_CommonFunctions.finallyBlock_TearDown(driver);
 			} catch (Exception Ex) {
 				System.out.println("Logout link not displayed closing the browser to end the test");
 				Ex.printStackTrace();
@@ -1256,6 +1257,9 @@ public class stepDefinition extends TestCase {
 					DCValidTo);
 			String DCIsCntryRel = objExcelUtils.getCellValueUsingColName("DC_IsCountryRelevant",
 					Integer.parseInt(rowNoGbl));
+			WebElement ele1 = driver.findElement(By.xpath("//select[@formcontrolname='addAccessRestriction']"));
+			Select s = new Select(ele1);
+			s.selectByVisibleText("Country");
 			objCBF.selectCheckbox(driver, test, extent, rowNoGbl, date1,
 					objPageReadDefiniton.getLocator("objAddDCIsCountryRelevantChkbox"), DCIsCntryRel);
 			String DCPrimaryDDOwner = objExcelUtils.getCellValueUsingColName("DC_PrimaryDataDictionary",
@@ -1296,6 +1300,12 @@ public class stepDefinition extends TestCase {
 			objCBF.enterData(driver, test, date1, rowNoGbl, extent,
 					objPageReadDefiniton.getLocator("objAddDCValidFrom"), DCValidFrom);
 			String DCValidTo = objExcelUtils.getDateCellValueUsingColName("DC_ValidTo", Integer.parseInt(rowNoGbl));
+			
+			WebElement ele1 = driver.findElement(By.xpath("//select[@formcontrolname='addAccessRestriction']"));
+			Select s = new Select(ele1);
+			s.selectByVisibleText("Country");
+				
+			
 			objCBF.enterData(driver, test, date1, rowNoGbl, extent, objPageReadDefiniton.getLocator("objAddDCValidTo"),
 					DCValidTo);
 			String DCIsCntryRel = objExcelUtils.getCellValueUsingColName("DC_IsCountryRelevant",
@@ -4411,6 +4421,56 @@ public class stepDefinition extends TestCase {
 		} catch (IOException e) {
 			System.out.println("In catch block " + e);
 			System.out.println("Step Failed : add_validation_rule_with_severity_in_E2E_test");
+		}
+	}
+	@Then("^Add Access Group \"([^\"]*)\"$")
+	public void add_access_group(String wbname) throws Throwable {
+		try {
+			dateFormat = new SimpleDateFormat("dd-MM-yyyy_HH.mm.ss");
+			date = new Date();
+			date1 = dateFormat.format(date);
+
+			objCBF.addAccessGroup(driver, test, extent, rowNoGbl, date1, wbname);
+		} catch (IOException e) {
+			System.out.println("In catch block " + e);
+			System.out.println("Step Failed : add_access_group");
+		}
+	}
+	
+	@When("^Search data collection in Access group \"([^\"]*)\"$")
+	public void search_data_collection_in_Access_group(String colName) throws Throwable {
+		try {
+			String DDName = ExcelUtils.getCellValueUsingColName(colName, Integer.parseInt(rowNoGbl));
+			objCBF.searchDataCollectionAccessGroup(driver, test, extent, rowNoGbl, date1, DDName);
+			;
+		} catch (Exception e) {
+			System.out.println("In catch block " + e);
+			System.out.println("Step Failed : search_data_collection_in_Access_group");
+		}
+	}
+
+	@Then("^Edit assigned Entities \"([^\"]*)\" and \"([^\"]*)\"$")
+	public void Edit_Assigned_Entities(String entity1, String entity2) throws Throwable {
+		try {
+//			String DDName = ExcelUtils.getCellValueUsingColName(colName, Integer.parseInt(rowNoGbl));
+			objCBF.editAssignedEntities(driver, test, extent, rowNoGbl, date1, entity1, entity2);
+		} catch (Exception e) {
+			System.out.println("In catch block " + e);
+			System.out.println("Step Failed : Edit_Assigned_Entities");
+		}
+	}
+	
+	@Then("^Edit Access Group \"([^\"]*)\"$")
+	public void edit_access_group(String wbname) throws Throwable {
+		try {
+			dateFormat = new SimpleDateFormat("dd-MM-yyyy_HH.mm.ss");
+			date = new Date();
+			date1 = dateFormat.format(date);
+
+			objCBF.editAccessGroup(driver, test, extent, rowNoGbl, date1, wbname);
+		} catch (IOException e) {
+			System.out.println("In catch block " + e);
+			System.out.println("Step Failed : edit_access_group");
 		}
 	}
 }

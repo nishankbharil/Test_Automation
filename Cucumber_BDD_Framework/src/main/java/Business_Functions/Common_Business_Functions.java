@@ -14,7 +14,7 @@ import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-//import org.eclipse.jetty.util.log.Log;
+import org.eclipse.jetty.util.log.Log;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Keys;
@@ -27,6 +27,7 @@ import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.ie.InternetExplorerDriver;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.remote.DesiredCapabilities;
+import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -144,7 +145,7 @@ public class Common_Business_Functions extends TestCase {
 				System.out.println("Close button not displayed");
 			} finally {
 				try {
-//					
+					RecentChanges_CommonFunctions.finallyBlock_TearDown(driver);
 				} catch (Exception Ex) {
 					System.out.println("Logout link not displayed closing the browser to end the test");
 					Ex.printStackTrace();
@@ -174,7 +175,8 @@ public class Common_Business_Functions extends TestCase {
 		return newValue;
 	}
 
-	public String generateSixDigitRandomNumber(String rowNoGbl, String workbookName, String colName) throws Exception {
+	public static String generateSixDigitRandomNumber(String rowNoGbl, String workbookName, String colName)
+			throws Exception {
 
 		// It will generate 6 digit random Number from 100000 to 999999.
 		Random rnd = new Random();
@@ -231,7 +233,7 @@ public class Common_Business_Functions extends TestCase {
 				System.out.println("Close button not displayed");
 			} finally {
 				try {
-//					
+					RecentChanges_CommonFunctions.finallyBlock_TearDown(driver);
 				} catch (Exception Ex) {
 					System.out.println("Logout link not displayed closing the browser to end the test");
 					Ex.printStackTrace();
@@ -329,7 +331,7 @@ public class Common_Business_Functions extends TestCase {
 				System.out.println("Close button not displayed");
 			} finally {
 				try {
-//					
+					RecentChanges_CommonFunctions.finallyBlock_TearDown(driver);
 				} catch (Exception Ex) {
 					System.out.println("Logout link not displayed closing the browser to end the test");
 					Ex.printStackTrace();
@@ -406,7 +408,7 @@ public class Common_Business_Functions extends TestCase {
 				System.out.println("Close button not displayed");
 			} finally {
 				try {
-//					
+					RecentChanges_CommonFunctions.finallyBlock_TearDown(driver);
 				} catch (Exception Ex) {
 					System.out.println("Logout link not displayed closing the browser to end the test");
 					Ex.printStackTrace();
@@ -624,7 +626,7 @@ public class Common_Business_Functions extends TestCase {
 				System.out.println("Close button not displayed");
 			} finally {
 				try {
-//					
+					RecentChanges_CommonFunctions.finallyBlock_TearDown(driver);
 				} catch (Exception Ex) {
 					System.out.println("Logout link not displayed closing the browser to end the test");
 					Ex.printStackTrace();
@@ -708,7 +710,7 @@ public class Common_Business_Functions extends TestCase {
 				System.out.println("Close button not displayed");
 			} finally {
 				try {
-//					
+					RecentChanges_CommonFunctions.finallyBlock_TearDown(driver);
 				} catch (Exception Ex) {
 					System.out.println("Logout link not displayed closing the browser to end the test");
 					Ex.printStackTrace();
@@ -986,7 +988,7 @@ public class Common_Business_Functions extends TestCase {
 				System.out.println("Close button not displayed");
 			} finally {
 				try {
-					
+					RecentChanges_CommonFunctions.finallyBlock_TearDown(driver);
 				} catch (Exception Ex) {
 					System.out.println("Logout link not displayed closing the browser to end the test");
 					Ex.printStackTrace();
@@ -1270,7 +1272,7 @@ public class Common_Business_Functions extends TestCase {
 				System.out.println("Close button not displayed");
 			} finally {
 				try {
-//					
+					RecentChanges_CommonFunctions.finallyBlock_TearDown(driver);
 				} catch (Exception Ex) {
 					System.out.println("Logout link not displayed closing the browser to end the test");
 					Ex.printStackTrace();
@@ -1363,7 +1365,7 @@ public class Common_Business_Functions extends TestCase {
 				System.out.println("Close button not displayed");
 			} finally {
 				try {
-//					
+					RecentChanges_CommonFunctions.finallyBlock_TearDown(driver);
 				} catch (Exception Ex) {
 					System.out.println("Logout link not displayed closing the browser to end the test");
 					Ex.printStackTrace();
@@ -1453,7 +1455,7 @@ public class Common_Business_Functions extends TestCase {
 				System.out.println("Close button not displayed");
 			} finally {
 				try {
-//					
+					RecentChanges_CommonFunctions.finallyBlock_TearDown(driver);
 				} catch (Exception Ex) {
 					System.out.println("Logout link not displayed closing the browser to end the test");
 					Ex.printStackTrace();
@@ -1540,7 +1542,7 @@ public class Common_Business_Functions extends TestCase {
 				System.out.println("Close button not displayed");
 			} finally {
 				try {
-//					
+					RecentChanges_CommonFunctions.finallyBlock_TearDown(driver);
 				} catch (Exception Ex) {
 					System.out.println("Logout link not displayed closing the browser to end the test");
 					Ex.printStackTrace();
@@ -1626,7 +1628,7 @@ public class Common_Business_Functions extends TestCase {
 				System.out.println("Close button not displayed");
 			} finally {
 				try {
-					
+					RecentChanges_CommonFunctions.finallyBlock_TearDown(driver);
 				} catch (Exception Ex) {
 					System.out.println("Logout link not displayed closing the browser to end the test");
 					Ex.printStackTrace();
@@ -1712,7 +1714,7 @@ public class Common_Business_Functions extends TestCase {
 				System.out.println("Close button not displayed");
 			} finally {
 				try {
-					
+					RecentChanges_CommonFunctions.finallyBlock_TearDown(driver);
 				} catch (Exception Ex) {
 					System.out.println("Logout link not displayed closing the browser to end the test");
 					Ex.printStackTrace();
@@ -1799,7 +1801,7 @@ public class Common_Business_Functions extends TestCase {
 				System.out.println("Close button not displayed");
 			} finally {
 				try {
-					
+					RecentChanges_CommonFunctions.finallyBlock_TearDown(driver);
 				} catch (Exception Ex) {
 					System.out.println("Logout link not displayed closing the browser to end the test");
 					Ex.printStackTrace();
@@ -1825,8 +1827,8 @@ public class Common_Business_Functions extends TestCase {
 			driver.manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS);
 			// Find the element to clicked
 			WebElement element = driver.findElement(By
-//					.xpath("//*[@id='1']//tree-root/tree-viewport/div/div/tree-node-collection/div/tree-node/div/tree-node-children/div/tree-node-collection/div/tree-node[8]//label[text()='"
-//							+ permissionName + "']/preceding-sibling::input"));
+					// .xpath("//*[@id='1']//tree-root/tree-viewport/div/div/tree-node-collection/div/tree-node/div/tree-node-children/div/tree-node-collection/div/tree-node[8]//label[text()='"
+					// + permissionName + "']/preceding-sibling::input"));
 					.xpath("//label[contains(text(),'" + permissionName + "')]/preceding-sibling::input"));
 			if (flag == true) {
 				if (element.isSelected()) {
@@ -1884,7 +1886,7 @@ public class Common_Business_Functions extends TestCase {
 				System.out.println("Close button not displayed");
 			} finally {
 				try {
-					
+					RecentChanges_CommonFunctions.finallyBlock_TearDown(driver);
 				} catch (Exception Ex) {
 					System.out.println("Logout link not displayed closing the browser to end the test");
 					Ex.printStackTrace();
@@ -1911,692 +1913,8 @@ public class Common_Business_Functions extends TestCase {
 			driver.manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS);
 			// Find the element to clicked
 			WebElement element = driver.findElement(By
-//					.xpath("//*[@id='2']//tree-root/tree-viewport/div/div/tree-node-collection/div/tree-node//label[text()='"
-//							+ permissionName + "']/preceding-sibling::input"));
-					.xpath("//label[contains(text(),'"+ permissionName + "')]/preceding-sibling::input"));
-			if (flag == true) {
-				if (element.isSelected()) {
-					System.out.println("Permission: " + permissionName + "  is assigned to user as per matrix ");
-					test.pass("Permission: " + permissionName + "  is assigned to user as per matrix ",
-							MediaEntityBuilder.createScreenCaptureFromPath(objCreateScreenshot.createScreenshot(driver,
-									"VerifyActionItem", test, rowNoGbl, date1)).build());
-				} else {
-					System.out.println(
-							"Permission: " + permissionName + "  is not assigned to user and not as per matrix ");
-					test.fail("Permission: " + permissionName + "  is not assigned to user as per matrix ",
-							MediaEntityBuilder.createScreenCaptureFromPath(objCreateScreenshot.createScreenshot(driver,
-									"VerifyActionItem", test, rowNoGbl, date1)).build());
-				}
-			}
-			if (flag == false) {
-				if (!element.isSelected()) {
-					System.out.println("Permission: " + permissionName + "  is not assigned to user as per matrix ");
-					test.pass("Permission: " + permissionName + "  is not assigned to user as per matrix ",
-							MediaEntityBuilder.createScreenCaptureFromPath(objCreateScreenshot.createScreenshot(driver,
-									"VerifyActionItem", test, rowNoGbl, date1)).build());
-				} else {
-					System.out
-							.println("Permission: " + permissionName + "  is assigned to user and not as per matrix ");
-					test.fail("Permission: " + permissionName + "  is not as per matrix ",
-							MediaEntityBuilder.createScreenCaptureFromPath(objCreateScreenshot.createScreenshot(driver,
-									"VerifyActionItem", test, rowNoGbl, date1)).build());
-				}
-			}
-			extent.flush();
-		} catch (Exception e) {
-			System.out.println("In catch block");
-			// Add the screenshot to the Reporting steps with a hyperlink
-			test.fail("NoSuchElementException : " + e.getMessage());
-			test.addScreenCaptureFromPath(
-					objCreateScreenshot.createScreenshot(driver, "NoSuchElementException", test, rowNoGbl, date1));
-
-			// Close the Browser
-			System.out.println("Closing The Browser");
-
-			driver.manage().timeouts().implicitlyWait(3, TimeUnit.SECONDS);
-			try {
-				driver.findElement(By.xpath("//button[contains(text(),'Cancel')]")).click();
-				Thread.sleep(1000);
-				System.out.println("Clicked on Cancel button");
-			} catch (Exception Ex) {
-				System.out.println("Cancel button not displayed");
-			}
-			try {
-				driver.findElement(By.xpath("//button[contains(text(),'Close')]")).click();
-				Thread.sleep(1000);
-				System.out.println("Clicked on Close button");
-
-			} catch (Exception Ex) {
-				System.out.println("Close button not displayed");
-			} finally {
-				try {
-					
-				} catch (Exception Ex) {
-					System.out.println("Logout link not displayed closing the browser to end the test");
-					Ex.printStackTrace();
-
-					driver.quit();
-				}
-				driver.quit();
-				System.out.println("===========INDIVIDUAL TEST EXECUTION ENDED WITH EXCEPTION=========");
-			}
-
-			test.pass("Closed the Browser");
-
-			// Calling flush writes everything to the Extent Report
-			extent.flush();
-
-			fail("NoSuchElementException");
-		}
-	}
-
-	public void checkPermissionForReportingCycle(WebDriver driver, ExtentTest test, ExtentReports extent,
-			String rowNoGbl, String date1, String permissionName, boolean flag)
-			throws IOException, InterruptedException {
-		try {
-			driver.manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS);
-			// Find the element to clicked
-			WebElement element = driver.findElement(By
-//					.xpath("//*[@id='1']//tree-root/tree-viewport/div/div/tree-node-collection/div/tree-node/div/tree-node-children/div/tree-node-collection/div/tree-node[9]//label[text()='"
-//							+ permissionName + "']/preceding-sibling::input"));
-			.xpath("//label[contains(text(),'"+ permissionName + "')]/preceding-sibling::input"));
-			if (flag == true) {
-				if (element.isSelected()) {
-					System.out.println("Permission: " + permissionName + "  is assigned to user as per matrix ");
-					test.pass("Permission: " + permissionName + "  is assigned to user as per matrix ",
-							MediaEntityBuilder.createScreenCaptureFromPath(objCreateScreenshot.createScreenshot(driver,
-									"VerifyActionItem", test, rowNoGbl, date1)).build());
-				} else {
-					System.out.println(
-							"Permission: " + permissionName + "  is not assigned to user and not as per matrix ");
-					test.fail("Permission: " + permissionName + "  is not assigned to user as per matrix ",
-							MediaEntityBuilder.createScreenCaptureFromPath(objCreateScreenshot.createScreenshot(driver,
-									"VerifyActionItem", test, rowNoGbl, date1)).build());
-				}
-			}
-			if (flag == false) {
-				if (!element.isSelected()) {
-					System.out.println("Permission: " + permissionName + "  is not assigned to user as per matrix ");
-					test.pass("Permission: " + permissionName + "  is not assigned to user as per matrix ",
-							MediaEntityBuilder.createScreenCaptureFromPath(objCreateScreenshot.createScreenshot(driver,
-									"VerifyActionItem", test, rowNoGbl, date1)).build());
-				} else {
-					System.out
-							.println("Permission: " + permissionName + "  is assigned to user and not as per matrix ");
-					test.fail("Permission: " + permissionName + "  is not as per matrix ",
-							MediaEntityBuilder.createScreenCaptureFromPath(objCreateScreenshot.createScreenshot(driver,
-									"VerifyActionItem", test, rowNoGbl, date1)).build());
-				}
-			}
-			extent.flush();
-		} catch (Exception e) {
-			System.out.println("In catch block");
-			// Add the screenshot to the Reporting steps with a hyperlink
-			test.fail("NoSuchElementException : " + e.getMessage());
-			test.addScreenCaptureFromPath(
-					objCreateScreenshot.createScreenshot(driver, "NoSuchElementException", test, rowNoGbl, date1));
-
-			// Close the Browser
-			System.out.println("Closing The Browser");
-
-			driver.manage().timeouts().implicitlyWait(3, TimeUnit.SECONDS);
-			try {
-				driver.findElement(By.xpath("//button[contains(text(),'Cancel')]")).click();
-				Thread.sleep(1000);
-				System.out.println("Clicked on Cancel button");
-			} catch (Exception Ex) {
-				System.out.println("Cancel button not displayed");
-			}
-			try {
-				driver.findElement(By.xpath("//button[contains(text(),'Close')]")).click();
-				Thread.sleep(1000);
-				System.out.println("Clicked on Close button");
-
-			} catch (Exception Ex) {
-				System.out.println("Close button not displayed");
-			} finally {
-				try {
-					
-				} catch (Exception Ex) {
-					System.out.println("Logout link not displayed closing the browser to end the test");
-					Ex.printStackTrace();
-
-					driver.quit();
-				}
-				driver.quit();
-				System.out.println("===========INDIVIDUAL TEST EXECUTION ENDED WITH EXCEPTION=========");
-			}
-
-			test.pass("Closed the Browser");
-
-			// Calling flush writes everything to the Extent Report
-			extent.flush();
-
-			fail("NoSuchElementException");
-		}
-	}
-
-	public void checkPermissionForObligationPerGroup(WebDriver driver, ExtentTest test, ExtentReports extent,
-			String rowNoGbl, String date1, String permissionName, boolean flag)
-			throws IOException, InterruptedException {
-		try {
-			driver.manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS);
-			// Find the element to clicked
-			WebElement element = driver.findElement(By
-//					.xpath("//*[@id='1']//tree-root/tree-viewport/div/div/tree-node-collection/div/tree-node/div/tree-node-children/div/tree-node-collection/div/tree-node[10]//label[text()='"
-//							+ permissionName + "']/preceding-sibling::input"));
-					.xpath("//label[contains(text(),'"+ permissionName + "')]/preceding-sibling::input"));
-			if (flag == true) {
-				if (element.isSelected()) {
-					System.out.println("Permission: " + permissionName + "  is assigned to user as per matrix ");
-					test.pass("Permission: " + permissionName + "  is assigned to user as per matrix ",
-							MediaEntityBuilder.createScreenCaptureFromPath(objCreateScreenshot.createScreenshot(driver,
-									"VerifyActionItem", test, rowNoGbl, date1)).build());
-				} else {
-					System.out.println(
-							"Permission: " + permissionName + "  is not assigned to user and not as per matrix ");
-					test.fail("Permission: " + permissionName + "  is not assigned to user as per matrix ",
-							MediaEntityBuilder.createScreenCaptureFromPath(objCreateScreenshot.createScreenshot(driver,
-									"VerifyActionItem", test, rowNoGbl, date1)).build());
-				}
-			}
-			if (flag == false) {
-				if (!element.isSelected()) {
-					System.out.println("Permission: " + permissionName + "  is not assigned to user as per matrix ");
-					test.pass("Permission: " + permissionName + "  is not assigned to user as per matrix ",
-							MediaEntityBuilder.createScreenCaptureFromPath(objCreateScreenshot.createScreenshot(driver,
-									"VerifyActionItem", test, rowNoGbl, date1)).build());
-				} else {
-					System.out
-							.println("Permission: " + permissionName + "  is assigned to user and not as per matrix ");
-					test.fail("Permission: " + permissionName + "  is not as per matrix ",
-							MediaEntityBuilder.createScreenCaptureFromPath(objCreateScreenshot.createScreenshot(driver,
-									"VerifyActionItem", test, rowNoGbl, date1)).build());
-				}
-			}
-			extent.flush();
-		} catch (Exception e) {
-			System.out.println("In catch block");
-			// Add the screenshot to the Reporting steps with a hyperlink
-			test.fail("NoSuchElementException : " + e.getMessage());
-			test.addScreenCaptureFromPath(
-					objCreateScreenshot.createScreenshot(driver, "NoSuchElementException", test, rowNoGbl, date1));
-
-			// Close the Browser
-			System.out.println("Closing The Browser");
-
-			driver.manage().timeouts().implicitlyWait(3, TimeUnit.SECONDS);
-			try {
-				driver.findElement(By.xpath("//button[contains(text(),'Cancel')]")).click();
-				Thread.sleep(1000);
-				System.out.println("Clicked on Cancel button");
-			} catch (Exception Ex) {
-				System.out.println("Cancel button not displayed");
-			}
-			try {
-				driver.findElement(By.xpath("//button[contains(text(),'Close')]")).click();
-				Thread.sleep(1000);
-				System.out.println("Clicked on Close button");
-
-			} catch (Exception Ex) {
-				System.out.println("Close button not displayed");
-			} finally {
-				try {
-					
-				} catch (Exception Ex) {
-					System.out.println("Logout link not displayed closing the browser to end the test");
-					Ex.printStackTrace();
-
-					driver.quit();
-				}
-				driver.quit();
-				System.out.println("===========INDIVIDUAL TEST EXECUTION ENDED WITH EXCEPTION=========");
-			}
-
-			test.pass("Closed the Browser");
-
-			// Calling flush writes everything to the Extent Report
-			extent.flush();
-
-			fail("NoSuchElementException");
-		}
-	}
-
-	public void checkPermissionForObligationPerEntity(WebDriver driver, ExtentTest test, ExtentReports extent,
-			String rowNoGbl, String date1, String permissionName, boolean flag)
-			throws IOException, InterruptedException {
-		try {
-			driver.manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS);
-			// Find the element to clicked
-			WebElement element = driver.findElement(By
-//					.xpath("//*[@id='1']//tree-root/tree-viewport/div/div/tree-node-collection/div/tree-node/div/tree-node-children/div/tree-node-collection/div/tree-node[11]//label[text()='"
-//							+ permissionName + "']/preceding-sibling::input"));
-			.xpath("//label[contains(text(),'"+ permissionName + "')]/preceding-sibling::input"));
-			if (flag == true) {
-				if (element.isSelected()) {
-					System.out.println("Permission: " + permissionName + "  is assigned to user as per matrix ");
-					test.pass("Permission: " + permissionName + "  is assigned to user as per matrix ",
-							MediaEntityBuilder.createScreenCaptureFromPath(objCreateScreenshot.createScreenshot(driver,
-									"VerifyActionItem", test, rowNoGbl, date1)).build());
-				} else {
-					System.out.println(
-							"Permission: " + permissionName + "  is not assigned to user and not as per matrix ");
-					test.fail("Permission: " + permissionName + "  is not assigned to user as per matrix ",
-							MediaEntityBuilder.createScreenCaptureFromPath(objCreateScreenshot.createScreenshot(driver,
-									"VerifyActionItem", test, rowNoGbl, date1)).build());
-				}
-			}
-			if (flag == false) {
-				if (!element.isSelected()) {
-					System.out.println("Permission: " + permissionName + "  is not assigned to user as per matrix ");
-					test.pass("Permission: " + permissionName + "  is not assigned to user as per matrix ",
-							MediaEntityBuilder.createScreenCaptureFromPath(objCreateScreenshot.createScreenshot(driver,
-									"VerifyActionItem", test, rowNoGbl, date1)).build());
-				} else {
-					System.out
-							.println("Permission: " + permissionName + "  is assigned to user and not as per matrix ");
-					test.fail("Permission: " + permissionName + "  is not as per matrix ",
-							MediaEntityBuilder.createScreenCaptureFromPath(objCreateScreenshot.createScreenshot(driver,
-									"VerifyActionItem", test, rowNoGbl, date1)).build());
-				}
-			}
-			extent.flush();
-		} catch (Exception e) {
-			System.out.println("In catch block");
-			// Add the screenshot to the Reporting steps with a hyperlink
-			test.fail("NoSuchElementException : " + e.getMessage());
-			test.addScreenCaptureFromPath(
-					objCreateScreenshot.createScreenshot(driver, "NoSuchElementException", test, rowNoGbl, date1));
-
-			// Close the Browser
-			System.out.println("Closing The Browser");
-
-			driver.manage().timeouts().implicitlyWait(3, TimeUnit.SECONDS);
-			try {
-				driver.findElement(By.xpath("//button[contains(text(),'Cancel')]")).click();
-				Thread.sleep(1000);
-				System.out.println("Clicked on Cancel button");
-			} catch (Exception Ex) {
-				System.out.println("Cancel button not displayed");
-			}
-			try {
-				driver.findElement(By.xpath("//button[contains(text(),'Close')]")).click();
-				Thread.sleep(1000);
-				System.out.println("Clicked on Close button");
-
-			} catch (Exception Ex) {
-				System.out.println("Close button not displayed");
-			} finally {
-				try {
-					
-				} catch (Exception Ex) {
-					System.out.println("Logout link not displayed closing the browser to end the test");
-					Ex.printStackTrace();
-
-					driver.quit();
-				}
-				driver.quit();
-				System.out.println("===========INDIVIDUAL TEST EXECUTION ENDED WITH EXCEPTION=========");
-			}
-
-			test.pass("Closed the Browser");
-
-			// Calling flush writes everything to the Extent Report
-			extent.flush();
-
-			fail("NoSuchElementException");
-		}
-	}
-
-	public void checkPermissionForValidations(WebDriver driver, ExtentTest test, ExtentReports extent, String rowNoGbl,
-			String date1, String permissionName, boolean flag) throws IOException, InterruptedException {
-		try {
-			driver.manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS);
-			// Find the element to clicked
-			WebElement element = driver.findElement(By
-//					.xpath("//*[@id='1']//tree-root/tree-viewport/div/div/tree-node-collection/div/tree-node/div/tree-node-children/div/tree-node-collection/div/tree-node[12]//label[text()='"
-//							+ permissionName + "']/preceding-sibling::input"));
-					.xpath("//label[contains(text(),'"+ permissionName + "')]/preceding-sibling::input"));
-			if (flag == true) {
-				if (element.isSelected()) {
-					System.out.println("Permission: " + permissionName + "  is assigned to user as per matrix ");
-					test.pass("Permission: " + permissionName + "  is assigned to user as per matrix ",
-							MediaEntityBuilder.createScreenCaptureFromPath(objCreateScreenshot.createScreenshot(driver,
-									"VerifyActionItem", test, rowNoGbl, date1)).build());
-				} else {
-					System.out.println(
-							"Permission: " + permissionName + "  is not assigned to user and not as per matrix ");
-					test.fail("Permission: " + permissionName + "  is not assigned to user as per matrix ",
-							MediaEntityBuilder.createScreenCaptureFromPath(objCreateScreenshot.createScreenshot(driver,
-									"VerifyActionItem", test, rowNoGbl, date1)).build());
-				}
-			}
-			if (flag == false) {
-				if (!element.isSelected()) {
-					System.out.println("Permission: " + permissionName + "  is not assigned to user as per matrix ");
-					test.pass("Permission: " + permissionName + "  is not assigned to user as per matrix ",
-							MediaEntityBuilder.createScreenCaptureFromPath(objCreateScreenshot.createScreenshot(driver,
-									"VerifyActionItem", test, rowNoGbl, date1)).build());
-				} else {
-					System.out
-							.println("Permission: " + permissionName + "  is assigned to user and not as per matrix ");
-					test.fail("Permission: " + permissionName + "  is not as per matrix ",
-							MediaEntityBuilder.createScreenCaptureFromPath(objCreateScreenshot.createScreenshot(driver,
-									"VerifyActionItem", test, rowNoGbl, date1)).build());
-				}
-			}
-			extent.flush();
-		} catch (Exception e) {
-			System.out.println("In catch block");
-			// Add the screenshot to the Reporting steps with a hyperlink
-			test.fail("NoSuchElementException : " + e.getMessage());
-			test.addScreenCaptureFromPath(
-					objCreateScreenshot.createScreenshot(driver, "NoSuchElementException", test, rowNoGbl, date1));
-
-			// Close the Browser
-			System.out.println("Closing The Browser");
-
-			driver.manage().timeouts().implicitlyWait(3, TimeUnit.SECONDS);
-			try {
-				driver.findElement(By.xpath("//button[contains(text(),'Cancel')]")).click();
-				Thread.sleep(1000);
-				System.out.println("Clicked on Cancel button");
-			} catch (Exception Ex) {
-				System.out.println("Cancel button not displayed");
-			}
-			try {
-				driver.findElement(By.xpath("//button[contains(text(),'Close')]")).click();
-				Thread.sleep(1000);
-				System.out.println("Clicked on Close button");
-
-			} catch (Exception Ex) {
-				System.out.println("Close button not displayed");
-			} finally {
-				try {
-					
-				} catch (Exception Ex) {
-					System.out.println("Logout link not displayed closing the browser to end the test");
-					Ex.printStackTrace();
-
-					driver.quit();
-				}
-				driver.quit();
-				System.out.println("===========INDIVIDUAL TEST EXECUTION ENDED WITH EXCEPTION=========");
-			}
-
-			test.pass("Closed the Browser");
-
-			// Calling flush writes everything to the Extent Report
-			extent.flush();
-
-			fail("NoSuchElementException");
-		}
-	}
-
-	public void checkPermissionForDiscExport(WebDriver driver, ExtentTest test, ExtentReports extent, String rowNoGbl,
-			String date1, String permissionName, boolean flag) throws IOException, InterruptedException {
-		try {
-			driver.manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS);
-			// Find the element to clicked
-			WebElement element = driver.findElement(By
-//					.xpath("//*[@id='1']//tree-root/tree-viewport/div/div/tree-node-collection/div/tree-node/div/tree-node-children/div/tree-node-collection/div/tree-node[13]//label[text()='"
-//							+ permissionName + "']/preceding-sibling::input"));
-			.xpath("//label[contains(text(),'"+ permissionName + "')]/preceding-sibling::input"));
-			if (flag == true) {
-				if (element.isSelected()) {
-					System.out.println("Permission: " + permissionName + "  is assigned to user as per matrix ");
-					test.pass("Permission: " + permissionName + "  is assigned to user as per matrix ",
-							MediaEntityBuilder.createScreenCaptureFromPath(objCreateScreenshot.createScreenshot(driver,
-									"VerifyActionItem", test, rowNoGbl, date1)).build());
-				} else {
-					System.out.println(
-							"Permission: " + permissionName + "  is not assigned to user and not as per matrix ");
-					test.fail("Permission: " + permissionName + "  is not assigned to user as per matrix ",
-							MediaEntityBuilder.createScreenCaptureFromPath(objCreateScreenshot.createScreenshot(driver,
-									"VerifyActionItem", test, rowNoGbl, date1)).build());
-				}
-			}
-			if (flag == false) {
-				if (!element.isSelected()) {
-					System.out.println("Permission: " + permissionName + "  is not assigned to user as per matrix ");
-					test.pass("Permission: " + permissionName + "  is not assigned to user as per matrix ",
-							MediaEntityBuilder.createScreenCaptureFromPath(objCreateScreenshot.createScreenshot(driver,
-									"VerifyActionItem", test, rowNoGbl, date1)).build());
-				} else {
-					System.out
-							.println("Permission: " + permissionName + "  is assigned to user and not as per matrix ");
-					test.fail("Permission: " + permissionName + "  is not as per matrix ",
-							MediaEntityBuilder.createScreenCaptureFromPath(objCreateScreenshot.createScreenshot(driver,
-									"VerifyActionItem", test, rowNoGbl, date1)).build());
-				}
-			}
-			extent.flush();
-		} catch (Exception e) {
-			System.out.println("In catch block");
-			// Add the screenshot to the Reporting steps with a hyperlink
-			test.fail("NoSuchElementException : " + e.getMessage());
-			test.addScreenCaptureFromPath(
-					objCreateScreenshot.createScreenshot(driver, "NoSuchElementException", test, rowNoGbl, date1));
-
-			// Close the Browser
-			System.out.println("Closing The Browser");
-
-			driver.manage().timeouts().implicitlyWait(3, TimeUnit.SECONDS);
-			try {
-				driver.findElement(By.xpath("//button[contains(text(),'Cancel')]")).click();
-				Thread.sleep(1000);
-				System.out.println("Clicked on Cancel button");
-			} catch (Exception Ex) {
-				System.out.println("Cancel button not displayed");
-			}
-			try {
-				driver.findElement(By.xpath("//button[contains(text(),'Close')]")).click();
-				Thread.sleep(1000);
-				System.out.println("Clicked on Close button");
-
-			} catch (Exception Ex) {
-				System.out.println("Close button not displayed");
-			} finally {
-				try {
-					
-				} catch (Exception Ex) {
-					System.out.println("Logout link not displayed closing the browser to end the test");
-					Ex.printStackTrace();
-
-					driver.quit();
-				}
-				driver.quit();
-				System.out.println("===========INDIVIDUAL TEST EXECUTION ENDED WITH EXCEPTION=========");
-			}
-
-			test.pass("Closed the Browser");
-
-			// Calling flush writes everything to the Extent Report
-			extent.flush();
-
-			fail("NoSuchElementException");
-		}
-	}
-
-	public void checkPermissionForManageUser(WebDriver driver, ExtentTest test, ExtentReports extent, String rowNoGbl,
-			String date1, String permissionName, boolean flag) throws IOException, InterruptedException {
-		try {
-			driver.manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS);
-			// Find the element to clicked
-			WebElement element = driver.findElement(By
-//					.xpath("//*[@id='3']//tree-root/tree-viewport/div/div/tree-node-collection/div/tree-node/div/tree-node-children/div/tree-node-collection/div/tree-node[1]//label[text()='"
-//							+ permissionName + "']/preceding-sibling::input"));
-					.xpath("//label[contains(text(),'"+ permissionName + "')]/preceding-sibling::input"));
-			if (flag == true) {
-				if (element.isSelected()) {
-					System.out.println("Permission: " + permissionName + "  is assigned to user as per matrix ");
-					test.pass("Permission: " + permissionName + "  is assigned to user as per matrix ",
-							MediaEntityBuilder.createScreenCaptureFromPath(objCreateScreenshot.createScreenshot(driver,
-									"VerifyActionItem", test, rowNoGbl, date1)).build());
-				} else {
-					System.out.println(
-							"Permission: " + permissionName + "  is not assigned to user and not as per matrix ");
-					test.fail("Permission: " + permissionName + "  is not assigned to user as per matrix ",
-							MediaEntityBuilder.createScreenCaptureFromPath(objCreateScreenshot.createScreenshot(driver,
-									"VerifyActionItem", test, rowNoGbl, date1)).build());
-				}
-			}
-			if (flag == false) {
-				if (!element.isSelected()) {
-					System.out.println("Permission: " + permissionName + "  is not assigned to user as per matrix ");
-					test.pass("Permission: " + permissionName + "  is not assigned to user as per matrix ",
-							MediaEntityBuilder.createScreenCaptureFromPath(objCreateScreenshot.createScreenshot(driver,
-									"VerifyActionItem", test, rowNoGbl, date1)).build());
-				} else {
-					System.out
-							.println("Permission: " + permissionName + "  is assigned to user and not as per matrix ");
-					test.fail("Permission: " + permissionName + "  is not as per matrix ",
-							MediaEntityBuilder.createScreenCaptureFromPath(objCreateScreenshot.createScreenshot(driver,
-									"VerifyActionItem", test, rowNoGbl, date1)).build());
-				}
-			}
-			extent.flush();
-		} catch (Exception e) {
-			System.out.println("In catch block");
-			// Add the screenshot to the Reporting steps with a hyperlink
-			test.fail("NoSuchElementException : " + e.getMessage());
-			test.addScreenCaptureFromPath(
-					objCreateScreenshot.createScreenshot(driver, "NoSuchElementException", test, rowNoGbl, date1));
-
-			// Close the Browser
-			System.out.println("Closing The Browser");
-
-			driver.manage().timeouts().implicitlyWait(3, TimeUnit.SECONDS);
-			try {
-				driver.findElement(By.xpath("//button[contains(text(),'Cancel')]")).click();
-				Thread.sleep(1000);
-				System.out.println("Clicked on Cancel button");
-			} catch (Exception Ex) {
-				System.out.println("Cancel button not displayed");
-			}
-			try {
-				driver.findElement(By.xpath("//button[contains(text(),'Close')]")).click();
-				Thread.sleep(1000);
-				System.out.println("Clicked on Close button");
-
-			} catch (Exception Ex) {
-				System.out.println("Close button not displayed");
-			} finally {
-				try {
-					
-				} catch (Exception Ex) {
-					System.out.println("Logout link not displayed closing the browser to end the test");
-					Ex.printStackTrace();
-
-					driver.quit();
-				}
-				driver.quit();
-				System.out.println("===========INDIVIDUAL TEST EXECUTION ENDED WITH EXCEPTION=========");
-			}
-
-			test.pass("Closed the Browser");
-
-			// Calling flush writes everything to the Extent Report
-			extent.flush();
-
-			fail("NoSuchElementException");
-		}
-	}
-
-	public void checkPermissionForRoles(WebDriver driver, ExtentTest test, ExtentReports extent, String rowNoGbl,
-			String date1, String permissionName, boolean flag) throws IOException, InterruptedException {
-		try {
-			driver.manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS);
-			// Find the element to clicked
-			WebElement element = driver.findElement(By
-//					.xpath("//*[@id='3']//tree-root/tree-viewport/div/div/tree-node-collection/div/tree-node/div/tree-node-children/div/tree-node-collection/div/tree-node[2]//label[text()='"
-//							+ permissionName + "']/preceding-sibling::input"));
-					.xpath("//label[contains(text(),'"+ permissionName + "')]/preceding-sibling::input"));
-			if (flag == true) {
-				if (element.isSelected()) {
-					System.out.println("Permission: " + permissionName + "  is assigned to user as per matrix ");
-					test.pass("Permission: " + permissionName + "  is assigned to user as per matrix ",
-							MediaEntityBuilder.createScreenCaptureFromPath(objCreateScreenshot.createScreenshot(driver,
-									"VerifyActionItem", test, rowNoGbl, date1)).build());
-				} else {
-					System.out.println(
-							"Permission: " + permissionName + "  is not assigned to user and not as per matrix ");
-					test.fail("Permission: " + permissionName + "  is not assigned to user as per matrix ",
-							MediaEntityBuilder.createScreenCaptureFromPath(objCreateScreenshot.createScreenshot(driver,
-									"VerifyActionItem", test, rowNoGbl, date1)).build());
-				}
-			}
-			if (flag == false) {
-				if (!element.isSelected()) {
-					System.out.println("Permission: " + permissionName + "  is not assigned to user as per matrix ");
-					test.pass("Permission: " + permissionName + "  is not assigned to user as per matrix ",
-							MediaEntityBuilder.createScreenCaptureFromPath(objCreateScreenshot.createScreenshot(driver,
-									"VerifyActionItem", test, rowNoGbl, date1)).build());
-				} else {
-					System.out
-							.println("Permission: " + permissionName + "  is assigned to user and not as per matrix ");
-					test.fail("Permission: " + permissionName + "  is not as per matrix ",
-							MediaEntityBuilder.createScreenCaptureFromPath(objCreateScreenshot.createScreenshot(driver,
-									"VerifyActionItem", test, rowNoGbl, date1)).build());
-				}
-			}
-			extent.flush();
-		} catch (Exception e) {
-			System.out.println("In catch block");
-			// Add the screenshot to the Reporting steps with a hyperlink
-			test.fail("NoSuchElementException : " + e.getMessage());
-			test.addScreenCaptureFromPath(
-					objCreateScreenshot.createScreenshot(driver, "NoSuchElementException", test, rowNoGbl, date1));
-
-			// Close the Browser
-			System.out.println("Closing The Browser");
-
-			driver.manage().timeouts().implicitlyWait(3, TimeUnit.SECONDS);
-			try {
-				driver.findElement(By.xpath("//button[contains(text(),'Cancel')]")).click();
-				Thread.sleep(1000);
-				System.out.println("Clicked on Cancel button");
-			} catch (Exception Ex) {
-				System.out.println("Cancel button not displayed");
-			}
-			try {
-				driver.findElement(By.xpath("//button[contains(text(),'Close')]")).click();
-				Thread.sleep(1000);
-				System.out.println("Clicked on Close button");
-
-			} catch (Exception Ex) {
-				System.out.println("Close button not displayed");
-			} finally {
-				try {
-					
-				} catch (Exception Ex) {
-					System.out.println("Logout link not displayed closing the browser to end the test");
-					Ex.printStackTrace();
-
-					driver.quit();
-				}
-				driver.quit();
-				System.out.println("===========INDIVIDUAL TEST EXECUTION ENDED WITH EXCEPTION=========");
-			}
-
-			test.pass("Closed the Browser");
-
-			// Calling flush writes everything to the Extent Report
-			extent.flush();
-
-			fail("NoSuchElementException");
-		}
-	}
-
-	public void checkPermissionForCustomAttribute(WebDriver driver, ExtentTest test, ExtentReports extent,
-			String rowNoGbl, String date1, String permissionName, boolean flag)
-			throws IOException, InterruptedException {
-		try {
-			driver.manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS);
-			// Find the element to clicked
-			WebElement element = driver.findElement(By
-//					.xpath("//*[@id='1']//tree-root/tree-viewport/div/div/tree-node-collection/div/tree-node/div/tree-node-children/div/tree-node-collection/div/tree-node[7]//label[text()='"
-//							+ permissionName + "']/preceding-sibling::input"));
+					// .xpath("//*[@id='2']//tree-root/tree-viewport/div/div/tree-node-collection/div/tree-node//label[text()='"
+					// + permissionName + "']/preceding-sibling::input"));
 					.xpath("//label[contains(text(),'" + permissionName + "')]/preceding-sibling::input"));
 			if (flag == true) {
 				if (element.isSelected()) {
@@ -2654,7 +1972,691 @@ public class Common_Business_Functions extends TestCase {
 				System.out.println("Close button not displayed");
 			} finally {
 				try {
-					
+					RecentChanges_CommonFunctions.finallyBlock_TearDown(driver);
+				} catch (Exception Ex) {
+					System.out.println("Logout link not displayed closing the browser to end the test");
+					Ex.printStackTrace();
+
+					driver.quit();
+				}
+				driver.quit();
+				System.out.println("===========INDIVIDUAL TEST EXECUTION ENDED WITH EXCEPTION=========");
+			}
+
+			test.pass("Closed the Browser");
+
+			// Calling flush writes everything to the Extent Report
+			extent.flush();
+
+			fail("NoSuchElementException");
+		}
+	}
+
+	public void checkPermissionForReportingCycle(WebDriver driver, ExtentTest test, ExtentReports extent,
+			String rowNoGbl, String date1, String permissionName, boolean flag)
+			throws IOException, InterruptedException {
+		try {
+			driver.manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS);
+			// Find the element to clicked
+			WebElement element = driver.findElement(By
+					// .xpath("//*[@id='1']//tree-root/tree-viewport/div/div/tree-node-collection/div/tree-node/div/tree-node-children/div/tree-node-collection/div/tree-node[9]//label[text()='"
+					// + permissionName + "']/preceding-sibling::input"));
+					.xpath("//label[contains(text(),'" + permissionName + "')]/preceding-sibling::input"));
+			if (flag == true) {
+				if (element.isSelected()) {
+					System.out.println("Permission: " + permissionName + "  is assigned to user as per matrix ");
+					test.pass("Permission: " + permissionName + "  is assigned to user as per matrix ",
+							MediaEntityBuilder.createScreenCaptureFromPath(objCreateScreenshot.createScreenshot(driver,
+									"VerifyActionItem", test, rowNoGbl, date1)).build());
+				} else {
+					System.out.println(
+							"Permission: " + permissionName + "  is not assigned to user and not as per matrix ");
+					test.fail("Permission: " + permissionName + "  is not assigned to user as per matrix ",
+							MediaEntityBuilder.createScreenCaptureFromPath(objCreateScreenshot.createScreenshot(driver,
+									"VerifyActionItem", test, rowNoGbl, date1)).build());
+				}
+			}
+			if (flag == false) {
+				if (!element.isSelected()) {
+					System.out.println("Permission: " + permissionName + "  is not assigned to user as per matrix ");
+					test.pass("Permission: " + permissionName + "  is not assigned to user as per matrix ",
+							MediaEntityBuilder.createScreenCaptureFromPath(objCreateScreenshot.createScreenshot(driver,
+									"VerifyActionItem", test, rowNoGbl, date1)).build());
+				} else {
+					System.out
+							.println("Permission: " + permissionName + "  is assigned to user and not as per matrix ");
+					test.fail("Permission: " + permissionName + "  is not as per matrix ",
+							MediaEntityBuilder.createScreenCaptureFromPath(objCreateScreenshot.createScreenshot(driver,
+									"VerifyActionItem", test, rowNoGbl, date1)).build());
+				}
+			}
+			extent.flush();
+		} catch (Exception e) {
+			System.out.println("In catch block");
+			// Add the screenshot to the Reporting steps with a hyperlink
+			test.fail("NoSuchElementException : " + e.getMessage());
+			test.addScreenCaptureFromPath(
+					objCreateScreenshot.createScreenshot(driver, "NoSuchElementException", test, rowNoGbl, date1));
+
+			// Close the Browser
+			System.out.println("Closing The Browser");
+
+			driver.manage().timeouts().implicitlyWait(3, TimeUnit.SECONDS);
+			try {
+				driver.findElement(By.xpath("//button[contains(text(),'Cancel')]")).click();
+				Thread.sleep(1000);
+				System.out.println("Clicked on Cancel button");
+			} catch (Exception Ex) {
+				System.out.println("Cancel button not displayed");
+			}
+			try {
+				driver.findElement(By.xpath("//button[contains(text(),'Close')]")).click();
+				Thread.sleep(1000);
+				System.out.println("Clicked on Close button");
+
+			} catch (Exception Ex) {
+				System.out.println("Close button not displayed");
+			} finally {
+				try {
+					RecentChanges_CommonFunctions.finallyBlock_TearDown(driver);
+				} catch (Exception Ex) {
+					System.out.println("Logout link not displayed closing the browser to end the test");
+					Ex.printStackTrace();
+
+					driver.quit();
+				}
+				driver.quit();
+				System.out.println("===========INDIVIDUAL TEST EXECUTION ENDED WITH EXCEPTION=========");
+			}
+
+			test.pass("Closed the Browser");
+
+			// Calling flush writes everything to the Extent Report
+			extent.flush();
+
+			fail("NoSuchElementException");
+		}
+	}
+
+	public void checkPermissionForObligationPerGroup(WebDriver driver, ExtentTest test, ExtentReports extent,
+			String rowNoGbl, String date1, String permissionName, boolean flag)
+			throws IOException, InterruptedException {
+		try {
+			driver.manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS);
+			// Find the element to clicked
+			WebElement element = driver.findElement(By
+					// .xpath("//*[@id='1']//tree-root/tree-viewport/div/div/tree-node-collection/div/tree-node/div/tree-node-children/div/tree-node-collection/div/tree-node[10]//label[text()='"
+					// + permissionName + "']/preceding-sibling::input"));
+					.xpath("//label[contains(text(),'" + permissionName + "')]/preceding-sibling::input"));
+			if (flag == true) {
+				if (element.isSelected()) {
+					System.out.println("Permission: " + permissionName + "  is assigned to user as per matrix ");
+					test.pass("Permission: " + permissionName + "  is assigned to user as per matrix ",
+							MediaEntityBuilder.createScreenCaptureFromPath(objCreateScreenshot.createScreenshot(driver,
+									"VerifyActionItem", test, rowNoGbl, date1)).build());
+				} else {
+					System.out.println(
+							"Permission: " + permissionName + "  is not assigned to user and not as per matrix ");
+					test.fail("Permission: " + permissionName + "  is not assigned to user as per matrix ",
+							MediaEntityBuilder.createScreenCaptureFromPath(objCreateScreenshot.createScreenshot(driver,
+									"VerifyActionItem", test, rowNoGbl, date1)).build());
+				}
+			}
+			if (flag == false) {
+				if (!element.isSelected()) {
+					System.out.println("Permission: " + permissionName + "  is not assigned to user as per matrix ");
+					test.pass("Permission: " + permissionName + "  is not assigned to user as per matrix ",
+							MediaEntityBuilder.createScreenCaptureFromPath(objCreateScreenshot.createScreenshot(driver,
+									"VerifyActionItem", test, rowNoGbl, date1)).build());
+				} else {
+					System.out
+							.println("Permission: " + permissionName + "  is assigned to user and not as per matrix ");
+					test.fail("Permission: " + permissionName + "  is not as per matrix ",
+							MediaEntityBuilder.createScreenCaptureFromPath(objCreateScreenshot.createScreenshot(driver,
+									"VerifyActionItem", test, rowNoGbl, date1)).build());
+				}
+			}
+			extent.flush();
+		} catch (Exception e) {
+			System.out.println("In catch block");
+			// Add the screenshot to the Reporting steps with a hyperlink
+			test.fail("NoSuchElementException : " + e.getMessage());
+			test.addScreenCaptureFromPath(
+					objCreateScreenshot.createScreenshot(driver, "NoSuchElementException", test, rowNoGbl, date1));
+
+			// Close the Browser
+			System.out.println("Closing The Browser");
+
+			driver.manage().timeouts().implicitlyWait(3, TimeUnit.SECONDS);
+			try {
+				driver.findElement(By.xpath("//button[contains(text(),'Cancel')]")).click();
+				Thread.sleep(1000);
+				System.out.println("Clicked on Cancel button");
+			} catch (Exception Ex) {
+				System.out.println("Cancel button not displayed");
+			}
+			try {
+				driver.findElement(By.xpath("//button[contains(text(),'Close')]")).click();
+				Thread.sleep(1000);
+				System.out.println("Clicked on Close button");
+
+			} catch (Exception Ex) {
+				System.out.println("Close button not displayed");
+			} finally {
+				try {
+					RecentChanges_CommonFunctions.finallyBlock_TearDown(driver);
+				} catch (Exception Ex) {
+					System.out.println("Logout link not displayed closing the browser to end the test");
+					Ex.printStackTrace();
+
+					driver.quit();
+				}
+				driver.quit();
+				System.out.println("===========INDIVIDUAL TEST EXECUTION ENDED WITH EXCEPTION=========");
+			}
+
+			test.pass("Closed the Browser");
+
+			// Calling flush writes everything to the Extent Report
+			extent.flush();
+
+			fail("NoSuchElementException");
+		}
+	}
+
+	public void checkPermissionForObligationPerEntity(WebDriver driver, ExtentTest test, ExtentReports extent,
+			String rowNoGbl, String date1, String permissionName, boolean flag)
+			throws IOException, InterruptedException {
+		try {
+			driver.manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS);
+			// Find the element to clicked
+			WebElement element = driver.findElement(By
+					// .xpath("//*[@id='1']//tree-root/tree-viewport/div/div/tree-node-collection/div/tree-node/div/tree-node-children/div/tree-node-collection/div/tree-node[11]//label[text()='"
+					// + permissionName + "']/preceding-sibling::input"));
+					.xpath("//label[contains(text(),'" + permissionName + "')]/preceding-sibling::input"));
+			if (flag == true) {
+				if (element.isSelected()) {
+					System.out.println("Permission: " + permissionName + "  is assigned to user as per matrix ");
+					test.pass("Permission: " + permissionName + "  is assigned to user as per matrix ",
+							MediaEntityBuilder.createScreenCaptureFromPath(objCreateScreenshot.createScreenshot(driver,
+									"VerifyActionItem", test, rowNoGbl, date1)).build());
+				} else {
+					System.out.println(
+							"Permission: " + permissionName + "  is not assigned to user and not as per matrix ");
+					test.fail("Permission: " + permissionName + "  is not assigned to user as per matrix ",
+							MediaEntityBuilder.createScreenCaptureFromPath(objCreateScreenshot.createScreenshot(driver,
+									"VerifyActionItem", test, rowNoGbl, date1)).build());
+				}
+			}
+			if (flag == false) {
+				if (!element.isSelected()) {
+					System.out.println("Permission: " + permissionName + "  is not assigned to user as per matrix ");
+					test.pass("Permission: " + permissionName + "  is not assigned to user as per matrix ",
+							MediaEntityBuilder.createScreenCaptureFromPath(objCreateScreenshot.createScreenshot(driver,
+									"VerifyActionItem", test, rowNoGbl, date1)).build());
+				} else {
+					System.out
+							.println("Permission: " + permissionName + "  is assigned to user and not as per matrix ");
+					test.fail("Permission: " + permissionName + "  is not as per matrix ",
+							MediaEntityBuilder.createScreenCaptureFromPath(objCreateScreenshot.createScreenshot(driver,
+									"VerifyActionItem", test, rowNoGbl, date1)).build());
+				}
+			}
+			extent.flush();
+		} catch (Exception e) {
+			System.out.println("In catch block");
+			// Add the screenshot to the Reporting steps with a hyperlink
+			test.fail("NoSuchElementException : " + e.getMessage());
+			test.addScreenCaptureFromPath(
+					objCreateScreenshot.createScreenshot(driver, "NoSuchElementException", test, rowNoGbl, date1));
+
+			// Close the Browser
+			System.out.println("Closing The Browser");
+
+			driver.manage().timeouts().implicitlyWait(3, TimeUnit.SECONDS);
+			try {
+				driver.findElement(By.xpath("//button[contains(text(),'Cancel')]")).click();
+				Thread.sleep(1000);
+				System.out.println("Clicked on Cancel button");
+			} catch (Exception Ex) {
+				System.out.println("Cancel button not displayed");
+			}
+			try {
+				driver.findElement(By.xpath("//button[contains(text(),'Close')]")).click();
+				Thread.sleep(1000);
+				System.out.println("Clicked on Close button");
+
+			} catch (Exception Ex) {
+				System.out.println("Close button not displayed");
+			} finally {
+				try {
+					RecentChanges_CommonFunctions.finallyBlock_TearDown(driver);
+				} catch (Exception Ex) {
+					System.out.println("Logout link not displayed closing the browser to end the test");
+					Ex.printStackTrace();
+
+					driver.quit();
+				}
+				driver.quit();
+				System.out.println("===========INDIVIDUAL TEST EXECUTION ENDED WITH EXCEPTION=========");
+			}
+
+			test.pass("Closed the Browser");
+
+			// Calling flush writes everything to the Extent Report
+			extent.flush();
+
+			fail("NoSuchElementException");
+		}
+	}
+
+	public void checkPermissionForValidations(WebDriver driver, ExtentTest test, ExtentReports extent, String rowNoGbl,
+			String date1, String permissionName, boolean flag) throws IOException, InterruptedException {
+		try {
+			driver.manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS);
+			// Find the element to clicked
+			WebElement element = driver.findElement(By
+					// .xpath("//*[@id='1']//tree-root/tree-viewport/div/div/tree-node-collection/div/tree-node/div/tree-node-children/div/tree-node-collection/div/tree-node[12]//label[text()='"
+					// + permissionName + "']/preceding-sibling::input"));
+					.xpath("//label[contains(text(),'" + permissionName + "')]/preceding-sibling::input"));
+			if (flag == true) {
+				if (element.isSelected()) {
+					System.out.println("Permission: " + permissionName + "  is assigned to user as per matrix ");
+					test.pass("Permission: " + permissionName + "  is assigned to user as per matrix ",
+							MediaEntityBuilder.createScreenCaptureFromPath(objCreateScreenshot.createScreenshot(driver,
+									"VerifyActionItem", test, rowNoGbl, date1)).build());
+				} else {
+					System.out.println(
+							"Permission: " + permissionName + "  is not assigned to user and not as per matrix ");
+					test.fail("Permission: " + permissionName + "  is not assigned to user as per matrix ",
+							MediaEntityBuilder.createScreenCaptureFromPath(objCreateScreenshot.createScreenshot(driver,
+									"VerifyActionItem", test, rowNoGbl, date1)).build());
+				}
+			}
+			if (flag == false) {
+				if (!element.isSelected()) {
+					System.out.println("Permission: " + permissionName + "  is not assigned to user as per matrix ");
+					test.pass("Permission: " + permissionName + "  is not assigned to user as per matrix ",
+							MediaEntityBuilder.createScreenCaptureFromPath(objCreateScreenshot.createScreenshot(driver,
+									"VerifyActionItem", test, rowNoGbl, date1)).build());
+				} else {
+					System.out
+							.println("Permission: " + permissionName + "  is assigned to user and not as per matrix ");
+					test.fail("Permission: " + permissionName + "  is not as per matrix ",
+							MediaEntityBuilder.createScreenCaptureFromPath(objCreateScreenshot.createScreenshot(driver,
+									"VerifyActionItem", test, rowNoGbl, date1)).build());
+				}
+			}
+			extent.flush();
+		} catch (Exception e) {
+			System.out.println("In catch block");
+			// Add the screenshot to the Reporting steps with a hyperlink
+			test.fail("NoSuchElementException : " + e.getMessage());
+			test.addScreenCaptureFromPath(
+					objCreateScreenshot.createScreenshot(driver, "NoSuchElementException", test, rowNoGbl, date1));
+
+			// Close the Browser
+			System.out.println("Closing The Browser");
+
+			driver.manage().timeouts().implicitlyWait(3, TimeUnit.SECONDS);
+			try {
+				driver.findElement(By.xpath("//button[contains(text(),'Cancel')]")).click();
+				Thread.sleep(1000);
+				System.out.println("Clicked on Cancel button");
+			} catch (Exception Ex) {
+				System.out.println("Cancel button not displayed");
+			}
+			try {
+				driver.findElement(By.xpath("//button[contains(text(),'Close')]")).click();
+				Thread.sleep(1000);
+				System.out.println("Clicked on Close button");
+
+			} catch (Exception Ex) {
+				System.out.println("Close button not displayed");
+			} finally {
+				try {
+					RecentChanges_CommonFunctions.finallyBlock_TearDown(driver);
+				} catch (Exception Ex) {
+					System.out.println("Logout link not displayed closing the browser to end the test");
+					Ex.printStackTrace();
+
+					driver.quit();
+				}
+				driver.quit();
+				System.out.println("===========INDIVIDUAL TEST EXECUTION ENDED WITH EXCEPTION=========");
+			}
+
+			test.pass("Closed the Browser");
+
+			// Calling flush writes everything to the Extent Report
+			extent.flush();
+
+			fail("NoSuchElementException");
+		}
+	}
+
+	public void checkPermissionForDiscExport(WebDriver driver, ExtentTest test, ExtentReports extent, String rowNoGbl,
+			String date1, String permissionName, boolean flag) throws IOException, InterruptedException {
+		try {
+			driver.manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS);
+			// Find the element to clicked
+			WebElement element = driver.findElement(By
+					// .xpath("//*[@id='1']//tree-root/tree-viewport/div/div/tree-node-collection/div/tree-node/div/tree-node-children/div/tree-node-collection/div/tree-node[13]//label[text()='"
+					// + permissionName + "']/preceding-sibling::input"));
+					.xpath("//label[contains(text(),'" + permissionName + "')]/preceding-sibling::input"));
+			if (flag == true) {
+				if (element.isSelected()) {
+					System.out.println("Permission: " + permissionName + "  is assigned to user as per matrix ");
+					test.pass("Permission: " + permissionName + "  is assigned to user as per matrix ",
+							MediaEntityBuilder.createScreenCaptureFromPath(objCreateScreenshot.createScreenshot(driver,
+									"VerifyActionItem", test, rowNoGbl, date1)).build());
+				} else {
+					System.out.println(
+							"Permission: " + permissionName + "  is not assigned to user and not as per matrix ");
+					test.fail("Permission: " + permissionName + "  is not assigned to user as per matrix ",
+							MediaEntityBuilder.createScreenCaptureFromPath(objCreateScreenshot.createScreenshot(driver,
+									"VerifyActionItem", test, rowNoGbl, date1)).build());
+				}
+			}
+			if (flag == false) {
+				if (!element.isSelected()) {
+					System.out.println("Permission: " + permissionName + "  is not assigned to user as per matrix ");
+					test.pass("Permission: " + permissionName + "  is not assigned to user as per matrix ",
+							MediaEntityBuilder.createScreenCaptureFromPath(objCreateScreenshot.createScreenshot(driver,
+									"VerifyActionItem", test, rowNoGbl, date1)).build());
+				} else {
+					System.out
+							.println("Permission: " + permissionName + "  is assigned to user and not as per matrix ");
+					test.fail("Permission: " + permissionName + "  is not as per matrix ",
+							MediaEntityBuilder.createScreenCaptureFromPath(objCreateScreenshot.createScreenshot(driver,
+									"VerifyActionItem", test, rowNoGbl, date1)).build());
+				}
+			}
+			extent.flush();
+		} catch (Exception e) {
+			System.out.println("In catch block");
+			// Add the screenshot to the Reporting steps with a hyperlink
+			test.fail("NoSuchElementException : " + e.getMessage());
+			test.addScreenCaptureFromPath(
+					objCreateScreenshot.createScreenshot(driver, "NoSuchElementException", test, rowNoGbl, date1));
+
+			// Close the Browser
+			System.out.println("Closing The Browser");
+
+			driver.manage().timeouts().implicitlyWait(3, TimeUnit.SECONDS);
+			try {
+				driver.findElement(By.xpath("//button[contains(text(),'Cancel')]")).click();
+				Thread.sleep(1000);
+				System.out.println("Clicked on Cancel button");
+			} catch (Exception Ex) {
+				System.out.println("Cancel button not displayed");
+			}
+			try {
+				driver.findElement(By.xpath("//button[contains(text(),'Close')]")).click();
+				Thread.sleep(1000);
+				System.out.println("Clicked on Close button");
+
+			} catch (Exception Ex) {
+				System.out.println("Close button not displayed");
+			} finally {
+				try {
+					RecentChanges_CommonFunctions.finallyBlock_TearDown(driver);
+				} catch (Exception Ex) {
+					System.out.println("Logout link not displayed closing the browser to end the test");
+					Ex.printStackTrace();
+
+					driver.quit();
+				}
+				driver.quit();
+				System.out.println("===========INDIVIDUAL TEST EXECUTION ENDED WITH EXCEPTION=========");
+			}
+
+			test.pass("Closed the Browser");
+
+			// Calling flush writes everything to the Extent Report
+			extent.flush();
+
+			fail("NoSuchElementException");
+		}
+	}
+
+	public void checkPermissionForManageUser(WebDriver driver, ExtentTest test, ExtentReports extent, String rowNoGbl,
+			String date1, String permissionName, boolean flag) throws IOException, InterruptedException {
+		try {
+			driver.manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS);
+			// Find the element to clicked
+			WebElement element = driver.findElement(By
+					// .xpath("//*[@id='3']//tree-root/tree-viewport/div/div/tree-node-collection/div/tree-node/div/tree-node-children/div/tree-node-collection/div/tree-node[1]//label[text()='"
+					// + permissionName + "']/preceding-sibling::input"));
+					.xpath("//label[contains(text(),'" + permissionName + "')]/preceding-sibling::input"));
+			if (flag == true) {
+				if (element.isSelected()) {
+					System.out.println("Permission: " + permissionName + "  is assigned to user as per matrix ");
+					test.pass("Permission: " + permissionName + "  is assigned to user as per matrix ",
+							MediaEntityBuilder.createScreenCaptureFromPath(objCreateScreenshot.createScreenshot(driver,
+									"VerifyActionItem", test, rowNoGbl, date1)).build());
+				} else {
+					System.out.println(
+							"Permission: " + permissionName + "  is not assigned to user and not as per matrix ");
+					test.fail("Permission: " + permissionName + "  is not assigned to user as per matrix ",
+							MediaEntityBuilder.createScreenCaptureFromPath(objCreateScreenshot.createScreenshot(driver,
+									"VerifyActionItem", test, rowNoGbl, date1)).build());
+				}
+			}
+			if (flag == false) {
+				if (!element.isSelected()) {
+					System.out.println("Permission: " + permissionName + "  is not assigned to user as per matrix ");
+					test.pass("Permission: " + permissionName + "  is not assigned to user as per matrix ",
+							MediaEntityBuilder.createScreenCaptureFromPath(objCreateScreenshot.createScreenshot(driver,
+									"VerifyActionItem", test, rowNoGbl, date1)).build());
+				} else {
+					System.out
+							.println("Permission: " + permissionName + "  is assigned to user and not as per matrix ");
+					test.fail("Permission: " + permissionName + "  is not as per matrix ",
+							MediaEntityBuilder.createScreenCaptureFromPath(objCreateScreenshot.createScreenshot(driver,
+									"VerifyActionItem", test, rowNoGbl, date1)).build());
+				}
+			}
+			extent.flush();
+		} catch (Exception e) {
+			System.out.println("In catch block");
+			// Add the screenshot to the Reporting steps with a hyperlink
+			test.fail("NoSuchElementException : " + e.getMessage());
+			test.addScreenCaptureFromPath(
+					objCreateScreenshot.createScreenshot(driver, "NoSuchElementException", test, rowNoGbl, date1));
+
+			// Close the Browser
+			System.out.println("Closing The Browser");
+
+			driver.manage().timeouts().implicitlyWait(3, TimeUnit.SECONDS);
+			try {
+				driver.findElement(By.xpath("//button[contains(text(),'Cancel')]")).click();
+				Thread.sleep(1000);
+				System.out.println("Clicked on Cancel button");
+			} catch (Exception Ex) {
+				System.out.println("Cancel button not displayed");
+			}
+			try {
+				driver.findElement(By.xpath("//button[contains(text(),'Close')]")).click();
+				Thread.sleep(1000);
+				System.out.println("Clicked on Close button");
+
+			} catch (Exception Ex) {
+				System.out.println("Close button not displayed");
+			} finally {
+				try {
+					RecentChanges_CommonFunctions.finallyBlock_TearDown(driver);
+				} catch (Exception Ex) {
+					System.out.println("Logout link not displayed closing the browser to end the test");
+					Ex.printStackTrace();
+
+					driver.quit();
+				}
+				driver.quit();
+				System.out.println("===========INDIVIDUAL TEST EXECUTION ENDED WITH EXCEPTION=========");
+			}
+
+			test.pass("Closed the Browser");
+
+			// Calling flush writes everything to the Extent Report
+			extent.flush();
+
+			fail("NoSuchElementException");
+		}
+	}
+
+	public void checkPermissionForRoles(WebDriver driver, ExtentTest test, ExtentReports extent, String rowNoGbl,
+			String date1, String permissionName, boolean flag) throws IOException, InterruptedException {
+		try {
+			driver.manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS);
+			// Find the element to clicked
+			WebElement element = driver.findElement(By
+					// .xpath("//*[@id='3']//tree-root/tree-viewport/div/div/tree-node-collection/div/tree-node/div/tree-node-children/div/tree-node-collection/div/tree-node[2]//label[text()='"
+					// + permissionName + "']/preceding-sibling::input"));
+					.xpath("//label[contains(text(),'" + permissionName + "')]/preceding-sibling::input"));
+			if (flag == true) {
+				if (element.isSelected()) {
+					System.out.println("Permission: " + permissionName + "  is assigned to user as per matrix ");
+					test.pass("Permission: " + permissionName + "  is assigned to user as per matrix ",
+							MediaEntityBuilder.createScreenCaptureFromPath(objCreateScreenshot.createScreenshot(driver,
+									"VerifyActionItem", test, rowNoGbl, date1)).build());
+				} else {
+					System.out.println(
+							"Permission: " + permissionName + "  is not assigned to user and not as per matrix ");
+					test.fail("Permission: " + permissionName + "  is not assigned to user as per matrix ",
+							MediaEntityBuilder.createScreenCaptureFromPath(objCreateScreenshot.createScreenshot(driver,
+									"VerifyActionItem", test, rowNoGbl, date1)).build());
+				}
+			}
+			if (flag == false) {
+				if (!element.isSelected()) {
+					System.out.println("Permission: " + permissionName + "  is not assigned to user as per matrix ");
+					test.pass("Permission: " + permissionName + "  is not assigned to user as per matrix ",
+							MediaEntityBuilder.createScreenCaptureFromPath(objCreateScreenshot.createScreenshot(driver,
+									"VerifyActionItem", test, rowNoGbl, date1)).build());
+				} else {
+					System.out
+							.println("Permission: " + permissionName + "  is assigned to user and not as per matrix ");
+					test.fail("Permission: " + permissionName + "  is not as per matrix ",
+							MediaEntityBuilder.createScreenCaptureFromPath(objCreateScreenshot.createScreenshot(driver,
+									"VerifyActionItem", test, rowNoGbl, date1)).build());
+				}
+			}
+			extent.flush();
+		} catch (Exception e) {
+			System.out.println("In catch block");
+			// Add the screenshot to the Reporting steps with a hyperlink
+			test.fail("NoSuchElementException : " + e.getMessage());
+			test.addScreenCaptureFromPath(
+					objCreateScreenshot.createScreenshot(driver, "NoSuchElementException", test, rowNoGbl, date1));
+
+			// Close the Browser
+			System.out.println("Closing The Browser");
+
+			driver.manage().timeouts().implicitlyWait(3, TimeUnit.SECONDS);
+			try {
+				driver.findElement(By.xpath("//button[contains(text(),'Cancel')]")).click();
+				Thread.sleep(1000);
+				System.out.println("Clicked on Cancel button");
+			} catch (Exception Ex) {
+				System.out.println("Cancel button not displayed");
+			}
+			try {
+				driver.findElement(By.xpath("//button[contains(text(),'Close')]")).click();
+				Thread.sleep(1000);
+				System.out.println("Clicked on Close button");
+
+			} catch (Exception Ex) {
+				System.out.println("Close button not displayed");
+			} finally {
+				try {
+					RecentChanges_CommonFunctions.finallyBlock_TearDown(driver);
+				} catch (Exception Ex) {
+					System.out.println("Logout link not displayed closing the browser to end the test");
+					Ex.printStackTrace();
+
+					driver.quit();
+				}
+				driver.quit();
+				System.out.println("===========INDIVIDUAL TEST EXECUTION ENDED WITH EXCEPTION=========");
+			}
+
+			test.pass("Closed the Browser");
+
+			// Calling flush writes everything to the Extent Report
+			extent.flush();
+
+			fail("NoSuchElementException");
+		}
+	}
+
+	public void checkPermissionForCustomAttribute(WebDriver driver, ExtentTest test, ExtentReports extent,
+			String rowNoGbl, String date1, String permissionName, boolean flag)
+			throws IOException, InterruptedException {
+		try {
+			driver.manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS);
+			// Find the element to clicked
+			WebElement element = driver.findElement(By
+					// .xpath("//*[@id='1']//tree-root/tree-viewport/div/div/tree-node-collection/div/tree-node/div/tree-node-children/div/tree-node-collection/div/tree-node[7]//label[text()='"
+					// + permissionName + "']/preceding-sibling::input"));
+					.xpath("//label[contains(text(),'" + permissionName + "')]/preceding-sibling::input"));
+			if (flag == true) {
+				if (element.isSelected()) {
+					System.out.println("Permission: " + permissionName + "  is assigned to user as per matrix ");
+					test.pass("Permission: " + permissionName + "  is assigned to user as per matrix ",
+							MediaEntityBuilder.createScreenCaptureFromPath(objCreateScreenshot.createScreenshot(driver,
+									"VerifyActionItem", test, rowNoGbl, date1)).build());
+				} else {
+					System.out.println(
+							"Permission: " + permissionName + "  is not assigned to user and not as per matrix ");
+					test.fail("Permission: " + permissionName + "  is not assigned to user as per matrix ",
+							MediaEntityBuilder.createScreenCaptureFromPath(objCreateScreenshot.createScreenshot(driver,
+									"VerifyActionItem", test, rowNoGbl, date1)).build());
+				}
+			}
+			if (flag == false) {
+				if (!element.isSelected()) {
+					System.out.println("Permission: " + permissionName + "  is not assigned to user as per matrix ");
+					test.pass("Permission: " + permissionName + "  is not assigned to user as per matrix ",
+							MediaEntityBuilder.createScreenCaptureFromPath(objCreateScreenshot.createScreenshot(driver,
+									"VerifyActionItem", test, rowNoGbl, date1)).build());
+				} else {
+					System.out
+							.println("Permission: " + permissionName + "  is assigned to user and not as per matrix ");
+					test.fail("Permission: " + permissionName + "  is not as per matrix ",
+							MediaEntityBuilder.createScreenCaptureFromPath(objCreateScreenshot.createScreenshot(driver,
+									"VerifyActionItem", test, rowNoGbl, date1)).build());
+				}
+			}
+			extent.flush();
+		} catch (Exception e) {
+			System.out.println("In catch block");
+			// Add the screenshot to the Reporting steps with a hyperlink
+			test.fail("NoSuchElementException : " + e.getMessage());
+			test.addScreenCaptureFromPath(
+					objCreateScreenshot.createScreenshot(driver, "NoSuchElementException", test, rowNoGbl, date1));
+
+			// Close the Browser
+			System.out.println("Closing The Browser");
+
+			driver.manage().timeouts().implicitlyWait(3, TimeUnit.SECONDS);
+			try {
+				driver.findElement(By.xpath("//button[contains(text(),'Cancel')]")).click();
+				Thread.sleep(1000);
+				System.out.println("Clicked on Cancel button");
+			} catch (Exception Ex) {
+				System.out.println("Cancel button not displayed");
+			}
+			try {
+				driver.findElement(By.xpath("//button[contains(text(),'Close')]")).click();
+				Thread.sleep(1000);
+				System.out.println("Clicked on Close button");
+
+			} catch (Exception Ex) {
+				System.out.println("Close button not displayed");
+			} finally {
+				try {
+					RecentChanges_CommonFunctions.finallyBlock_TearDown(driver);
 				} catch (Exception Ex) {
 					System.out.println("Logout link not displayed closing the browser to end the test");
 					Ex.printStackTrace();
@@ -2743,7 +2745,7 @@ public class Common_Business_Functions extends TestCase {
 				System.out.println("Close button not displayed");
 			} finally {
 				try {
-					
+					RecentChanges_CommonFunctions.finallyBlock_TearDown(driver);
 				} catch (Exception Ex) {
 					System.out.println("Logout link not displayed closing the browser to end the test");
 					Ex.printStackTrace();
@@ -2807,7 +2809,7 @@ public class Common_Business_Functions extends TestCase {
 				System.out.println("Close button not displayed");
 			} finally {
 				try {
-					
+					RecentChanges_CommonFunctions.finallyBlock_TearDown(driver);
 				} catch (Exception Ex) {
 					System.out.println("Logout link not displayed closing the browser to end the test");
 					Ex.printStackTrace();
@@ -3176,7 +3178,7 @@ public class Common_Business_Functions extends TestCase {
 				System.out.println("Close button not displayed");
 			} finally {
 				try {
-					
+					RecentChanges_CommonFunctions.finallyBlock_TearDown(driver);
 				} catch (Exception Ex) {
 					System.out.println("Logout link not displayed closing the browser to end the test");
 					Ex.printStackTrace();
@@ -4569,7 +4571,7 @@ public class Common_Business_Functions extends TestCase {
 				System.out.println("Close button not displayed");
 			} finally {
 				try {
-					
+					RecentChanges_CommonFunctions.finallyBlock_TearDown(driver);
 				} catch (Exception Ex) {
 					System.out.println("Logout link not displayed closing the browser to end the test");
 					Ex.printStackTrace();
@@ -5047,7 +5049,7 @@ public class Common_Business_Functions extends TestCase {
 			String date1, String strSeverity) throws IOException {
 		try {
 			driver.manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS);
-			
+
 			Common_Business_Functions CBF1 = new Common_Business_Functions();
 			CBF1.generateRandomFourDigitNumber(rowNoGbl, "SanityTestData.xlsx", "Rule_Id");
 			String ruleId = ExcelUtils.getCellValueUsingColName("Rule_Id", Integer.parseInt(rowNoGbl));
@@ -5370,13 +5372,16 @@ public class Common_Business_Functions extends TestCase {
 			fail("NoSuchElementException");
 		}
 	}
+
 	public void addValidationRuleE2ETest(WebDriver driver, ExtentTest test, ExtentReports extent, String rowNoGbl,
 			String date1, String strSeverity) throws IOException {
 		try {
 			driver.manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS);
-//			Common_Business_Functions CBF1 = new Common_Business_Functions();
-//			CBF1.generateRandomFourDigitNumber(rowNoGbl, "SanityTestData.xlsx", "Rule_Id");
-//			String ruleId = ExcelUtils.getCellValueUsingColName("Rule_Id", Integer.parseInt(rowNoGbl));
+			// Common_Business_Functions CBF1 = new Common_Business_Functions();
+			// CBF1.generateRandomFourDigitNumber(rowNoGbl,
+			// "SanityTestData.xlsx", "Rule_Id");
+			// String ruleId = ExcelUtils.getCellValueUsingColName("Rule_Id",
+			// Integer.parseInt(rowNoGbl));
 			Thread.sleep(1000);
 			// rule id
 			driver.findElement(By.xpath("//input[@formcontrolname='ruleId']")).sendKeys("1234");
@@ -5460,5 +5465,124 @@ public class Common_Business_Functions extends TestCase {
 		}
 	}
 
+	public void addAccessGroup(WebDriver driver, ExtentTest test, ExtentReports extent, String rowNoGbl, String date1,
+			String wbname) throws Exception {
+		try {
+			driver.manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS);
+			// Find the element to clicked
+
+			driver.findElement(By.cssSelector("button.btn.btn-primary.small")).click();
+			WebDriverWait wait = new WebDriverWait(driver, 5);
+			wait.until(ExpectedConditions
+					.presenceOfElementLocated(By.xpath("//input[@formcontrolname='accessGroupName']"))).isDisplayed();
+			String s1 = Common_Business_Functions.generateSixDigitRandomNumber(rowNoGbl, wbname, "Access_Group_Name");
+			driver.findElement(By.xpath("//input[@formcontrolname='accessGroupName']")).sendKeys(s1);
+			driver.findElement(By.xpath("//textarea[@formcontrolname='accessGroupDescription']")).sendKeys("Testing");
+
+			driver.findElement(By.xpath("//button[contains(text(),'Save')]")).click();
+
+			test.log(Status.INFO, "Successfully Added Access Group : " + "AG01");
+
+			extent.flush();
+		} catch (Exception e) {
+			test.fail("Unable add accesss group : AG01" + "", MediaEntityBuilder.createScreenCaptureFromPath(
+					objCreateScreenshot.createScreenshot(driver, "NoSuchElementException", test, rowNoGbl, date1))
+					.build());
+			extent.flush();
+
+			fail("NoSuchElementException");
+		}
+	}
+
+	public void searchDataCollectionAccessGroup(WebDriver driver, ExtentTest test, ExtentReports extent,
+			String rowNoGbl, String date1, String value) throws IOException, InterruptedException {
+		try {
+			Thread.sleep(2000);
+			WebElement fieldToCheck;
+			driver.manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS);
+			fieldToCheck = driver.findElement(By.cssSelector("input.ag-floating-filter-input"));
+			if (fieldToCheck.isDisplayed()) {
+				fieldToCheck.clear();
+				fieldToCheck.sendKeys(value);
+				test.log(Status.INFO, "Successfully Record searched for value: " + value);
+			}
+			Thread.sleep(4000);
+			extent.flush();
+		} catch (Exception e) {
+			System.out.println("In catch block");
+			// Add the screenshot to the Reporting steps with a hyperlink
+			test.fail("NoSuchElementException : " + e.getMessage());
+			test.addScreenCaptureFromPath(
+					objCreateScreenshot.createScreenshot(driver, "NoSuchElementException", test, rowNoGbl, date1));
+
+			// Close the Browser
+			// driver.quit();
+			// test.log(Status.INFO, "Closed the Browser");
+
+			// Calling flush writes everything to the Extent Report
+			extent.flush();
+
+			fail("NoSuchElementException");
+		}
+	}
+
+	public void editAssignedEntities(WebDriver driver, ExtentTest test, ExtentReports extent, String rowNoGbl,
+			String date1, String entity1, String entity2) throws IOException, InterruptedException {
+		try {
+			Thread.sleep(2000);
+			driver.manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS);
+
+			WebElement ele1 = driver.findElement(By.xpath("//div[contains(text(),'" + entity1 + "')]/../div/div/span"));
+			WebElement ele2 = driver.findElement(By.xpath("//div[contains(text(),'" + entity2 + "')]/../div/div/span"));
+
+			if (ele1.isDisplayed()) {
+				ele1.click();
+			}
+			if (ele2.isDisplayed()) {
+				ele2.click();
+			}
+
+			Thread.sleep(2000);
+			extent.flush();
+		} catch (Exception e) {
+			System.out.println("In catch block");
+			// Add the screenshot to the Reporting steps with a hyperlink
+			test.fail("NoSuchElementException : " + e.getMessage());
+			test.addScreenCaptureFromPath(
+					objCreateScreenshot.createScreenshot(driver, "NoSuchElementException", test, rowNoGbl, date1));
+			extent.flush();
+
+			fail("NoSuchElementException");
+		}
+	}
+	
+	public void editAccessGroup(WebDriver driver, ExtentTest test, ExtentReports extent, String rowNoGbl, String date1,
+			String wbname) throws Exception {
+		try {
+			driver.manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS);
+			// Find the element to clicked
+
+			driver.findElement(By.cssSelector("button.btn.btn-primary.small")).click();
+			WebDriverWait wait = new WebDriverWait(driver, 5);
+			wait.until(ExpectedConditions
+					.presenceOfElementLocated(By.xpath("//input[@formcontrolname='accessGroupName']"))).isDisplayed();
+			String s1 = Common_Business_Functions.generateSixDigitRandomNumber(rowNoGbl, wbname, "Access_Group_Name");
+			driver.findElement(By.xpath("//input[@formcontrolname='accessGroupName']")).sendKeys(s1);
+			driver.findElement(By.xpath("//textarea[@formcontrolname='accessGroupDescription']")).sendKeys("Edit Description");
+
+			driver.findElement(By.xpath("//button[contains(text(),'Save')]")).click();
+
+			test.log(Status.INFO, "Successfully Added Access Group : " + "AG01");
+
+			extent.flush();
+		} catch (Exception e) {
+			test.fail("Unable add accesss group" + "", MediaEntityBuilder.createScreenCaptureFromPath(
+					objCreateScreenshot.createScreenshot(driver, "NoSuchElementException", test, rowNoGbl, date1))
+					.build());
+			extent.flush();
+
+			fail("NoSuchElementException");
+		}
+	}
 
 }
