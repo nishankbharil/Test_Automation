@@ -7,19 +7,16 @@ public class Print_One_To_Ten_Without_Loop {
 		Print_One_To_Ten_Without_Loop obj1 = new Print_One_To_Ten_Without_Loop();
 		obj1.printNum(10);
 
-
-
 	}
-	public void printNum(int num)
-	{
-		
-		if (num<=10)
-		{
-			printNum(num+1);
+
+	public void printNum(int num) {
+
+		if (num > 0) {
+			printNum(num - 1);
+			System.out.println(num + " ");
+			return;
 		}
-		
-		printNum(1);
-		
+
 	}
 
 }
