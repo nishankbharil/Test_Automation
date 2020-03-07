@@ -1,7 +1,8 @@
 package com.automation.testcases;
 
-import org.openqa.selenium.support.PageFactory;
 import org.testng.annotations.Test;
+import org.testng.Assert;
+import org.openqa.selenium.support.PageFactory;
 
 import com.automation.pages.BaseClass;
 import com.automation.pages.HomePage;
@@ -13,7 +14,7 @@ public class LoginPageTest extends BaseClass {
 	HomePage homePage;
 	LoginPage loginPage;
 
-	@Test(groups = "login", priority = 1)
+	@Test(groups = "Sanity")
 	public void loginApp() throws InterruptedException {
 
 		logger = report.createTest("Scenario_1");
@@ -35,7 +36,7 @@ public class LoginPageTest extends BaseClass {
 		homePage.clickOnLogout();
 	}
 
-	@Test(priority = 2)
+	@Test
 	public void logout() throws InterruptedException {
 
 		logger = report.createTest("Scenario_2");
@@ -50,27 +51,29 @@ public class LoginPageTest extends BaseClass {
 		if (b == true) {
 			logger.pass("Logout Successfull");
 		} else {
-			logger.fail("Logout Unsuccessfull");
+			Assert.fail("Logout Unsuccessfull");
 		}
 
 	}
 
-	@Test(priority = 3)
+	@Test
 	public void logout3() throws InterruptedException {
 
 		logger = report.createTest("Scenario_3");
-
 		homePage = PageFactory.initElements(driver, HomePage.class);
 
 		loginPage.loginToOHRM(excel.getStringData("Login", 0, 0), excel.getStringData("Login", 0, 1));
 		Thread.sleep(5000);
+		
+		
+		
 		homePage.clickOnLogout();
 		boolean b = loginPage.verifyLogout();
 
 		if (b == true) {
 			logger.pass("Logout Successfull");
 		} else {
-			logger.fail("Logout Unsuccessfull");
+			Assert.fail("Logout Unsuccessfull");
 		}
 
 	}

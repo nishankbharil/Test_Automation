@@ -1,7 +1,7 @@
 package com.automation.testcases;
 
-import org.openqa.selenium.support.PageFactory;
 import org.testng.annotations.Test;
+import org.openqa.selenium.support.PageFactory;
 
 import com.automation.pages.BaseClass;
 import com.automation.pages.HomePage;
@@ -12,7 +12,7 @@ public class HomePageTest extends BaseClass {
 	LoginPage loginPage;
 	HomePage homePage;
 
-	@Test(groups = "login", priority = 1)
+	@Test(groups = "login")
 	public void loginApp() throws InterruptedException {
 
 		logger = report.createTest("Scenario_4");

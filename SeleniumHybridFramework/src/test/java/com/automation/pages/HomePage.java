@@ -21,6 +21,9 @@ public class HomePage extends BaseClass {
 
 	@FindBy(xpath = "//b[contains(text(),'Admin')]")
 	WebElement adminLink;
+	
+	@FindBy(xpath = "//b[contains(text(),'Leave')]")
+	WebElement leaveLink;
 
 	public void clickOnLogout() {
 		welcomeAdminLink.click();
@@ -31,4 +34,7 @@ public class HomePage extends BaseClass {
 		adminLink.click();
 	}
 
+	public void clickOnLeave() {
+		leaveLink.click();
+	}
 }

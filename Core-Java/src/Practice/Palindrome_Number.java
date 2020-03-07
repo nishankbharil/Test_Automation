@@ -4,7 +4,7 @@ public class Palindrome_Number {
 
 	public static void main(String[] args) {
 
-		int orgnl_num = 123321;
+		int orgnl_num = 12321;
 		int numRev = 0;
 		int num = orgnl_num;
 

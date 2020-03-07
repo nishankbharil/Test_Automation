@@ -5,6 +5,7 @@
     <classes>
       <class name="com.automation.testcases.LoginPageTest"/>
       <class name="com.automation.testcases.HomePageTest"/>
+      <class name="com.automation.testcases.AssignLeaveTest"/>
     </classes>
   </test> <!-- Test -->
 </suite> <!-- Suite -->
