@@ -2,6 +2,7 @@ package Practice;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 public class Count_Each_Word_In_Sentence {
 
@@ -19,11 +20,10 @@ public class Count_Each_Word_In_Sentence {
 			} else {
 				hmap.put(temp, 1);
 			}
-			
 		}
 
 		for (Map.Entry entry : hmap.entrySet()) {
-			System.out.println(entry.getKey() + " " + entry.getValue());
+			System.out.print(entry.getKey() + " " + entry.getValue()+ " | ");
 		}
 		System.out.println(hmap);
 

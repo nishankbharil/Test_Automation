@@ -9,6 +9,11 @@ public class Bank extends AbstractConcept{
 	}
 	
 	
+	public void sayHello()
+	{
+		System.out.println("Hello");
+	}
+	
 	
 
 }

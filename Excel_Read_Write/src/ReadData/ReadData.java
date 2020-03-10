@@ -18,7 +18,7 @@ public class ReadData {
 
 	public static void getData(String workbookname, String sheetName, String columnName) throws IOException {
 		FileInputStream fis = new FileInputStream(
-				"C:\\My Documents\\Selenium\\Git_Repository_Learn_Selenium\\Excel\\" + workbookname);
+				"C:\\My Documents\\Selenium\\Git_Repository_Learn_Selenium\\Excel_Read_Write\\" + workbookname);
 		XSSFWorkbook wb = new XSSFWorkbook(fis);
 
 		XSSFSheet sheet = wb.getSheet(sheetName);
@@ -43,7 +43,7 @@ public class ReadData {
 	
 	public static void putData(String workbookname, String sheetName, String columnName, String testData ) throws IOException {
 		FileInputStream fis = new FileInputStream(
-				"C:\\My Documents\\Selenium\\Git_Repository_Learn_Selenium\\Excel\\" + workbookname);
+				"C:\\My Documents\\Selenium\\Git_Repository_Learn_Selenium\\Excel_Read_Write\\" + workbookname);
 		XSSFWorkbook wb = new XSSFWorkbook(fis);
 
 		XSSFSheet sheet = wb.getSheet(sheetName);
@@ -60,7 +60,7 @@ public class ReadData {
 			if (ColumnName.equalsIgnoreCase(columnName)) {
 				XSSFCell ce = sheet.getRow(1).getCell(i);
 				ce.setCellValue(testData);
-				FileOutputStream fos = new FileOutputStream("C:\\My Documents\\Selenium\\Git_Repository_Learn_Selenium\\Excel\\" + workbookname);
+				FileOutputStream fos = new FileOutputStream("C:\\My Documents\\Selenium\\Git_Repository_Learn_Selenium\\Excel_Read_Write\\" + workbookname);
 				wb.write(fos);
 				fos.close();
 				break;

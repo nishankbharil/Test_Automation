@@ -23,5 +23,11 @@ public class baseclass extends Override {
 		return c;
 
 	}
+	
+	public int sayHello()
+	{
+		System.out.println("Hello");
+		return 10;
+	}
 
 }

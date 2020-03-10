@@ -21,7 +21,6 @@ public class Bubble_Sort_Array {
 		for (int b : a) {
 			System.out.println(b);
 		}
-
 	}
 
 }

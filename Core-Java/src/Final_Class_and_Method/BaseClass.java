@@ -9,6 +9,7 @@ final public class BaseClass {
 		f.sum();
 //		f.a = 30;
 		System.out.println(f.a);
+		
 
 	}
 

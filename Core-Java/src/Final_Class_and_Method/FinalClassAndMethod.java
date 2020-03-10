@@ -7,5 +7,7 @@ public class FinalClassAndMethod {
 	}
 
 	final int a = 10;
+	
+	private int b=20;
 
 }

@@ -6,6 +6,8 @@ public class Test_Interface implements abc1, abc2
 	public static void main(String[] args) 
 	{
 	
+		abc1 obj1 = new Test_Interface();
+		obj1.mul(10, 20);
 
 	}
 	
@@ -24,5 +26,9 @@ public class Test_Interface implements abc1, abc2
 	public int mul(int c, int d) {
 		// TODO Auto-generated method stub
 		return 0;
+	}
+	
+	public void sayHello() {
+		System.out.println("Hello");
 	}
 }

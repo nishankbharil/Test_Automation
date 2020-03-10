@@ -80,8 +80,6 @@ public class ExcelUtility {
 
 			Iterator<Cell> cellIterator = row.cellIterator();
 			Cell cell = cellIterator.next();
-			
-			
 			if (cell.getCellTypeEnum().name().equals("STRING"))
 				return cell.getStringCellValue();
 			else if ((cell.getCellTypeEnum().name().equals("NUMERIC"))
@@ -151,7 +149,6 @@ public class ExcelUtility {
 				}
 
 				return cellText;
-				cell.getcell
 			} else if (cell.getCellTypeEnum().BLANK != null)
 				return "";
 			else

@@ -3,6 +3,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
+import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
@@ -13,7 +14,7 @@ public class Only_Practice {
 	public static void main(String[] args) throws IOException {
 
 		String columnData = "";
-		FileInputStream fis = new FileInputStream("C://My Documents//Selenium//Excel_Read_Write//TestData.xlsx");
+		FileInputStream fis = new FileInputStream("./TestData.xlsx");
 
 		XSSFWorkbook wb = new XSSFWorkbook(fis);
 		XSSFSheet sheet = wb.getSheet("Data1");
@@ -28,14 +29,14 @@ public class Only_Practice {
 		}
 
 		System.out.println(columnData);
-		
+
 		XSSFRow row = sheet.getRow(1);
-		
-		XSSFCell ce = row.getCell(3);
-		
-		ce.setCellValue("Hello I am put data");
-		
-		FileOutputStream fos = new FileOutputStream("C://My Documents//Selenium//Excel_Read_Write//TestData.xlsx");
+
+		XSSFCell ce = row.getCell(2);
+
+		ce.setCellValue("Hello I am test");
+
+		FileOutputStream fos = new FileOutputStream("./TestData.xlsx");
 		
 		wb.write(fos);
 		

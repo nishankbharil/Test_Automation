@@ -38,7 +38,7 @@ public class Count_Each_Word_In_String {
 			int value = s2.get(key1);
 
 			if (value == 2) {
-				s2.remove(s2.get(key1));
+				s2.remove(key1);
 
 			}
 		}

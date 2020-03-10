@@ -1,13 +1,15 @@
 package CollectionConcept;
 
 import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Set;
 
 public class SetCollection 
 {
 
 	public static void main(String[] args) 
 	{
-		HashSet<String> s = new HashSet<String>();
+		Set<String> s = new HashSet<String>();
 		s.add("Tom");
 		s.add("Hary");
 		s.add("test");
@@ -31,8 +33,17 @@ public class SetCollection
 		
 		System.out.println("------------------");
 		
-		s.iterator();
+		Iterator<String>s2 = s.iterator();
+		
+		while(s2.hasNext())
+		{
+			System.out.println("############");
+			System.out.println(s2.next());
+		}
 		boolean f = s.isEmpty();
 		System.out.println(f);
+		
+		
+		
 	}
 }
