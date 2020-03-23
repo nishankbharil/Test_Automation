@@ -1,11 +1,17 @@
 package stepDefinitions;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
+
+import com.aventstack.extentreports.ExtentReports;
+import com.aventstack.extentreports.ExtentTest;
+import com.aventstack.extentreports.MediaEntityBuilder;
+import com.aventstack.extentreports.reporter.ExtentHtmlReporter;
 
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
@@ -15,14 +21,44 @@ import pageObjects.BaseClass;
 import pageObjects.HomePage;
 import pageObjects.LoginPage;
 import utilities.BrowserFactory;
+import utilities.ConfigDataProvider;
+import utilities.ExcelDataProvider;
+import utilities.ExcelUtility;
+import utilities.Helper;
 
-public class stepDefinitions extends BaseClass{
+public class stepDefinitions {
 
-	public WebDriver driver;
 	public LoginPage loginPage;
 	public HomePage homePage;
 	public AssignLeavePage leavePage;
 	public BrowserFactory bwserfctry;
+//	public ITestResult result;
+	
+	public static WebDriver driver;
+	public static ExcelDataProvider excel;
+	public static ConfigDataProvider config;
+	public static Helper help;
+	public static ExtentReports report;
+	public static ExtentTest logger;
+	public static ExcelUtility eu;
+
+//	@BeforeClass
+//	public void setupSuite() {
+//
+//		Reporter.log("Setting up reports and Test started", true);
+//
+//		excel = new ExcelDataProvider();
+//		config = new ConfigDataProvider();
+//
+//		ExtentHtmlReporter extent = new ExtentHtmlReporter(new File(
+//				System.getProperty("user.dir") + "/Results/Summary/Summary_" + Helper.getCurrentDateTime() + ".html"));
+//		report = new ExtentReports();
+//		report.attachReporter(extent);
+//		eu = new ExcelUtility();
+//
+//		Reporter.log("Setting Done - Test can be started", true);
+//	}
+	
 
 	@Given("I launched chrome browser")
 	public void i_launched_chrome_browser() {
@@ -32,10 +68,10 @@ public class stepDefinitions extends BaseClass{
 		loginPage = new LoginPage(driver);
 		homePage = new HomePage(driver);
 		leavePage = new AssignLeavePage(driver);
-//		bwserfctry = new BrowserFactory(driver, );
-		driver.manage().timeouts().pageLoadTimeout(20, TimeUnit.SECONDS);
+
+		driver.manage().timeouts().pageLoadTimeout(60, TimeUnit.SECONDS);
 		driver.manage().window().maximize();
-		driver.manage().timeouts().implicitlyWait(20, TimeUnit.SECONDS);
+		driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
 		driver.manage().deleteAllCookies();
 
 	}
@@ -48,7 +84,7 @@ public class stepDefinitions extends BaseClass{
 	}
 
 	@Then("I verify that logo present on page")
-	public void i_verify_that_logo_present_on_page() {
+	public void i_verify_that_logo_present_on_page() throws IOException {
 
 		boolean status = driver.findElement(By.xpath("//div[@id='divLogo']//img")).isDisplayed();
 
@@ -58,11 +94,14 @@ public class stepDefinitions extends BaseClass{
 			System.out.println("Logo not Present");
 		}
 
+
 	}
 
 	@Then("I login to hrm application with user {string} and password {string}")
-	public void i_login_to_hrm_application_with_user_and_password(String UName, String Pwd) {
+	public void i_login_to_hrm_application_with_user_and_password(String UName, String Pwd) throws IOException {
 		loginPage.loginToOHRM(UName, Pwd);
+		
+//		report.flush();
 
 	}
 
@@ -96,7 +135,7 @@ public class stepDefinitions extends BaseClass{
 	}
 
 	@Then("Assign a leave")
-	public void assign_a_leave() throws IOException {
+	public void assign_a_leave() throws IOException, InterruptedException {
 		leavePage.clickOnAssignLeaveLink();
 		leavePage.setEmployeeNameEditBox("John Smith");
 		leavePage.selectLeaveType("Vacation US");
@@ -109,7 +148,22 @@ public class stepDefinitions extends BaseClass{
 		leavePage.setComment("Test");
 
 		leavePage.clickOnAssignButton();
-//		leavePage.clickOnConfirmOkButton();
+		Thread.sleep(2000);
+		leavePage.clickOnConfirmOkButton();
 	}
+	
+//	@AfterClass
+//	public void tearDownMethod(ITestResult result) throws IOException {
+//		Reporter.log("Test is about to end", true);
+//		if (result.getStatus() == ITestResult.FAILURE) {
+//			logger.fail("Test Failed",
+//					MediaEntityBuilder.createScreenCaptureFromPath(Helper.captureScreenshot(driver)).build());
+//		} else if (result.getStatus() == ITestResult.SUCCESS) {
+//			logger.pass("Test Passed",
+//					MediaEntityBuilder.createScreenCaptureFromPath(Helper.captureScreenshot(driver)).build());
+//		}
+//		report.flush();
+//		Reporter.log("Test completed and reports generated closing the browser", true);
+//	}
 
 }

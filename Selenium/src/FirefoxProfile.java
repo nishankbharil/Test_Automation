@@ -16,13 +16,12 @@ public class FirefoxProfile {
 //		FirefoxOptions option = new FirefoxOptions();
 //
 //		option.setProfile(profile);
+//		WebDriver driver = new FirefoxDriver(option);
 
-		WebDriver driver = new FirefoxDriver(option);
-
-		driver.manage().timeouts().pageLoadTimeout(60, TimeUnit.SECONDS);
-		driver.get("");
-		driver.manage().window().maximize();
-		driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+//		driver.manage().timeouts().pageLoadTimeout(60, TimeUnit.SECONDS);
+//		driver.get("");
+//		driver.manage().window().maximize();
+//		driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
 	}
 
 }

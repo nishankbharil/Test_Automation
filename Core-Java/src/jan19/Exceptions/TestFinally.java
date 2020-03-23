@@ -1,5 +1,7 @@
 package jan19.Exceptions;
 
+import Assignments.AirthematicOperators;
+
 public class TestFinally
 {
 	static String s;
@@ -18,6 +20,9 @@ public class TestFinally
 		{
 			System.out.println("Cant divide by zero");
 			ex.printStackTrace();
+		}catch(ArithmeticException ex)
+		{
+//			System.out.println("Hi");
 		}finally {
 			System.out.println("Inside Finally");
 		}

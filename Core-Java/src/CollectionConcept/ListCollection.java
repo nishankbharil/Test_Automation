@@ -1,6 +1,7 @@
 package CollectionConcept;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 //import java.util.List;
@@ -34,6 +35,13 @@ public class ListCollection {
 		System.out.println(l.contains(357));
 
 		System.out.println("--------------------");
+		
+		Iterator<Integer>s2 = l.iterator();
+		
+		while(s2.hasNext())
+		{
+			System.out.println(s2.next());
+		}
 
 	}
 
