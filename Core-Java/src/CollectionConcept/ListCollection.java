@@ -20,6 +20,7 @@ public class ListCollection {
 
 		System.out.println("--------------------");
 
+
 		System.out.println(l.size());
 
 		System.out.println("--------------------");

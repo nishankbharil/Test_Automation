@@ -7,8 +7,6 @@ public abstract class AbstractConcept
 //
 
 {
-	
-	
 	public AbstractConcept()
 	{
 		
