@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testng-results skipped="0" failed="0" ignored="0" total="1" passed="1">
+  <reporter-output>
+  </reporter-output>
+  <suite name="Default suite" duration-ms="77774" started-at="2020-03-12T17:00:14Z" finished-at="2020-03-12T17:01:32Z">
+    <groups>
+      <group name="cucumber">
+        <method signature="AbstractTestNGCucumberTests.runScenario(io.cucumber.testng.PickleWrapper, io.cucumber.testng.FeatureWrapper)[pri:0, instance:testRunner.testRunner@1b7cc17c]" name="runScenario" class="io.cucumber.testng.AbstractTestNGCucumberTests"/>
+      </group> <!-- cucumber -->
+    </groups>
+    <test name="Default test" duration-ms="77774" started-at="2020-03-12T17:00:14Z" finished-at="2020-03-12T17:01:32Z">
+      <class name="testRunner.testRunner">
+        <test-method status="PASS" signature="setUpClass()[pri:0, instance:testRunner.testRunner@1b7cc17c]" name="setUpClass" is-config="true" duration-ms="363" started-at="2020-03-12T17:00:14Z" finished-at="2020-03-12T17:00:15Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- setUpClass -->
+        <test-method status="PASS" signature="runScenario(io.cucumber.testng.PickleWrapper, io.cucumber.testng.FeatureWrapper)[pri:0, instance:testRunner.testRunner@1b7cc17c]" name="runScenario" duration-ms="76918" started-at="2020-03-12T17:00:15Z" description="Runs Cucumber Scenarios" data-provider="scenarios" finished-at="2020-03-12T17:01:32Z">
+          <params>
+            <param index="0">
+              <value>
+                <![CDATA["Assign Leave"]]>
+              </value>
+            </param>
+            <param index="1">
+              <value>
+                <![CDATA["OrangeHRM Login"]]>
+              </value>
+            </param>
+          </params>
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- runScenario -->
+        <test-method status="PASS" signature="tearDownClass()[pri:0, instance:testRunner.testRunner@1b7cc17c]" name="tearDownClass" is-config="true" duration-ms="223" started-at="2020-03-12T17:01:32Z" finished-at="2020-03-12T17:01:32Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- tearDownClass -->
+      </class> <!-- testRunner.testRunner -->
+    </test> <!-- Default test -->
+  </suite> <!-- Default suite -->
+</testng-results>
