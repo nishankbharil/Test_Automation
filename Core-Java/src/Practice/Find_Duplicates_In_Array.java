@@ -1,5 +1,7 @@
 package Practice;
 
+import java.util.ArrayList;
+
 public class Find_Duplicates_In_Array {
 
 	public static void main(String[] args) {

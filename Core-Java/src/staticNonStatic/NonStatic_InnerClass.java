@@ -10,5 +10,6 @@ public class NonStatic_InnerClass {
 	}
 	
 	a obj1 = new a();
+	
 
 }

@@ -8,6 +8,7 @@ public class B extends A
 	public B()
 	{
 		super();
+		
 		System.out.println("Base class conctructor");
 	}
 	

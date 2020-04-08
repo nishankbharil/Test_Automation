@@ -1,12 +1,16 @@
 package Assertions;
 
-import org.testng.asserts.SoftAssert;
+import org.testng.Assert;
+import org.testng.annotations.Test;
+//import org.testng.asserts.SoftAssert;
 
 public class assertDemo {
 	
-	public static void main(String args[])
+	@Test
+	public static void main1()
 	{
-		SoftAssert assert1 = new SoftAssert();
+		Assert.assertEquals(10, 101, "not verified");
+		Assert.assertTrue(true);
 	
 	}
 

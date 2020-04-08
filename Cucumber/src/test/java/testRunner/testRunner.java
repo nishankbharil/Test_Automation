@@ -1,38 +1,13 @@
 package testRunner;
 
-import java.io.File;
-import java.io.IOException;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.concurrent.TimeUnit;
-
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
 import org.junit.runner.RunWith;
-import org.openqa.selenium.WebDriver;
-import org.junit.runner.RunWith;
-
-import com.aventstack.extentreports.ExtentReports;
-import com.aventstack.extentreports.ExtentTest;
-import com.aventstack.extentreports.MediaEntityBuilder;
-import com.aventstack.extentreports.reporter.ExtentHtmlReporter;
-import com.vimalselvam.cucumber.listener.Reporter;
 
 import io.cucumber.junit.Cucumber;
 import io.cucumber.junit.CucumberOptions;
-import utilities.BrowserFactory;
-import utilities.ConfigDataProvider;
-import utilities.ExcelDataProvider;
-import utilities.ExcelUtility;
-import utilities.Helper;
 
 @RunWith(Cucumber.class)
-@CucumberOptions(plugin = { "pretty", "html:target/cucumber" }, 
-				features = "Features/", 
-				glue = {"stepDefinitions" }, 
-				dryRun = false, 
-				monochrome = true)
+@CucumberOptions(plugin = { "pretty", "html:target/cucumber" }, features = "Features/", glue = {
+		"stepDefinitions" }, dryRun = false, monochrome = true)
 //				tags = { "@cluster3" })
 public class testRunner {
 

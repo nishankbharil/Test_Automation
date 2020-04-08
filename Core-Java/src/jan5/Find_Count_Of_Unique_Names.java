@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 public class Find_Count_Of_Unique_Names {
 
@@ -15,8 +16,20 @@ public class Find_Count_Of_Unique_Names {
 		
 		for (String temp: arr)
 		{
-//			if (hp)
+			if (hp.containsKey(temp))
+			{
+				hp.put(temp, hp.get(temp)+1);
+			}
+			else
+			{
+				hp.put(temp, 1);
+			}
 		}
 		
+		
+		for (Entry<String, Integer> temp: hp.entrySet())
+		{
+			System.out.println(temp.getKey() + "   "+  temp.getValue());
+		}
 	}
 }

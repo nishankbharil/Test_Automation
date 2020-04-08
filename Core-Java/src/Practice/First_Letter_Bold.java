@@ -36,7 +36,6 @@ public class First_Letter_Bold {
 			{
 				c[i+1] = Character.toUpperCase(c[i+1]);
 			}
-
 		}
 		System.out.println(c);
 	}

@@ -21,4 +21,6 @@ public abstract class AbstractConcept
 	public void div(int a, int b) {
 		int c = a * b;
 	}
+	
+	public static int a;
 }

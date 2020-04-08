@@ -7,6 +7,6 @@ public class ExplicitTypeCastingChild extends ExplicitTypeCastingParent
 	{
 		ExplicitTypeCastingChild obj1 = (ExplicitTypeCastingChild)new ExplicitTypeCastingParent(); //explicit type casting
 		ExplicitTypeCastingParent obj2 = new ExplicitTypeCastingChild(); //implicit type casting
-
+		obj1.toString();
 	}
 }

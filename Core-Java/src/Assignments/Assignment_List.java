@@ -16,6 +16,8 @@ public class Assignment_List {
 		MyList.add("def");
 		
 		Collections.sort(MyList);
+		
+		
 
 		for(String temp: MyList)
 		{

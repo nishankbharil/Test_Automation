@@ -3,11 +3,11 @@
 <suite guice-stage="DEVELOPMENT" name="Failed suite [Default suite]">
   <test thread-count="5" name="Default test(failed)">
     <classes>
-      <class name="TestNG_Listener.MyFirstTestCase">
+      <class name="Retry_Failed_Test.Retry_Failed_Test">
         <methods>
-          <include name="GoogleTitleVerify"/>
+          <include name="test3"/>
         </methods>
-      </class> <!-- TestNG_Listener.MyFirstTestCase -->
+      </class> <!-- Retry_Failed_Test.Retry_Failed_Test -->
     </classes>
   </test> <!-- Default test(failed) -->
 </suite> <!-- Failed suite [Default suite] -->

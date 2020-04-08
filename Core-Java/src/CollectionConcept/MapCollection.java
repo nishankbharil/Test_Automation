@@ -1,5 +1,6 @@
 package CollectionConcept;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -20,6 +21,8 @@ public class MapCollection
 		System.out.println(m.get(1));
 		
 		Set<String> s1 = m.keySet();
+		
+		Collection<String> c1= m.values();
 		
 		Iterator<String>s2 = s1.iterator();
 //		System.out.println("--------------");

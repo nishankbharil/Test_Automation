@@ -14,7 +14,9 @@ public class MidCharOfString {
 		int l = s.length();
 		int m = l / 2;
 		String g = s.substring(m - 1, m + 2);
+		String g1 = s.substring(m, m + 1);
 		System.out.println(g);
+		System.out.println(g1);
 	}
 
 }

@@ -14,7 +14,7 @@ public class Test1
 		Assert.assertEquals(12, 13);
 	}
 	
-	@Test
+	@Test()
 	public void m2()
 	{
 		System.out.println("m2");

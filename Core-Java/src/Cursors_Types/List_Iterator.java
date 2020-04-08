@@ -33,11 +33,6 @@ public class List_Iterator {
 		{
 			System.out.println(li.previous());
 		}
-		
-		
-	
-		
-
 	}
 
 }

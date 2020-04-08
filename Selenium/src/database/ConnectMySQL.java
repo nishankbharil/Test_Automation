@@ -17,7 +17,7 @@ public class ConnectMySQL
 		
 		System.out.println("Driver loaded");
 		
-		Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/selenium","root", "selenium");
+		Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/selenium","UserName", "Password");
 		System.out.println("Connected to MySQl DB");
 		
 		Statement smt=con.createStatement();

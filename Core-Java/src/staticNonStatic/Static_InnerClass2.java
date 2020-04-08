@@ -13,6 +13,7 @@ public class Static_InnerClass2 {
 		StaticMethod obj1 = new StaticMethod();
 //		StaticMethod.A obj3 = new A();
 		
+		
 	}
 
 }

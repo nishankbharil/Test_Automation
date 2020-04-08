@@ -29,7 +29,7 @@ public class Drag_Drop {
 		WebElement dest = driver.findElement(By.id("drop"));
 		action.contextClick().sendKeys(Keys.RIGHT).perform();
 		action.dragAndDrop(sou, dest).perform();
-		action.moveToElement(sou);
+		action.moveToElement(sou).build().perform();
 		
 	}
 

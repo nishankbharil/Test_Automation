@@ -1,6 +1,7 @@
 package TakeScreenShot_Demo;
 
 import java.io.File;
+import java.util.logging.FileHandler;
 
 import org.apache.commons.io.FileUtils;
 import org.openqa.selenium.OutputType;
@@ -15,7 +16,8 @@ public class Screenshot
 	public void captureScreenShot(String fileName)
 	{
 		File file = ((TakesScreenshot)driver).getScreenshotAs(OutputType.FILE);
-//		FileUtils.copyFile(file, new File("Test01"));
+//		FileUtils.copyFile(file, new File("Test01"))
+		
 	}
 	
 	

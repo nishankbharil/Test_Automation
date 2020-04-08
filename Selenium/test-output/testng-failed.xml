@@ -1,14 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
-<suite thread-count="2" guice-stage="DEVELOPMENT" name="Failed suite [Suite]" parallel="methods">
-  <test thread-count="2" name="Parallel_test(failed)" parallel="methods">
+<suite guice-stage="DEVELOPMENT" name="Failed suite [Default suite]">
+  <test thread-count="5" name="Default test(failed)">
     <classes>
-      <class name="ParallelTesting_TestNG.Parallel_Test">
+      <class name="Head_Less_Browser.Html_Unit_Browser">
         <methods>
-          <include name="test2"/>
-          <include name="test1"/>
+          <include name="headLessTest"/>
         </methods>
-      </class> <!-- ParallelTesting_TestNG.Parallel_Test -->
+      </class> <!-- Head_Less_Browser.Html_Unit_Browser -->
     </classes>
-  </test> <!-- Parallel_test(failed) -->
-</suite> <!-- Failed suite [Suite] -->
+  </test> <!-- Default test(failed) -->
+</suite> <!-- Failed suite [Default suite] -->

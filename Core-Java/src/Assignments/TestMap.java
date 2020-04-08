@@ -37,6 +37,18 @@ public class TestMap {
 			System.out.println(nameValPairs.get(temp));//get the value for temp key
 		}
 		
+		Map<Object, Object> nameValPairs1 = new TreeMap<Object, Object>();
+		
+		nameValPairs1.put("Hwllo", "Hello");
+		nameValPairs1.put(1, "jj");
+		nameValPairs1.put("jj", 1);
+		
+		
+		
+		System.out.println(nameValPairs1);
+		
+		
+		
 	}
 
 }

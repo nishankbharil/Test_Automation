@@ -1,28 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testng-results skipped="0" failed="0" ignored="0" total="3" passed="3">
+<testng-results skipped="0" failed="0" ignored="0" total="1" passed="1">
   <reporter-output>
   </reporter-output>
-  <suite name="Suite" duration-ms="22353" started-at="2020-03-15T05:00:34Z" finished-at="2020-03-15T05:00:56Z">
+  <suite name="Default suite" duration-ms="27677" started-at="2020-04-01T06:54:42Z" finished-at="2020-04-01T06:55:09Z">
     <groups>
-      <group name="Automation">
-        <method signature="Parallel_Test.test1()[pri:0, instance:ParallelTesting_TestNG.Parallel_Test@1d29cf23]" name="test1" class="ParallelTesting_TestNG.Parallel_Test"/>
-      </group> <!-- Automation -->
     </groups>
-    <test name="Parallel_test" duration-ms="22353" started-at="2020-03-15T05:00:34Z" finished-at="2020-03-15T05:00:56Z">
-      <class name="ParallelTesting_TestNG.Parallel_Test">
-        <test-method status="PASS" signature="test1()[pri:0, instance:ParallelTesting_TestNG.Parallel_Test@1d29cf23]" name="test1" duration-ms="22315" started-at="2020-03-15T05:00:34Z" finished-at="2020-03-15T05:00:56Z">
+    <test name="Default test" duration-ms="27677" started-at="2020-04-01T06:54:42Z" finished-at="2020-04-01T06:55:09Z">
+      <class name="feb2.Bootstrap">
+        <test-method status="PASS" signature="test1()[pri:0, instance:feb2.Bootstrap@167fdd33]" name="test1" duration-ms="27641" started-at="2020-04-01T06:54:42Z" finished-at="2020-04-01T06:55:09Z">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- test1 -->
-        <test-method status="PASS" signature="test2()[pri:0, instance:ParallelTesting_TestNG.Parallel_Test@1d29cf23]" name="test2" duration-ms="22260" started-at="2020-03-15T05:00:34Z" finished-at="2020-03-15T05:00:56Z">
-          <reporter-output>
-          </reporter-output>
-        </test-method> <!-- test2 -->
-        <test-method status="PASS" signature="test3()[pri:0, instance:ParallelTesting_TestNG.Parallel_Test@1d29cf23]" name="test3" duration-ms="22174" started-at="2020-03-15T05:00:34Z" finished-at="2020-03-15T05:00:56Z">
-          <reporter-output>
-          </reporter-output>
-        </test-method> <!-- test3 -->
-      </class> <!-- ParallelTesting_TestNG.Parallel_Test -->
-    </test> <!-- Parallel_test -->
-  </suite> <!-- Suite -->
+      </class> <!-- feb2.Bootstrap -->
+    </test> <!-- Default test -->
+  </suite> <!-- Default suite -->
 </testng-results>

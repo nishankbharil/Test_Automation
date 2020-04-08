@@ -40,5 +40,10 @@ public class TestSet
 		
 		rollNos.addAll(newRolls);
 		System.out.println("Size = "+ rollNos.size());
+		
+		Set<Object> newRolls1 = new TreeSet<Object>();
+		newRolls1.add("hello");
+		newRolls1.add("de");
+		System.out.println(newRolls1);
 	}
 }

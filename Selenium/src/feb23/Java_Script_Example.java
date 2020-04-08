@@ -30,9 +30,6 @@ public class Java_Script_Example {
 		
 		((JavascriptExecutor)driver).executeScript("document.getElementsByName('name')[0].value='Tom';");
 		((JavascriptExecutor)driver).executeScript("document.getElementsByName('scheme')[0].selectedIndex=1;");
-		
-		
-
 	}
 
 }

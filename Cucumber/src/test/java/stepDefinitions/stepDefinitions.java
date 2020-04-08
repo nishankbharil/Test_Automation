@@ -1,6 +1,5 @@
 package stepDefinitions;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
@@ -10,8 +9,6 @@ import org.openqa.selenium.chrome.ChromeDriver;
 
 import com.aventstack.extentreports.ExtentReports;
 import com.aventstack.extentreports.ExtentTest;
-import com.aventstack.extentreports.MediaEntityBuilder;
-import com.aventstack.extentreports.reporter.ExtentHtmlReporter;
 
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
@@ -19,13 +16,15 @@ import io.cucumber.java.en.When;
 import pageObjects.AssignLeavePage;
 import pageObjects.HomePage;
 import pageObjects.LoginPage;
+import testRunner.testRunner;
 import utilities.BrowserFactory;
 import utilities.ConfigDataProvider;
 import utilities.ExcelDataProvider;
 import utilities.ExcelUtility;
 import utilities.Helper;
 
-public class stepDefinitions {
+public class stepDefinitions extends testRunner
+{
 
 	public LoginPage loginPage;
 	public HomePage homePage;

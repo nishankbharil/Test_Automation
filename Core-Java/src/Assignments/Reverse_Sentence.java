@@ -13,6 +13,8 @@ public class Reverse_Sentence {
 		String a = s.toString();
 		System.out.println(a);
 		
+		StringBuilder sb1 = new StringBuilder(s1);
+		System.out.println(sb1.reverse());
 	}
 
 }
