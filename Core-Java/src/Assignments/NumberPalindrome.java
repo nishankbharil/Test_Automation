@@ -18,5 +18,20 @@ public class NumberPalindrome {
 		else
 			System.out.println("Entered string/number isn't a palindrome.");
 		in.close();
+		
+		
+		
+		int l = 12321;
+		
+		int num = 0;
+		
+		
+		while(l!=0)
+		{
+			num = num*10 + l%10;
+			l = l/10;
+		}
+		
+		System.out.println(num);
 	}
 }

@@ -2,8 +2,8 @@ package Java_Concepts1;
 
 public class Java_Concepts1 {
 
-//	static int Count = 0;
-	int Count = 0;
+	static int Count = 0;
+//	int Count = 0;
 
 	Java_Concepts1() {
 		Count = Count + 1;

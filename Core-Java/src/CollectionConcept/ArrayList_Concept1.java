@@ -24,9 +24,6 @@ public class ArrayList_Concept1 {
 		{
 			System.out.println(li.get((int) temp));
 		}
-		
-		
-
 	}
 
 }

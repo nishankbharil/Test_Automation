@@ -33,7 +33,7 @@ public class TestSet
 		boolean isEmpty1 = rollNos.isEmpty();
 		System.out.println(isEmpty1); 
 		
-		Set<Integer> newRolls = new HashSet<Integer>();
+		Set<Integer> newRolls = new HashSet<>();
 		newRolls.add(125);
 		newRolls.add(120);
 		newRolls.add(129);

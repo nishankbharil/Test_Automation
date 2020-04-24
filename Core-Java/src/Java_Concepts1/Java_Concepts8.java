@@ -8,7 +8,6 @@ public class Java_Concepts8 {
 			if (i == 33) {
 				System.out.println(i);
 				continue;
-
 			}
 		}
 

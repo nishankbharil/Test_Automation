@@ -9,7 +9,6 @@ public class MainClass {
 		
 		AbstractConcept ab = new Bank();
 		ab.div(10, 20);
-		
 	}
 
 }

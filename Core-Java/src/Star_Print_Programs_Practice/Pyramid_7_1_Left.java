@@ -24,6 +24,18 @@ public class Pyramid_7_1_Left {
 			count--;
 			System.out.println();
 		}
+		
+		System.out.println("===================================");
+		int count1 =7;
+		for(int i =1; i<=7; i++)
+		{
+			for (int j=7; j>=i; j--)
+			{
+				System.out.print(count1);
+			}
+			count1--;
+			System.out.println();
+		}
 
 	}
 

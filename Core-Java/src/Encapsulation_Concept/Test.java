@@ -21,8 +21,6 @@ public class Test {
 		Test t = new Test();
 		t.setA(10);
 		System.out.println(t.getA());
-		
-
 	}
 
 }

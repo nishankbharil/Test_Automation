@@ -13,5 +13,18 @@ public class ReverseStringForLoop {
 		{
 			System.out.println(arr[i]);
 		}
+		
+		String arr1[] = new String[len];
+		int j = 0;
+		for (int i=arrlen; i>=0; i--)
+		{
+			arr1[j] = arr[i];
+			j++;
+		}
+		
+		for(String temp: arr1)
+		{
+			System.out.print(temp);
+		}
 	}
 }

@@ -11,7 +11,7 @@ public class ReverseStringWhileLoop
 		int k = i-1;
 		while(k>=0)
 		{
-			System.out.println(names[k]);
+			System.out.print(names[k]);
 			k=k-1;
 		}
 	}

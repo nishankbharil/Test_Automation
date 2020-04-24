@@ -19,4 +19,16 @@ public class NumOneToTenWithoutLoop
 		PrintNumber(i+1, j);
 		}
 	}
+	
+	public void tesy(int i, int j) {
+		
+		if(i<=j)
+		{
+			System.out.println(i);
+			
+			tesy(i+1, j);
+		}
+	}
 }
+
+

@@ -21,6 +21,8 @@ public class LinkedList1 {
 		
 		System.out.println(lli.peek());
 		System.out.println(lli.pop());
+		
+		System.out.println(lli);
 
 	}
 

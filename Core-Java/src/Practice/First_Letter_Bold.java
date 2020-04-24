@@ -32,12 +32,29 @@ public class First_Letter_Bold {
 		char c[] = str.toCharArray();
 		c[0] = Character.toUpperCase(c[0]);
 		for (int i = 0; i < c.length; i++) {
-			if ((c[i]==' ')&& (c[i+1]>='a') && (c[i+1]<='z'))
-			{
-				c[i+1] = Character.toUpperCase(c[i+1]);
+			if ((c[i] == ' ') && (c[i + 1] >= 'a') && (c[i + 1] <= 'z')) {
+				c[i + 1] = Character.toUpperCase(c[i + 1]);
 			}
 		}
 		System.out.println(c);
+
+//		-------------------------------
+
+		System.out.println("######################3");
+		String s2 = "";
+
+		List<String> li2 = new ArrayList<String>();
+
+		for (String temp : words) {
+			char s3 = temp.toUpperCase().charAt(0);
+
+			String substr = temp.substring(1, temp.length());
+			s2 = s3 + substr;
+			li2.add(s2);
+		}
+
+		System.out.println(li2.toString());
+
 	}
 
 }

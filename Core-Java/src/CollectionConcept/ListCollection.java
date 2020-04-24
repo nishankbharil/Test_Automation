@@ -44,6 +44,7 @@ public class ListCollection {
 			System.out.println(s2.next());
 		}
 
+		l.
 	}
 
 }

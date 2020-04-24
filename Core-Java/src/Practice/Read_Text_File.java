@@ -18,6 +18,7 @@ public class Read_Text_File {
 		while ((str = br.readLine()) != null) {
 			System.out.println(str);
 		}
+		
 		br.close();
 
 		// Approach2

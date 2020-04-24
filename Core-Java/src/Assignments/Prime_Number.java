@@ -21,5 +21,13 @@ public class Prime_Number {
 		{	
 			System.out.println("Number - "+num +" is a prime number");
 		}
+		
+		for (int i=2; i<num ; i++)
+		{
+			if(num%i==0)
+			{
+				System.out.println("Not Prime");
+			}
+		}
 	}
 }
