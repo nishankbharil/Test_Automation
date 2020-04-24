@@ -13,13 +13,23 @@ import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 
 public class TestNG_Annotation {
+	
+	@BeforeGroups
+	public void test10() {
+		System.out.println("BeforeGroups");
+	}
+
+	@AfterGroups
+	public void test11() {
+		System.out.println("AfterGroups");
+	}
 
 	@Test
 	public void test1() {
 		System.out.println("Test");
 	}
 
-	@BeforeTest
+	@BeforeTest()
 	public void test2() {
 		System.out.println("BeforeTest");
 	}
@@ -59,14 +69,7 @@ public class TestNG_Annotation {
 		System.out.println("AfterClass");
 	}
 
-	@BeforeGroups
-	public void test10() {
-		System.out.println("BeforeGroups");
-	}
 
-	@AfterGroups
-	public void test11() {
-		System.out.println("AfterGroups");
-	}
 
+	
 }

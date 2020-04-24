@@ -1,29 +1,33 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testng-results skipped="0" failed="0" ignored="0" total="4" passed="4">
+<testng-results skipped="0" failed="0" ignored="2" total="5" passed="3">
   <reporter-output>
   </reporter-output>
-  <suite name="Default suite" duration-ms="64" started-at="2020-04-05T06:52:56Z" finished-at="2020-04-05T06:52:57Z">
+  <suite name="Suite" duration-ms="58" started-at="2020-04-12T08:07:35Z" finished-at="2020-04-12T08:07:35Z">
     <groups>
+      <group name="Sanity">
+        <method signature="Class_Test.test5()[pri:0, instance:TestNG_Class.Class_Test@100fc185]" name="test5" class="TestNG_Class.Class_Test"/>
+      </group> <!-- Sanity -->
+      <group name="Regression">
+        <method signature="Class_Test.test2()[pri:0, instance:TestNG_Class.Class_Test@100fc185]" name="test2" class="TestNG_Class.Class_Test"/>
+        <method signature="Class_Test.test4()[pri:0, instance:TestNG_Class.Class_Test@100fc185]" name="test4" class="TestNG_Class.Class_Test"/>
+        <method signature="Class_Test.test5()[pri:0, instance:TestNG_Class.Class_Test@100fc185]" name="test5" class="TestNG_Class.Class_Test"/>
+      </group> <!-- Regression -->
     </groups>
-    <test name="Default test" duration-ms="64" started-at="2020-04-05T06:52:56Z" finished-at="2020-04-05T06:52:57Z">
-      <class name="Retry_Failed_Test.Retry_Failed_Test">
-        <test-method status="PASS" signature="test1()[pri:0, instance:Retry_Failed_Test.Retry_Failed_Test@32d992b2]" name="test1" duration-ms="13" started-at="2020-04-05T06:52:56Z" finished-at="2020-04-05T06:52:56Z">
-          <reporter-output>
-          </reporter-output>
-        </test-method> <!-- test1 -->
-        <test-method status="PASS" signature="test2()[pri:0, instance:Retry_Failed_Test.Retry_Failed_Test@32d992b2]" name="test2" duration-ms="2" started-at="2020-04-05T06:52:56Z" finished-at="2020-04-05T06:52:56Z">
+    <test name="Test" duration-ms="58" started-at="2020-04-12T08:07:35Z" finished-at="2020-04-12T08:07:35Z">
+      <class name="TestNG_Class.Class_Test">
+        <test-method status="PASS" signature="test2()[pri:0, instance:TestNG_Class.Class_Test@100fc185]" name="test2" duration-ms="12" started-at="2020-04-12T08:07:35Z" finished-at="2020-04-12T08:07:35Z">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- test2 -->
-        <test-method status="PASS" signature="test3()[pri:0, instance:Retry_Failed_Test.Retry_Failed_Test@32d992b2]" name="test3" duration-ms="2" started-at="2020-04-05T06:52:57Z" finished-at="2020-04-05T06:52:57Z">
-          <reporter-output>
-          </reporter-output>
-        </test-method> <!-- test3 -->
-        <test-method status="PASS" signature="test4()[pri:0, instance:Retry_Failed_Test.Retry_Failed_Test@32d992b2]" name="test4" duration-ms="3" started-at="2020-04-05T06:52:57Z" finished-at="2020-04-05T06:52:57Z">
+        <test-method status="PASS" signature="test4()[pri:0, instance:TestNG_Class.Class_Test@100fc185]" name="test4" duration-ms="7" started-at="2020-04-12T08:07:35Z" finished-at="2020-04-12T08:07:35Z">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- test4 -->
-      </class> <!-- Retry_Failed_Test.Retry_Failed_Test -->
-    </test> <!-- Default test -->
-  </suite> <!-- Default suite -->
+        <test-method status="PASS" signature="test5()[pri:0, instance:TestNG_Class.Class_Test@100fc185]" name="test5" duration-ms="2" started-at="2020-04-12T08:07:35Z" finished-at="2020-04-12T08:07:35Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- test5 -->
+      </class> <!-- TestNG_Class.Class_Test -->
+    </test> <!-- Test -->
+  </suite> <!-- Suite -->
 </testng-results>
