@@ -18,36 +18,32 @@ public class ExcelDataProvider {
 	public static XSSFSheet sheet;
 	public static XSSFRow row;
 	public static XSSFCell cell;
-	public static ExcelDataProvider edp;
 	public static DataFormatter format;
 
-	public ExcelDataProvider() {
+	public String sheetPath;
 
-//		File file = new File(System.getProperty("user.dir") + "/TestData/TestData.xlsx");
+	public ExcelDataProvider(String filePath) {
 
-		File file = new File(System.getProperty("user.dir") + "/TestData/SanityTest.xlsx");
+		File file = new File(System.getProperty("user.dir") + filePath);
 
 		try {
-
 			FileInputStream fis = new FileInputStream(file);
 			wb = new XSSFWorkbook(fis);
-
 		} catch (Exception e) {
-
 			System.out.println("Unable to read excel file" + e.getMessage());
-
 		}
+		this.sheetPath = filePath;
 
 	}
 
-	public static String getData(String sheetName, String TC_id, String subIteration, String ColumnName) {
+	public String getData(String sheetName, String TC_id, String Iteration, String ColumnName) {
 
 		sheet = wb.getSheet(sheetName);
 
 		int rowCount = sheet.getLastRowNum();
 		int columnCount = sheet.getRow(0).getLastCellNum();
 
-		for (int i = 3; i <= columnCount; i++) {
+		for (int i = 2; i <= columnCount; i++) {
 			row = sheet.getRow(0);
 			String CName = row.getCell(i).getStringCellValue();
 			if (CName.equalsIgnoreCase(ColumnName)) {
@@ -59,15 +55,10 @@ public class ExcelDataProvider {
 		for (int i = 0; i <= rowCount; i++) {
 			row = sheet.getRow(i);
 
-			Object TCID = format.formatCellValue(row.getCell(0));
-			Object subIt = format.formatCellValue(row.getCell(2));
+			String TCID = row.getCell(0).getStringCellValue();
+			String subIt = row.getCell(1).getStringCellValue();
 
-//			String TCID = row.getCell(0).getStringCellValue();
-//			String subIt = row.getCell(2).getStringCellValue();
-//
-//			if (TCID.equalsIgnoreCase(TC_id) && (subIt.equalsIgnoreCase(subIteration))) {
-
-			if (((String) TCID).equalsIgnoreCase(TC_id) && (((String) subIt).equalsIgnoreCase(subIteration))) {
+			if (TCID.equalsIgnoreCase(TC_id) && (subIt.equalsIgnoreCase(Iteration))) {
 
 				rowCount = i;
 				break;
@@ -79,15 +70,14 @@ public class ExcelDataProvider {
 		if (cell2 == null) {
 			requiredData = "";
 		} else {
-//			requiredData = cell2.getStringCellValue();
-			requiredData = format.formatCellValue(row1.getCell(columnCount));
+			requiredData = cell2.getStringCellValue();
 		}
 
 		return requiredData;
 
 	}
 
-	public static void putData(String sheetName, String TC_id, String subIteration, String ColumnName, String TestData)
+	public void putData(String sheetName, String TC_id, String Iteration, String ColumnName, String TestData)
 			throws IOException {
 
 		sheet = wb.getSheet(sheetName);
@@ -95,7 +85,7 @@ public class ExcelDataProvider {
 		int rowCount = sheet.getLastRowNum();
 		int columnCount = sheet.getRow(0).getLastCellNum();
 
-		for (int i = 3; i <= columnCount; i++) {
+		for (int i = 2; i <= columnCount; i++) {
 			row = sheet.getRow(0);
 			String CName = row.getCell(i).getStringCellValue();
 			if (CName.equalsIgnoreCase(ColumnName)) {
@@ -107,33 +97,19 @@ public class ExcelDataProvider {
 		for (int i = 0; i <= rowCount; i++) {
 			row = sheet.getRow(i);
 
-//			Object TCID = format.formatCellValue(row.getCell(0));
-//			Object subIt = format.formatCellValue(row.getCell(2));
 			String TCID = row.getCell(0).getStringCellValue();
-			String subIt = row.getCell(2).getStringCellValue();
+			String subIt = row.getCell(1).getStringCellValue();
 
-			if (TCID.equalsIgnoreCase(TC_id) && (subIt.equalsIgnoreCase(subIteration))) {
-
-//			if (((String) TCID).equalsIgnoreCase(TC_id) && (((String) subIt).equalsIgnoreCase(subIteration))) {
-
+			if (TCID.equalsIgnoreCase(TC_id) && (subIt.equalsIgnoreCase(Iteration))) {
 				rowCount = i;
 				break;
 			}
 		}
 
-//		row = sheet.getRow(rowCount);
-//		cell = row.getCell(columnCount+1);
-//		cell.setCellValue(TestData);
-//		FileOutputStream fileOut = new FileOutputStream(
-//				"..\\"+sheetName+".xlsx");
-//		wb.write(fileOut);
-//		fileOut.close();
-
 		XSSFRow row1 = sheet.getRow(rowCount);
 		row1.getCell(columnCount).setCellValue("");
 		row1.getCell(columnCount).setCellValue(TestData);
-//		ce.setCellValue(TestData);
-		FileOutputStream fileOut = new FileOutputStream("..\\" + sheetName + ".xlsx");
+		FileOutputStream fileOut = new FileOutputStream(System.getProperty("user.dir") + sheetPath);
 		wb.write(fileOut);
 		fileOut.close();
 	}

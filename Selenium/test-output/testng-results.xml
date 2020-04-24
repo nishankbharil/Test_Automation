@@ -2,16 +2,16 @@
 <testng-results skipped="0" failed="0" ignored="0" total="1" passed="1">
   <reporter-output>
   </reporter-output>
-  <suite name="Default suite" duration-ms="27677" started-at="2020-04-01T06:54:42Z" finished-at="2020-04-01T06:55:09Z">
+  <suite name="Default suite" duration-ms="32642" started-at="2020-04-12T08:57:29Z" finished-at="2020-04-12T08:58:02Z">
     <groups>
     </groups>
-    <test name="Default test" duration-ms="27677" started-at="2020-04-01T06:54:42Z" finished-at="2020-04-01T06:55:09Z">
-      <class name="feb2.Bootstrap">
-        <test-method status="PASS" signature="test1()[pri:0, instance:feb2.Bootstrap@167fdd33]" name="test1" duration-ms="27641" started-at="2020-04-01T06:54:42Z" finished-at="2020-04-01T06:55:09Z">
+    <test name="Default test" duration-ms="32642" started-at="2020-04-12T08:57:29Z" finished-at="2020-04-12T08:58:02Z">
+      <class name="feb16.Driver_Quit">
+        <test-method status="PASS" signature="Driver_Quit1()[pri:0, instance:feb16.Driver_Quit@167fdd33]" name="Driver_Quit1" duration-ms="32612" started-at="2020-04-12T08:57:29Z" finished-at="2020-04-12T08:58:02Z">
           <reporter-output>
           </reporter-output>
-        </test-method> <!-- test1 -->
-      </class> <!-- feb2.Bootstrap -->
+        </test-method> <!-- Driver_Quit1 -->
+      </class> <!-- feb16.Driver_Quit -->
     </test> <!-- Default test -->
   </suite> <!-- Default suite -->
 </testng-results>

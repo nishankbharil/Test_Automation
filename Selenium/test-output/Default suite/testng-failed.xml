@@ -3,11 +3,11 @@
 <suite guice-stage="DEVELOPMENT" name="Failed suite [Default suite]">
   <test thread-count="5" name="Default test(failed)">
     <classes>
-      <class name="Head_Less_Browser.Html_Unit_Browser">
+      <class name="DockerDemo.FFDemo">
         <methods>
-          <include name="headLessTest"/>
+          <include name="testapp"/>
         </methods>
-      </class> <!-- Head_Less_Browser.Html_Unit_Browser -->
+      </class> <!-- DockerDemo.FFDemo -->
     </classes>
   </test> <!-- Default test(failed) -->
 </suite> <!-- Failed suite [Default suite] -->

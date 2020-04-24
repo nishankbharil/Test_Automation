@@ -15,6 +15,11 @@ public class Driver_Quit {
 		try {
 			driver.get("https://opensource-demo.orangehrmlive.com/");
 			driver.manage().deleteAllCookies();
+			int i = driver.hashCode();
+			
+			System.out.println(i);
+			
+			
 			driver.manage().window().maximize();
 			driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
 			driver.findElement(By.name("txtUsername")).sendKeys("admin");

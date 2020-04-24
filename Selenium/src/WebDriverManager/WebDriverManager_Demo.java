@@ -19,7 +19,4 @@ public class WebDriverManager_Demo {
 		Thread.sleep(5000);
 		driver.quit();
 	}
-	
-	
-
 }

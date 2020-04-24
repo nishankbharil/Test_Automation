@@ -15,7 +15,7 @@ import io.cucumber.java.Before;
 public class BaseClass {
 
 	public static WebDriver driver;
-	public static ExcelDataProvider excel;
+//	public static ExcelDataProvider excel;
 	public static ConfigDataProvider config;
 	public static Helper help;
 	public static ExtentReports report;
@@ -27,7 +27,7 @@ public class BaseClass {
 
 		logger.info("Setting up reports and Test started");
 
-		excel = new ExcelDataProvider();
+//		excel = new ExcelDataProvider();
 		config = new ConfigDataProvider();
 
 		ExtentHtmlReporter extent = new ExtentHtmlReporter(new File(

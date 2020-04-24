@@ -90,6 +90,8 @@ public class Fluent_Wait {
 
 		System.out.println("Final visible status is >>>>> " + element.isDisplayed());
 		
+		
+		
 
 	}
 

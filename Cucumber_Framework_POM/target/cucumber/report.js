@@ -22,10 +22,6 @@ formatter.scenario({
     }
   ]
 });
-formatter.before({
-  "error_message": "java.lang.NullPointerException\r\n\tat stepDefinitions.stepDefinitions.setupSuite(stepDefinitions.java:49)\r\n",
-  "status": "failed"
-});
 formatter.step({
   "name": "I launched chrome browser",
   "keyword": "Given "
@@ -34,7 +30,7 @@ formatter.match({
   "location": "stepDefinitions.stepDefinitions.i_launched_chrome_browser()"
 });
 formatter.result({
-  "status": "skipped"
+  "status": "passed"
 });
 formatter.step({
   "name": "I open orange hrm homepage",
@@ -44,7 +40,7 @@ formatter.match({
   "location": "stepDefinitions.stepDefinitions.i_open_orange_hrm_homepage()"
 });
 formatter.result({
-  "status": "skipped"
+  "status": "passed"
 });
 formatter.step({
   "name": "I login to hrm application with user \"Admin\" and password \"admin123\"",
@@ -54,7 +50,7 @@ formatter.match({
   "location": "stepDefinitions.stepDefinitions.i_login_to_hrm_application_with_user_and_password(java.lang.String,java.lang.String)"
 });
 formatter.result({
-  "status": "skipped"
+  "status": "passed"
 });
 formatter.step({
   "name": "user click on Admin tab",
@@ -64,7 +60,7 @@ formatter.match({
   "location": "stepDefinitions.stepDefinitions.user_click_on_tab()"
 });
 formatter.result({
-  "status": "skipped"
+  "status": "passed"
 });
 formatter.step({
   "name": "user click on Leave tab",
@@ -74,7 +70,7 @@ formatter.match({
   "location": "stepDefinitions.stepDefinitions.user_click_on_Leave_tab()"
 });
 formatter.result({
-  "status": "skipped"
+  "status": "passed"
 });
 formatter.step({
   "name": "Assign a leave",
@@ -84,7 +80,7 @@ formatter.match({
   "location": "stepDefinitions.stepDefinitions.assign_a_leave()"
 });
 formatter.result({
-  "status": "skipped"
+  "status": "passed"
 });
 formatter.step({
   "name": "logout from OHRM application",
@@ -94,7 +90,8 @@ formatter.match({
   "location": "stepDefinitions.stepDefinitions.logout_from_OHRM_application()"
 });
 formatter.result({
-  "status": "skipped"
+  "error_message": "org.openqa.selenium.ElementNotInteractableException: element not interactable\n  (Session info: chrome\u003d80.0.3987.163)\nBuild info: version: \u00273.141.59\u0027, revision: \u0027e82be7d358\u0027, time: \u00272018-11-14T08:17:03\u0027\nSystem info: host: \u0027DESKTOP-U94MBI6\u0027, ip: \u002710.0.75.1\u0027, os.name: \u0027Windows 10\u0027, os.arch: \u0027amd64\u0027, os.version: \u002710.0\u0027, java.version: \u00271.8.0_201\u0027\nDriver info: org.openqa.selenium.chrome.ChromeDriver\nCapabilities {acceptInsecureCerts: false, browserName: chrome, browserVersion: 80.0.3987.163, chrome: {chromedriverVersion: 79.0.3945.36 (3582db32b3389..., userDataDir: C:\\Users\\NISHAN~1\\AppData\\L...}, goog:chromeOptions: {debuggerAddress: localhost:61257}, javascriptEnabled: true, networkConnectionEnabled: false, pageLoadStrategy: normal, platform: WINDOWS, platformName: WINDOWS, proxy: Proxy(), setWindowRect: true, strictFileInteractability: false, timeouts: {implicit: 0, pageLoad: 300000, script: 30000}, unhandledPromptBehavior: dismiss and notify}\nSession ID: 91785542bba718a4d80939f7ee574b2d\r\n\tat sun.reflect.NativeConstructorAccessorImpl.newInstance0(Native Method)\r\n\tat sun.reflect.NativeConstructorAccessorImpl.newInstance(NativeConstructorAccessorImpl.java:62)\r\n\tat sun.reflect.DelegatingConstructorAccessorImpl.newInstance(DelegatingConstructorAccessorImpl.java:45)\r\n\tat java.lang.reflect.Constructor.newInstance(Constructor.java:423)\r\n\tat org.openqa.selenium.remote.http.W3CHttpResponseCodec.createException(W3CHttpResponseCodec.java:187)\r\n\tat org.openqa.selenium.remote.http.W3CHttpResponseCodec.decode(W3CHttpResponseCodec.java:122)\r\n\tat org.openqa.selenium.remote.http.W3CHttpResponseCodec.decode(W3CHttpResponseCodec.java:49)\r\n\tat org.openqa.selenium.remote.HttpCommandExecutor.execute(HttpCommandExecutor.java:158)\r\n\tat org.openqa.selenium.remote.service.DriverCommandExecutor.execute(DriverCommandExecutor.java:83)\r\n\tat org.openqa.selenium.remote.RemoteWebDriver.execute(RemoteWebDriver.java:552)\r\n\tat org.openqa.selenium.remote.RemoteWebElement.execute(RemoteWebElement.java:285)\r\n\tat org.openqa.selenium.remote.RemoteWebElement.click(RemoteWebElement.java:84)\r\n\tat sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)\r\n\tat sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)\r\n\tat sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)\r\n\tat java.lang.reflect.Method.invoke(Method.java:498)\r\n\tat org.openqa.selenium.support.pagefactory.internal.LocatingElementHandler.invoke(LocatingElementHandler.java:51)\r\n\tat com.sun.proxy.$Proxy17.click(Unknown Source)\r\n\tat pageObjects.HomePage.clickOnLogout(HomePage.java:32)\r\n\tat stepDefinitions.stepDefinitions.logout_from_OHRM_application(stepDefinitions.java:121)\r\n\tat ✽.logout from OHRM application(file:///C:/My%20Documents/Selenium/Git_Repository_Learn_Selenium/Cucumber_Framework_POM/Features/01_OrangeHRM.feature:26)\r\n",
+  "status": "failed"
 });
 formatter.step({
   "name": "Verify logout link",
@@ -115,9 +112,5 @@ formatter.match({
 });
 formatter.result({
   "status": "skipped"
-});
-formatter.after({
-  "error_message": "java.lang.NullPointerException\r\n\tat stepDefinitions.stepDefinitions.tearDownMethod(stepDefinitions.java:68)\r\n",
-  "status": "failed"
 });
 });
